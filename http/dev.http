@@ -1,0 +1,36 @@
+
+### Opret en bruger med en user rolle
+POST https://bicycle.thegreenway.dk/api/auth/register/
+Accept: application/json
+Content-Type: application/json
+
+{
+    "username": "Pia",
+    "password": "green123"
+}
+
+### Login og gem token
+POST https:/bicycle.thegreenway.dk/api/auth/login
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username": "Pia",
+  "password": "green123"
+}
+
+
+### Tilføj en admin rolle til brugeren
+### Kopier den jwt-token som du får ud ved at logge brugeren ind og sæt den ind under Authorization
+### På den måde er det muligt at tilføje roller
+
+POST https://trips.thegreenway.dk/api/auth/user/addrole/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsYXJzIiwic3ViIjoiTGFycyIsImV4cCI6MTczMzc0MTE4MSwicm9sZXMiOiJ1c2VyIiwidXNlcm5hbWUiOiJMYXJzIn0.OYs8i2CAcn6f15MnK1IIRAkBL2NBCkUPYzuISuf3vU0
+
+{
+    "role": "admin"
+}
+
+
+
