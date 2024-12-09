@@ -46,11 +46,11 @@ const StyledNavLink = styled(NavLink)`
   }
 
   @media (max-width: 768px) {
-    font-size: 1.2rem; /* Smaller font size on tablet */
+    font-size: 1.2rem;
   }
 
   @media (max-width: 480px) {
-    font-size: 1rem; /* Even smaller font size on mobile */
+    font-size: 1rem;
   }
 `;
 
@@ -61,7 +61,7 @@ const AuthSection = styled.div`
   color: white;
 
   @media (max-width: 768px) {
-    flex-direction: column; /* Stack elements vertically on smaller screens */
+    flex-direction: column; 
     gap: 0.5rem;
   }
 `;
