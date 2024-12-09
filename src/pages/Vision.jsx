@@ -51,7 +51,7 @@ const Paragraph = styled.p`
 `;
 
 const fullText = `Vi har samarbejde med over 250 forhandlere på landsplan, som løbende opdaterer vores database med de cykler, de aktuelt har til salg.\n
-Hvis du ønsker at søge efter racercykler baseret på komponenter, kan du vælge linket "Bicycles". Er du derimod interesseret i at finde komponenter og få detaljer om de enkelte, kan du vælge linket "Components".\n
+Hvis du ønsker at søge efter racercykler baseret på komponenter, kan du vælge linket "Bicycles".\n
 Vi håber, du får en god oplevelse!
 `;
 
