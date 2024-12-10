@@ -1,7 +1,6 @@
 
 ### Opret en bruger med en user rolle
 POST https://bicycle.thegreenway.dk/api/auth/register/
-Accept: application/json
 Content-Type: application/json
 
 {
@@ -10,12 +9,11 @@ Content-Type: application/json
 }
 
 ### Login og gem token
-POST https:/bicycle.thegreenway.dk/api/auth/login
-Accept: application/json
+POST https://bicycle.thegreenway.dk/api/auth/login
 Content-Type: application/json
 
 {
-  "username": "Pia",
+  "username": "Nicolai",
   "password": "green123"
 }
 
@@ -24,13 +22,39 @@ Content-Type: application/json
 ### Kopier den jwt-token som du får ud ved at logge brugeren ind og sæt den ind under Authorization
 ### På den måde er det muligt at tilføje roller
 
-POST https://trips.thegreenway.dk/api/auth/user/addrole/
+POST https://bicycle.thegreenway.dk/api/auth/user/addrole/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsYXJzIiwic3ViIjoiTGFycyIsImV4cCI6MTczMzc0MTE4MSwicm9sZXMiOiJ1c2VyIiwidXNlcm5hbWUiOiJMYXJzIn0.OYs8i2CAcn6f15MnK1IIRAkBL2NBCkUPYzuISuf3vU0
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsYXJzIiwic3ViIjoiUGV0ZXIiLCJleHAiOjE3MzM4MTI5NzIsInJvbGVzIjoidXNlciIsInVzZXJuYW1lIjoiUGV0ZXIifQ.yOSUcxH9iVBpk3XELPMBYj8thP9qOlbrINc3YxKCot8
 
 {
     "role": "admin"
 }
+
+
+### Her fylder vi databasen med data
+GET https://bicycle.thegreenway.dk/api/bicycles/populate
+Content-Type: application/json
+
+### Her henter vi alle bicycles
+GET https://bicycle.thegreenway.dk/api/bicycles
+Accept: application/json
+
+### Her henter vi alle frames
+GET https://bicycle.thegreenway.dk/api/frames
+Accept: application/json
+
+### Her henter vi alle gears
+GET https://bicycle.thegreenway.dk/api/gears
+Accept: application/json
+
+### Her henter vi alle saddles
+GET https://bicycle.thegreenway.dk/api/saddles
+Accept: application/json
+
+### Her henter vi alle wheels
+GET https://bicycle.thegreenway.dk/api/wheels
+Accept: application/json
+
 
 
 
