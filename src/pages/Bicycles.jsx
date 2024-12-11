@@ -289,7 +289,7 @@ const Bicycles = () => {
                     </BicycleTableRow>
                     <BicycleTableRow>
                       <BicycleTableData>Frame:</BicycleTableData>
-                      <BicycleTableData>{bicycle.frame?.brand}</BicycleTableData>
+                      <BicycleTableData>{bicycle.frame?.model}</BicycleTableData>
                     </BicycleTableRow>
                     <BicycleTableRow>
                       <BicycleTableData>Gear:</BicycleTableData>

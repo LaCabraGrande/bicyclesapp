@@ -4,7 +4,7 @@ POST https://bicycle.thegreenway.dk/api/auth/register/
 Content-Type: application/json
 
 {
-    "username": "Lars",
+    "username": "Nicolai",
     "password": "green123"
 }
 
@@ -17,7 +17,6 @@ Content-Type: application/json
   "password": "green123"
 }
 
-
 ### Tilføj en admin rolle til brugeren
 ### Kopier den jwt-token som du får ud ved at logge brugeren ind og sæt den ind under Authorization
 ### På den måde er det muligt at tilføje roller
@@ -29,7 +28,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsYXJzIiwic3ViIjoiUGV0ZXIiL
 {
     "role": "admin"
 }
-
 
 ### Her fylder vi databasen med data
 GET https://bicycle.thegreenway.dk/api/bicycles/populate
