@@ -8,7 +8,7 @@ const Container = styled.div`
 `;
 
 const Sidebar = styled.div`
-  width: 18%;
+  width: 23%;
   border-right: 1px solid #ddd;
   padding: 1rem;
   box-sizing: border-box;
