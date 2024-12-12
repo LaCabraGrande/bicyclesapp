@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { NavLink } from "react-router";
+import { useState, useEffect } from "react";
+import { NavLink, useNavigate } from "react-router";
 import styled from "styled-components";
-import apiFacade from "../util/apiFacade";
+import facade from "../util/apiFacade";
 
 // Styled Components
 const HeaderWrapper = styled.header`
@@ -61,7 +61,7 @@ const AuthSection = styled.div`
   color: white;
 
   @media (max-width: 768px) {
-    flex-direction: column; 
+    flex-direction: column;
     gap: 0.5rem;
   }
 `;
@@ -117,28 +117,101 @@ const Button = styled.button`
   }
 `;
 
+// Add the styled component for FrontPageText
+const FrontPageText = styled.div`
+ font-size: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  margin: 0 auto;
+  color: white;
+  position: relative; /* Required for the ::after pseudo-element */
+
+  &:hover {
+    color: white;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -2px; /* Adjust position below the text */
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: white;
+    transition: width 0.4s ease, left 0.4s ease;
+  }
+
+  &:hover::after {
+    width: 100%;
+    left: 0;
+  }
+`;
+
+// Add the styled component for DealersPageText
+const DealersPageText = styled.div`
+font-size: 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  margin: 0 auto;
+  color: white;
+  position: relative; /* Required for the ::after pseudo-element */
+
+  &:hover {
+    color: white;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -2px; /* Adjust position below the text */
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: white;
+    transition: width 0.4s ease, left 0.4s ease;
+  }
+
+  &:hover::after {
+    width: 100%;
+    left: 0;
+  }
+`;
+
 const Header = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [hoveredLink, setHoveredLink] = useState(null);
+  const navigate = useNavigate();
+  useEffect(() => {
+    // Check local storage for logged-in user
+    const storedUser = localStorage.getItem("loggedInUser");
+    if (storedUser) {
+      setLoggedInUser(storedUser);
+    }
+  }, []);
 
   const login = (evt) => {
     evt.preventDefault();
-    apiFacade
+    facade
       .login(username, password)
-      .then(() => setLoggedInUser(username))
+      .then(() => {
+        setLoggedInUser(username);
+        localStorage.setItem("loggedInUser", username); // Save to local storage
+        navigate("/Dealers"); // Navigate to the Dealers page on successful login
+      })
       .catch(() => alert("Login failed"));
   };
 
   const logout = () => {
-    apiFacade.logout();
+    facade.logout();
     setLoggedInUser(null);
     setUsername("");
     setPassword("");
+    localStorage.removeItem("loggedInUser"); // Remove from local storage
+    navigate("/"); // Navigate to the front page on logout
   };
 
-  // Link array updated to only include "Bicycles"
   const links = [{ to: "/Bicycles", label: "Bicycles" }];
 
   return (
@@ -149,7 +222,9 @@ const Header = () => {
             key={link.to}
             to={link.to}
             className={({ isActive }) => (isActive ? "active" : "")}
-            isActive={hoveredLink === null && window.location.pathname === link.to}
+            isActive={
+              hoveredLink === null && window.location.pathname === link.to
+            }
             isHovered={hoveredLink === link.to}
             onMouseEnter={() => setHoveredLink(link.to)}
             onMouseLeave={() => setHoveredLink(null)}
@@ -158,6 +233,19 @@ const Header = () => {
           </StyledNavLink>
         ))}
       </Nav>
+      {/* Navigate to the front page programmatically */}
+      <FrontPageText onClick={() => navigate("/")}>
+        Frontpage
+      </FrontPageText>
+      {/* Delete this DealerPAge when login work
+      <DealersPageText onClick={() => navigate("/Dealers")}>
+            Dealers
+          </DealersPageText> */}
+      {loggedInUser && (
+          <DealersPageText onClick={() => navigate("/Dealers")}>
+            Dealers
+          </DealersPageText>
+        )}
       <AuthSection>
         {loggedInUser ? (
           <div>

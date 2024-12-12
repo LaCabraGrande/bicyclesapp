@@ -5,6 +5,7 @@ import Bicycles from './pages/Bicycles.jsx'
 import MainLayout from './layouts/MainLayout.jsx'
 import Vision from './pages/Vision.jsx'
 import Components from './pages/Components.jsx'
+import Dealers from './pages/DealersNew.jsx'
 
 const router = createBrowserRouter(
  createRoutesFromElements(
@@ -12,6 +13,7 @@ const router = createBrowserRouter(
     <Route index element={<Vision />}/>
     <Route path = 'Bicycles' element = {<Bicycles />}/>
     <Route path = 'Components' element = {<Components />}/>
+    <Route path='Dealers' element={<Dealers />}/>
   </Route>
  )
 )

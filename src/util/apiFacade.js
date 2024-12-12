@@ -1,9 +1,10 @@
 const URL = "https://bicycle.thegreenway.dk/api";
 
 // Helper function to handle HTTP errors
-function handleHttpErrors(res) {
+async function handleHttpErrors(res) {
     if (!res.ok) {
-        return Promise.reject({ status: res.status, fullError: res.json() });
+        const errorData = await res.json(); // Wait for the JSON to resolve
+        return Promise.reject({ status: res.status, fullError: errorData });
     }
     return res.json();
 }
@@ -29,13 +30,18 @@ function apiFacade() {
         localStorage.removeItem("jwtToken");
     };
 
-    // Decode JWT token to get user roles
+    // Get user roles from the JWT token
     const getUserRoles = () => {
         const token = getToken();
-        if (token != null) {
-            const payloadBase64 = token.split(".")[1];
-            const decodedClaims = JSON.parse(window.atob(payloadBase64));
-            return decodedClaims.roles || [];
+        if (token) {
+            try {
+                const payloadBase64 = token.split(".")[1];
+                const decodedClaims = JSON.parse(window.atob(payloadBase64));
+                return Array.isArray(decodedClaims.roles) ? decodedClaims.roles : [];
+            } catch (error) {
+                console.error("Error decoding JWT:", error);
+                return [];
+            }
         }
         return [];
     };
@@ -61,9 +67,10 @@ function apiFacade() {
         const options = makeOptions(method, true, body);
         try {
             const res = await fetch(`${URL}${endpoint}`, options);
-            return handleHttpErrors(res);
+            return handleHttpErrors(res); // Handles errors and parses the response
         } catch (error) {
-            throw new Error(`Error fetching ${endpoint}: ${error}`);
+            console.error(`Error fetching ${endpoint}:`, error);
+            throw error; // Re-throw to handle in the caller
         }
     };
 
@@ -87,41 +94,10 @@ function apiFacade() {
         return opts;
     };
 
-    // Fetch guides, including authentication
-    const fetchGuides = () => {
-        return fetchWithAuth("/guides", "GET")
-            .then((guides) => {
-                return guides;
-            })
-            .catch((error) => {
-                console.error("Error fetching guides:", error);
-                throw new Error("Error fetching guides");
-            });
+    // Submit a new bicycle
+    const submitBicycle = async (bicycleData) => {
+        return fetchWithAuth("/bicycles", "POST", bicycleData);
     };
-
-    const fetchPackingItems = async (categoryType) => {
-        console.log("Fetching packing items with categoryType:", categoryType); // Log categoryType
-        if (!categoryType) {
-            console.error("categoryType is undefined or null");
-            throw new Error("categoryType is required for fetching packing items");
-        }
-        const endpoint = `https://trips.thegreenway.dk/api/trips/packing-list/${categoryType}`;
-        try {
-            const res = await fetch(endpoint);
-            if (!res.ok) {
-                console.error("Failed to fetch packing items, status:", res.status);
-                throw new Error(`Failed to fetch packing items: ${res.statusText}`);
-            }
-            const data = await res.json();
-            console.log("Packing items fetched successfully:", data); // Log successful data
-            return data;
-        } catch (error) {
-            console.error("Error fetching packing items:", error);
-            throw new Error("Could not fetch packing items");
-        }
-    };
-    
-    
 
     return {
         setToken,
@@ -132,8 +108,7 @@ function apiFacade() {
         hasUserAccess,
         login,
         fetchWithAuth,
-        fetchGuides,
-        fetchPackingItems, // Returner den opdaterede metode
+        submitBicycle,
     };
 }
 
