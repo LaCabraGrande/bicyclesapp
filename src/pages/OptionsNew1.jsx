@@ -226,36 +226,28 @@ const Options = ({ onFormSelect, activeForm }) => {
   if (activeForm === "Change Bicycle") {
     return (
       <FormContainer>
-        <Select
-          onChange={(e) => handleBicycleSelect(e.target.value)}
-          value={selectedBicycleId || ""}
-        >
-          <option value="">Select Bicycle</option>
-          {bicycles.map((bike) => (
-            <option key={bike.id} value={bike.id}>
-              {bike.brand} - {bike.model}
-            </option>
-          ))}
-        </Select>
-
-        {bicycleDetails && (
+      <Select
+        onChange={(e) => handleBicycleSelect(e.target.value)}
+        value={selectedBicycleId || ""}
+      >
+        <option value="">Select Bicycle</option>
+        {bicycles.map((bike) => (
+          <option key={bike.id} value={bike.id}>
+            {bike.brand} - {bike.model}
+          </option>
+        ))}
+      </Select>
+    
+      {bicycleDetails && (
+        <div>
+          {/* Kommentareret indhold fjernet */}
+        </div>
+      )}
+    
+      {bicycleDetails && (
+        <Form onSubmit={handleChangeSubmit}>
           <div>
-            <h3>Bicycle Details</h3>
-            <p>Brand: {bicycleDetails.brand}</p>
-            <p>Model: {bicycleDetails.model}</p>
-            <p>Size: {bicycleDetails.size}</p>
-            <p>Price: {bicycleDetails.price}</p>
-            <p>Weight: {bicycleDetails.weight}</p>
-            <p>Description: {bicycleDetails.description}</p>
-            <p>Frame: {bicycleDetails.frame.brand}</p>
-            <p>Gear: {bicycleDetails.gear.brand}</p>
-            <p>Wheels: {bicycleDetails.wheel.brand}</p>
-            <p>Saddle: {bicycleDetails.saddle.brand}</p>
-          </div>
-        )}
-
-        {bicycleDetails && (
-          <Form onSubmit={handleChangeSubmit}>
+            <label htmlFor="brand">Brand: </label>
             <Input
               type="text"
               name="brand"
@@ -264,6 +256,10 @@ const Options = ({ onFormSelect, activeForm }) => {
               onChange={handleChange}
               required
             />
+          </div>
+    
+          <div>
+            <label htmlFor="model">Model: </label>
             <Input
               type="text"
               name="model"
@@ -272,6 +268,10 @@ const Options = ({ onFormSelect, activeForm }) => {
               onChange={handleChange}
               required
             />
+          </div>
+    
+          <div>
+            <label htmlFor="size">Size: </label>
             <Input
               type="number"
               name="size"
@@ -280,6 +280,10 @@ const Options = ({ onFormSelect, activeForm }) => {
               onChange={handleChange}
               required
             />
+          </div>
+    
+          <div>
+            <label htmlFor="price">Price: </label>
             <Input
               type="number"
               name="price"
@@ -288,6 +292,10 @@ const Options = ({ onFormSelect, activeForm }) => {
               onChange={handleChange}
               required
             />
+          </div>
+    
+          <div>
+            <label htmlFor="weight">Weight: </label>
             <Input
               type="number"
               name="weight"
@@ -296,6 +304,10 @@ const Options = ({ onFormSelect, activeForm }) => {
               onChange={handleChange}
               required
             />
+          </div>
+    
+          <div>
+            <label htmlFor="description">Description: </label>
             <Input
               type="text"
               name="description"
@@ -304,7 +316,10 @@ const Options = ({ onFormSelect, activeForm }) => {
               onChange={handleChange}
               required
             />
-
+          </div>
+    
+          <div>
+            <label htmlFor="frameId">Frame: </label>
             <Select
               name="frameId"
               value={formData.frameId || ""}
@@ -313,11 +328,14 @@ const Options = ({ onFormSelect, activeForm }) => {
               <option value="">Select Frame</option>
               {filters.frames.map((frame) => (
                 <option key={frame.id} value={frame.id}>
-                  {frame.brand}
+                  {frame.model}
                 </option>
               ))}
             </Select>
-
+          </div>
+    
+          <div>
+            <label htmlFor="gearId">Gear: </label>
             <Select
               name="gearId"
               value={formData.gearId || ""}
@@ -326,11 +344,14 @@ const Options = ({ onFormSelect, activeForm }) => {
               <option value="">Select Gear</option>
               {filters.gears.map((gear) => (
                 <option key={gear.id} value={gear.id}>
-                  {gear.brand}
+                  {gear.model}
                 </option>
               ))}
             </Select>
-
+          </div>
+    
+          <div>
+            <label htmlFor="wheelId">Wheels: </label>
             <Select
               name="wheelId"
               value={formData.wheelId || ""}
@@ -339,11 +360,14 @@ const Options = ({ onFormSelect, activeForm }) => {
               <option value="">Select Wheels</option>
               {filters.wheels.map((wheel) => (
                 <option key={wheel.id} value={wheel.id}>
-                  {wheel.brand}
+                  {wheel.model}
                 </option>
               ))}
             </Select>
-
+          </div>
+    
+          <div>
+            <label htmlFor="saddleId">Saddle: </label>
             <Select
               name="saddleId"
               value={formData.saddleId || ""}
@@ -352,17 +376,19 @@ const Options = ({ onFormSelect, activeForm }) => {
               <option value="">Select Saddle</option>
               {filters.saddles.map((saddle) => (
                 <option key={saddle.id} value={saddle.id}>
-                  {saddle.brand}
+                  {saddle.model}
                 </option>
               ))}
             </Select>
-
-            <SubmitButton type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Submitting..." : "Change Bicycle"}
-            </SubmitButton>
-          </Form>
-        )}
-      </FormContainer>
+          </div>
+    
+          <SubmitButton type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Submitting..." : "Change Bicycle"}
+          </SubmitButton>
+        </Form>
+      )}
+    </FormContainer>
+    
     );
   }
 
