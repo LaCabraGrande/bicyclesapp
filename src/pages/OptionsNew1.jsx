@@ -39,7 +39,7 @@ const FormContainer = styled.div`
   padding: 1rem;
   border: 1px solid #ddd;
   border-radius: 4px;
-  background-color: white;
+  background-color: #f9f9f9;
 `;
 
 const Form = styled.form`
@@ -52,12 +52,14 @@ const Input = styled.input`
   padding: 0.5rem;
   border: 1px solid #ddd;
   border-radius: 4px;
+  background-color: white;
 `;
 
 const Select = styled.select`
   padding: 0.5rem;
   border: 1px solid #ddd;
   border-radius: 4px;
+  background-color: white;
 `;
 
 const SubmitButton = styled.button`
@@ -226,10 +228,12 @@ const Options = ({ onFormSelect, activeForm }) => {
   if (activeForm === "Change Bicycle") {
     return (
       <FormContainer>
+      <label htmlFor="bicycleSelect">Select Bicycle: </label>  
       <Select
         onChange={(e) => handleBicycleSelect(e.target.value)}
         value={selectedBicycleId || ""}
       >
+        
         <option value="">Select Bicycle</option>
         {bicycles.map((bike) => (
           <option key={bike.id} value={bike.id}>
