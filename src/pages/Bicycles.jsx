@@ -32,15 +32,14 @@ const Sidebar = styled.div`
 const Content = styled.div`
   flex: 1;
   padding: 1rem;
-  height: 100%;  /* Set height to 100% of the container */
-  max-height: 80vh;  /* Limit the height to 80vh */
+  height: 100%;
+  max-height: 80vh;
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
   justify-content: flex-start;
-  overflow-y: auto;  /* Allow vertical scrolling if content overflows */
+  overflow-y: auto;
 `;
-
 
 const FilterCategory = styled.div`
   margin-bottom: 1rem;
@@ -160,39 +159,33 @@ const BicycleBoxButton = styled.button`
 
 const Bicycles = () => {
   const [filters, setFilters] = useState({
-    frame: [],
-    gear: [],
-    wheel: [],
-    saddle: [],
+    gear: {},
+    saddle: {},
+    wheel: {},
   });
   const [selectedFilters, setSelectedFilters] = useState({
-    frame: 0,
-    gear: 0,
-    wheel: 0,
-    saddle: 0,
+    gear: [],
+    saddle: [],
+    wheel: [],
   });
   const [bicycles, setBicycles] = useState([]);
   const [openCategories, setOpenCategories] = useState({
-    frame: false,
     gear: false,
-    wheel: false,
     saddle: false,
+    wheel: false,
   });
 
   useEffect(() => {
     const fetchFilters = async () => {
       try {
-        const [framesRes, gearsRes, wheelsRes, saddlesRes] = await Promise.all([
-          fetch("https://bicycle.thegreenway.dk/api/frames").then((res) => res.json()),
-          fetch("https://bicycle.thegreenway.dk/api/gears").then((res) => res.json()),
-          fetch("https://bicycle.thegreenway.dk/api/wheels").then((res) => res.json()),
-          fetch("https://bicycle.thegreenway.dk/api/saddles").then((res) => res.json()),
-        ]);
+        const response = await fetch(
+          "https://bicycle.thegreenway.dk/api/bicycles/filtercounts"
+        );
+        const data = await response.json();
         setFilters({
-          frame: framesRes,
-          gear: gearsRes,
-          wheel: wheelsRes,
-          saddle: saddlesRes,
+          gear: data.gearSeriesCount,
+          saddle: data.saddleBrandCount,
+          wheel: data.wheelBrandCount,
         });
       } catch (error) {
         console.error("Error fetching filters:", error);
@@ -202,36 +195,69 @@ const Bicycles = () => {
     fetchFilters();
   }, []);
 
-  const fetchBicycles = async (filters) => {
+  const fetchBicycles = async () => {
     try {
-      const query = new URLSearchParams({
-        frameId: filters.frame,
-        gearId: filters.gear,
-        wheelId: filters.wheel,
-        saddleId: filters.saddle,
-      }).toString();
+      const queryParams = new URLSearchParams();
   
+      // Hvis gear er valgt, tilføj gearSeries korrekt
+      if (selectedFilters.gear.length > 0) {
+        selectedFilters.gear.forEach((gear) => {
+          queryParams.append("gearSeries", gear);
+        });
+      }
+  
+      // Hvis wheel brand er valgt, tilføj wheelBrand korrekt
+      if (selectedFilters.wheel.length > 0) {
+        selectedFilters.wheel.forEach((wheel) => {
+          queryParams.append("wheelBrand", wheel);
+        });
+      }
+  
+      // Hvis saddle brand er valgt, tilføj saddleBrand korrekt
+      if (selectedFilters.saddle.length > 0) {
+        selectedFilters.saddle.forEach((saddle) => {
+          queryParams.append("saddleBrand", saddle);
+        });
+      }
+  
+      // Tilføj minPrice og maxPrice til slutningen af URL'en
+      queryParams.append("minPrice", 0);
+      queryParams.append("maxPrice", 18000);
+  
+      // Byg den korrekte URL til API-anmodningen
       const response = await fetch(
-        `https://bicycle.thegreenway.dk/api/bicycles/filter?${query}`
+        `https://bicycle.thegreenway.dk/api/bicycles/filterbicycles?${queryParams.toString()}`
       );
+  
+      if (!response.ok) {
+        throw new Error(`HTTP-fejl! Status: ${response.status}`);
+      }
+  
       const data = await response.json();
-      setBicycles(data); 
+      console.log(data);  // Log responsen fra API'et
+      setBicycles(data);
     } catch (error) {
       console.error("Error fetching bicycles:", error);
     }
   };
+  
+  
+  
+  
 
-  const handleFilterChange = (category, id) => {
-    const newId = selectedFilters[category] === id ? 0 : id;
-    setSelectedFilters((prev) => ({
-      ...prev,
-      [category]: newId,
-    }));
+  const handleFilterChange = (category, brand) => {
+    setSelectedFilters((prev) => {
+      const newSelection = prev[category].includes(brand)
+        ? prev[category].filter((item) => item !== brand)
+        : [...prev[category], brand];
+
+      console.log(newSelection); // Log udvalgte filtre
+      return {
+        ...prev,
+        [category]: newSelection,
+      };
+    });
   };
-
-  useEffect(() => {
-    fetchBicycles(selectedFilters);
-  }, [selectedFilters]);
 
   const toggleCategory = (category) => {
     setOpenCategories((prev) => ({
@@ -239,6 +265,10 @@ const Bicycles = () => {
       [category]: !prev[category],
     }));
   };
+
+  useEffect(() => {
+    fetchBicycles();
+  }, [selectedFilters]);
 
   return (
     <Container>
@@ -249,16 +279,16 @@ const Bicycles = () => {
               {category.charAt(0).toUpperCase() + category.slice(1)}
             </FilterTitle>
             <FilterOptions isOpen={openCategories[category]}>
-              {filters[category].map((item) => (
+              {Object.entries(filters[category]).map(([brand, count]) => (
                 <FilterButton
-                  key={item.id}
-                  selected={selectedFilters[category] === item.id}
-                  onClick={() => handleFilterChange(category, item.id)}
+                  key={brand}
+                  selected={selectedFilters[category].includes(brand)}
+                  onClick={() => handleFilterChange(category, brand)}
                 >
                   <div className="checkbox">
                     <span className="checkbox-icon">✔</span>
                   </div>
-                  {item.model || item.name || item.brand}
+                  {brand} ({count})
                 </FilterButton>
               ))}
             </FilterOptions>
@@ -303,14 +333,10 @@ const Bicycles = () => {
                       <BicycleTableData>Saddle:</BicycleTableData>
                       <BicycleTableData>{bicycle.saddle?.model}</BicycleTableData>
                     </BicycleTableRow>
-                    <BicycleTableRow>
-                      <BicycleTableData>Description:</BicycleTableData>
-                      <BicycleTableData>{bicycle.description}</BicycleTableData>
-                    </BicycleTableRow>
                   </tbody>
                 </BicycleTable>
+                <BicycleBoxButton>Add to cart</BicycleBoxButton>
               </BicycleBoxContent>
-              <BicycleBoxButton>Details</BicycleBoxButton>
             </BicycleBox>
           ))
         )}
