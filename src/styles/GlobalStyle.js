@@ -22,7 +22,7 @@ const GlobalStyle = createGlobalStyle`
     --text-color-dark: white;
     --small-device: 640px;
     --medium-device: 968px;
-    --large-device: 1750px;
+    --large-device: 1900px;
 }
 
 /* Wireframe */
@@ -41,8 +41,8 @@ header {
 }
 
 main {
-    padding: 1rem 1rem 1rem 1rem;
-    margin: 1rem 0rem 1rem 0rem;
+    padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+    margin:0.5rem 0.5rem 0.5rem 0.5rem;
     width: 95%;
     max-width: var(--large-device);
     min-height: 50vh;
