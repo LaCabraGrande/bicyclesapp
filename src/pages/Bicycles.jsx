@@ -9,6 +9,7 @@ const Container = styled.div`
 
 const Sidebar = styled.div`
   width: 20%;
+  min-width: 270px;
   border-right: 1px solid #ddd;
   padding: 2rem 1.5rem 1.5rem 2rem;
   box-sizing: border-box;
@@ -155,7 +156,31 @@ const BicycleBox = styled.div`
     transform: translateY(-5px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   }
+
+  &:hover .tooltip {
+    visibility: visible; /* Gør tooltip synlig ved hover */
+    opacity: 1;
+  }
 `;
+
+
+const Tooltip = styled.div`
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  top: 1.0rem; /* Positioner tooltip lidt nede fra toppen */
+  right: 1.5rem; /* Placerer tooltip lidt væk fra højre kant */
+  background-color: #f0f0f0;
+  color: black;
+  /*color: #4CAF50;*/
+  text-align: center;
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  transition: opacity 0.2s ease;
+  pointer-events: none; /* Forhindrer interaktion med tooltip */
+`;
+
 
 const BicycleBoxContent = styled.div`
   width: 295px;
@@ -184,7 +209,7 @@ const BicycleBoxContent = styled.div`
 const BicycleBrand = styled.h4`
   font-size: 1.3rem;
   font-weight: 400;
-  color: #333;
+  color: darkgreen;
   margin: 0;
   padding: 0;
 `;
@@ -197,7 +222,6 @@ const BicycleTableContainer = styled.div`
 
 const BicycleTable = styled.table`
   width: 280px;
-
   margin-top: 0.4rem;
   border-collapse: collapse;
 `;
@@ -215,6 +239,7 @@ const BicycleTableData = styled.td`
   &:first-child {
     width: 29%; /* Første kolonne får 30% af bredden */
     text-align: left;
+    font-weight: bold;
   }
 
   &:nth-child(2) {
@@ -335,20 +360,15 @@ const Bicycles = () => {
   }, [selectedFilters]);
 
   const [openBicycleDetails, setOpenBicycleDetails] = useState({});
+ 
 
-  const toggleBicycleDetail = (bicycleId, part) => {
-    setOpenBicycleDetails((prev) => ({
-      ...prev,
-      [bicycleId]: {
-        ...prev[bicycleId],
-        [part]: !prev[bicycleId]?.[part],
-      },
+  const toggleBicycleDetail = (bicycleId) => {
+    setOpenBicycleDetails((prevDetails) => ({
+      ...prevDetails,
+      [bicycleId]: !prevDetails[bicycleId],  // Skifter mellem true/false
     }));
   };
-
-  useEffect(() => {
-    fetchBicycles();
-  }, [selectedFilters]);
+  
 
   const categoryTitles = {
     gearSeries: "Gear",
@@ -357,8 +377,7 @@ const Bicycles = () => {
     bicycleBrand: "Mærke",
     bicycleType: "Geartype",
     wheelType: "Bremsetype",
-    priceInterval: "Pris",
-  
+    priceInterval: "Pris",  
   };
 
   return (
@@ -400,7 +419,10 @@ const Bicycles = () => {
           <p>No bicycles found. Please adjust your filters.</p>
         ) : (
           bicycles.map((bicycle) => (
-            <BicycleBox key={bicycle.id}>
+            <BicycleBox key={bicycle.id} onClick={() => toggleBicycleDetail(bicycle.id)}>
+              <Tooltip className="tooltip">
+              {openBicycleDetails[bicycle.id] ? "Klik for at lukke detaljer" : "Klik for detaljer"}
+            </Tooltip>
               <BicycleBoxContent>
                 <BicycleBrand>{bicycle.brand}</BicycleBrand>
                 <BicycleTableContainer>
@@ -424,15 +446,13 @@ const Bicycles = () => {
                           {bicycle.description}
                         </BicycleTableData>
                       </BicycleTableRow>
-                      <BicycleTableRow
-                        onClick={() => toggleBicycleDetail(bicycle.id, "frame")}
-                      >
+                      <BicycleTableRow>
                         <BicycleTableData>Frame:</BicycleTableData>
                         <BicycleTableData>
                           {bicycle.frame?.model}
                         </BicycleTableData>
                       </BicycleTableRow>
-                      {openBicycleDetails[bicycle.id]?.frame && (
+                      {openBicycleDetails[bicycle.id] && (
                         <>
                           <BicycleTableRow>
                             <BicycleTableData>- weight:</BicycleTableData>
@@ -454,15 +474,13 @@ const Bicycles = () => {
                           </BicycleTableRow>
                         </>
                       )}
-                      <BicycleTableRow
-                        onClick={() => toggleBicycleDetail(bicycle.id, "gear")}
-                      >
+                      <BicycleTableRow>
                         <BicycleTableData>Gear:</BicycleTableData>
                         <BicycleTableData>
                           {bicycle.gear?.model}
                         </BicycleTableData>
                       </BicycleTableRow>
-                      {openBicycleDetails[bicycle.id]?.gear && (
+                      {openBicycleDetails[bicycle.id] && (
                         <>
                           <BicycleTableRow>
                             <BicycleTableData>- type:</BicycleTableData>
@@ -484,15 +502,13 @@ const Bicycles = () => {
                           </BicycleTableRow>
                         </>
                       )}
-                      <BicycleTableRow
-                        onClick={() => toggleBicycleDetail(bicycle.id, "wheel")}
-                      >
+                      <BicycleTableRow>
                         <BicycleTableData>Wheel:</BicycleTableData>
                         <BicycleTableData>
                           {bicycle.wheel?.model}
                         </BicycleTableData>
                       </BicycleTableRow>
-                      {openBicycleDetails[bicycle.id]?.wheel && (
+                      {openBicycleDetails[bicycle.id] && (
                         <>
                           <BicycleTableRow>
                             <BicycleTableData>- weight:</BicycleTableData>
@@ -514,17 +530,13 @@ const Bicycles = () => {
                           </BicycleTableRow>
                         </>
                       )}
-                      <BicycleTableRow
-                        onClick={() =>
-                          toggleBicycleDetail(bicycle.id, "saddle")
-                        }
-                      >
+                     <BicycleTableRow>
                         <BicycleTableData>Saddle:</BicycleTableData>
                         <BicycleTableData>
                           {bicycle.saddle?.model}
                         </BicycleTableData>
                       </BicycleTableRow>
-                      {openBicycleDetails[bicycle.id]?.saddle && (
+                      {openBicycleDetails[bicycle.id] && (
                         <>
                           <BicycleTableRow>
                             <BicycleTableData>- weight:</BicycleTableData>

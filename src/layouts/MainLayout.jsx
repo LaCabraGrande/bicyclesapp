@@ -13,7 +13,7 @@ const Container = styled.div`
   padding: 0;
   border: 1px solid silver;
   border-radius: 0px;
-  background-color: #39b739;
+  background-color: darkgreen;
   box-shadow: 0 0 55px rgba(0, 0, 0, 0.3), 0 0 55px rgba(0, 0, 0, 0.3);
 
   // Mobile media query
@@ -26,7 +26,7 @@ const Container = styled.div`
 const Footer = styled.footer`
   text-align: center;
   padding: 20px 20px 25px 20px;
-  background-color: #39b739;
+  background-color: darkgreen
   color: white;
 
   p {
