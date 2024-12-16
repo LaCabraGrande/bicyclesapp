@@ -98,7 +98,7 @@ const Options = ({ onFormSelect, activeForm }) => {
     },
     "New Frame": {
       endpoint: "/frames",
-      fields: ["brand", "material", "type", "weight", "size"],
+      fields: ["brand", "model" ,"material", "type", "weight", "size"],
     },
     "New Gear": {
       endpoint: "/gears",
@@ -194,6 +194,51 @@ const Options = ({ onFormSelect, activeForm }) => {
       ...prevData,
       [name]: value,
     }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (isSubmitting) return;
+  
+    setIsSubmitting(true);
+  
+    const formConfig = formsConfig[activeForm];
+    if (!formConfig) return;
+  
+    try {
+      if (activeForm === "New Bicycle" && addComponents) {
+        // Submitting a bicycle with components
+        const endpoint = "/bicycles/withcomponents";
+        const payload = {
+          ...formData,
+          frameId: parseInt(formData.frameId),
+          gearId: parseInt(formData.gearId),
+          wheelId: parseInt(formData.wheelId),
+          saddleId: parseInt(formData.saddleId),
+        };
+        console.log("endpoint:", endpoint);
+        console.log("payload:", payload);
+        await facade.fetchWithAuth(endpoint, "POST", payload);
+      } else if (activeForm === "New Bicycle") {
+        // Submitting a bicycle without components
+        const endpoint = "/bicycles";
+        console.log("endpoint:", endpoint);
+        console.log("formData:", formData);
+        await facade.fetchWithAuth(endpoint, "POST", formData);
+      } else {
+        // Generic submission for other forms
+        await facade.fetchWithAuth(formConfig.endpoint, "POST", formData);
+      }
+  
+      alert(`${activeForm} successfully added!`);
+      setFormData({});
+      onFormSelect("");
+    } catch (error) {
+      console.error(`Error adding ${activeForm.toLowerCase()}:`, error);
+      alert(`Failed to add ${activeForm.toLowerCase()}. Please try again.`);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChangeSubmit = async (e) => {

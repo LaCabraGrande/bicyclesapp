@@ -237,10 +237,10 @@ const Header = () => {
       <FrontPageText onClick={() => navigate("/")}>
         Frontpage
       </FrontPageText>
-      {/* Delete this DealerPAge when login work
+      {/* Delete this DealerPAge when login work*/}
       <DealersPageText onClick={() => navigate("/Dealers")}>
             Dealers
-          </DealersPageText> */}
+          </DealersPageText> 
       {loggedInUser && (
           <DealersPageText onClick={() => navigate("/Dealers")}>
             Dealers
