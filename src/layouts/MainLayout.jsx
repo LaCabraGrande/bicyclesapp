@@ -26,7 +26,7 @@ const Container = styled.div`
 const Footer = styled.footer`
   text-align: center;
   padding: 20px 20px 25px 20px;
-  background-color: darkgreen
+  background-color: darkgreen;
   color: white;
 
   p {

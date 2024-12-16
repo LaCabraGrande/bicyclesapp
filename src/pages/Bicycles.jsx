@@ -72,7 +72,7 @@ const FilterCategory = styled.div`
 
 const FilterTitle = styled.h4`
   cursor: pointer;
-  margin: 0;
+  margin-left: 5px;
   font-size: 1.3rem;
   font-weight: 400;
  
@@ -258,6 +258,7 @@ const Bicycles = () => {
     wheelType: {},
     priceInterval: {},
   });
+
   const [selectedFilters, setSelectedFilters] = useState({
     gearSeries: [],
     saddleBrand: [],
@@ -267,6 +268,7 @@ const Bicycles = () => {
     wheelType: [],
     priceInterval: [],
   });
+
   const [bicycles, setBicycles] = useState([]);
   const [openCategories, setOpenCategories] = useState({
     gearSeries: false,
@@ -279,6 +281,7 @@ const Bicycles = () => {
   });
 
   useEffect(() => {
+    
     const fetchFilters = async () => {
       try {
         const queryParams = new URLSearchParams();
