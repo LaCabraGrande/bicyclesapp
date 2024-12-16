@@ -17,7 +17,7 @@ const Sidebar = styled.div`
   max-height: 72vh;
   margin-right: 10px;
   margin-top: 5px;
-  
+
   /* WebKit specific styling */
   &::-webkit-scrollbar {
     width: 8px; /* Scrollbar bredde */
@@ -48,7 +48,6 @@ const Content = styled.div`
     290px,
     290px
   ); /* Her styrer jeg rækkehøjden og kolonnebredden */
-  
 
   /* WebKit specific styling */
   &::-webkit-scrollbar {
@@ -75,7 +74,6 @@ const FilterTitle = styled.h4`
   margin-left: 5px;
   font-size: 1.3rem;
   font-weight: 400;
- 
 `;
 
 const FilterOptions = styled.div`
@@ -130,7 +128,6 @@ const FilterButton = styled.button`
     font-size: 0.9rem;
     color: ${(props) => (props.disabled ? "#bbb" : "#888")};
   }
-  
 `;
 
 const BicycleBox = styled.div`
@@ -163,12 +160,11 @@ const BicycleBox = styled.div`
   }
 `;
 
-
 const Tooltip = styled.div`
   visibility: hidden;
   opacity: 0;
   position: absolute;
-  top: 1.0rem; /* Positioner tooltip lidt nede fra toppen */
+  top: 1rem; /* Positioner tooltip lidt nede fra toppen */
   right: 1.5rem; /* Placerer tooltip lidt væk fra højre kant */
   background-color: #f0f0f0;
   color: black;
@@ -180,7 +176,6 @@ const Tooltip = styled.div`
   transition: opacity 0.2s ease;
   pointer-events: none; /* Forhindrer interaktion med tooltip */
 `;
-
 
 const BicycleBoxContent = styled.div`
   width: 295px;
@@ -248,6 +243,22 @@ const BicycleTableData = styled.td`
   }
 `;
 
+const StyledLink = styled.a`
+  color: #45a049; /* Blå farve */
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 0.7rem;
+
+  &:hover {
+    text-decoration: none;
+    color: #0056b3; /* Mørkere blå ved hover */
+  }
+
+  &:visited {
+    color: #551a8b; /* Ændrer farven på besøgte links */
+  }
+`;
+
 const Bicycles = () => {
   const [filters, setFilters] = useState({
     gearSeries: {},
@@ -281,7 +292,6 @@ const Bicycles = () => {
   });
 
   useEffect(() => {
-    
     const fetchFilters = async () => {
       try {
         const queryParams = new URLSearchParams();
@@ -363,15 +373,13 @@ const Bicycles = () => {
   }, [selectedFilters]);
 
   const [openBicycleDetails, setOpenBicycleDetails] = useState({});
- 
 
   const toggleBicycleDetail = (bicycleId) => {
     setOpenBicycleDetails((prevDetails) => ({
       ...prevDetails,
-      [bicycleId]: !prevDetails[bicycleId],  // Skifter mellem true/false
+      [bicycleId]: !prevDetails[bicycleId], // Skifter mellem true/false
     }));
   };
-  
 
   const categoryTitles = {
     gearSeries: "Gear",
@@ -380,7 +388,7 @@ const Bicycles = () => {
     bicycleBrand: "Mærke",
     bicycleType: "Geartype",
     wheelType: "Bremsetype",
-    priceInterval: "Pris",  
+    priceInterval: "Pris",
   };
 
   return (
@@ -422,10 +430,15 @@ const Bicycles = () => {
           <p>No bicycles found. Please adjust your filters.</p>
         ) : (
           bicycles.map((bicycle) => (
-            <BicycleBox key={bicycle.id} onClick={() => toggleBicycleDetail(bicycle.id)}>
+            <BicycleBox
+              key={bicycle.id}
+              onClick={() => toggleBicycleDetail(bicycle.id)}
+            >
               <Tooltip className="tooltip">
-              {openBicycleDetails[bicycle.id] ? "Klik for at lukke detaljer" : "Klik for detaljer"}
-            </Tooltip>
+                {openBicycleDetails[bicycle.id]
+                  ? "Klik for at lukke detaljer"
+                  : "Klik for detaljer"}
+              </Tooltip>
               <BicycleBoxContent>
                 <BicycleBrand>{bicycle.brand}</BicycleBrand>
                 <BicycleTableContainer>
@@ -444,9 +457,15 @@ const Bicycles = () => {
                         <BicycleTableData>{bicycle.weight} kg</BicycleTableData>
                       </BicycleTableRow>
                       <BicycleTableRow>
-                        <BicycleTableData>Description:</BicycleTableData>
+                        <BicycleTableData>Dealer:</BicycleTableData>
                         <BicycleTableData>
-                          {bicycle.description}
+                          <StyledLink
+                            href={bicycle.description}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            visit dealer
+                          </StyledLink>
                         </BicycleTableData>
                       </BicycleTableRow>
                       <BicycleTableRow>
@@ -533,7 +552,7 @@ const Bicycles = () => {
                           </BicycleTableRow>
                         </>
                       )}
-                     <BicycleTableRow>
+                      <BicycleTableRow>
                         <BicycleTableData>Saddle:</BicycleTableData>
                         <BicycleTableData>
                           {bicycle.saddle?.model}
