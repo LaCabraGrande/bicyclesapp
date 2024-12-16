@@ -463,6 +463,7 @@ const Bicycles = () => {
                             href={bicycle.description}
                             target="_blank"
                             rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
                           >
                             visit dealer
                           </StyledLink>
