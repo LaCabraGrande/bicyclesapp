@@ -75,7 +75,8 @@ const FilterCategory = styled.div`
 
 const FilterTitle = styled.h4`
   cursor: pointer;
-  margin-left: 5px;
+  margin-left: 4px;
+  margin-bottom: 2px;
   font-size: 1.1rem;
   font-weight: 400;
   color: darkgreen
@@ -170,7 +171,7 @@ const Tooltip = styled.div`
   position: absolute;
   top: 1rem; /* Positioner tooltip lidt nede fra toppen */
   right: 1.5rem; /* Placerer tooltip lidt væk fra højre kant */
-  background-color: #f0f0f0;
+  
   color: darkgreen;
   /*color: #4CAF50;*/
   text-align: center;
