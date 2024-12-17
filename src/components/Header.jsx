@@ -39,7 +39,7 @@ const StyledNavLink = styled(NavLink)`
     bottom: 0;
     left: 50%;
     width: ${(props) => (props.isHovered || props.isActive ? "100%" : "0")};
-    height: 2px;
+    height: 1px;
     background-color: white;
     transition: width 0.3s ease, left 0.3s ease;
     left: ${(props) => (props.isHovered || props.isActive ? "0" : "50%")};
