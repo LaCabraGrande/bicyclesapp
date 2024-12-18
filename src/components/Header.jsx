@@ -120,66 +120,6 @@ const Button = styled.button`
   }
 `;
 
-// Add the styled component for FrontPageText
-const FrontPageText = styled.div`
- font-size: 1.5rem;
-  text-align: center;
-  cursor: pointer;
-  margin: 0 auto;
-  color: white;
-  position: relative; /* Required for the ::after pseudo-element */
-
-  &:hover {
-    color: white;
-  }
-
-  &::after {
-    content: "";
-    position: absolute;
-    bottom: -2px; /* Adjust position below the text */
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background-color: white;
-    transition: width 0.4s ease, left 0.4s ease;
-  }
-
-  &:hover::after {
-    width: 100%;
-    left: 0;
-  }
-`;
-
-// Add the styled component for DealersPageText
-const DealersPageText = styled.div`
-font-size: 1.5rem;
-  text-align: center;
-  cursor: pointer;
-  margin: 0 auto;
-  color: white;
-  position: relative; /* Required for the ::after pseudo-element */
-
-  &:hover {
-    color: white;
-  }
-
-  &::after {
-    content: "";
-    position: absolute;
-    bottom: -2px; /* Adjust position below the text */
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background-color: white;
-    transition: width 0.4s ease, left 0.4s ease;
-  }
-
-  &:hover::after {
-    width: 100%;
-    left: 0;
-  }
-`;
-
 const Header = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
