@@ -4,7 +4,7 @@ POST https://bicycle.thegreenway.dk/api/auth/register/
 Content-Type: application/json
 
 {
-    "username": "Nicolai",
+    "username": "Lars",
     "password": "green123"
 }
 
