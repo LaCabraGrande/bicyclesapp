@@ -212,7 +212,12 @@ const Header = () => {
     navigate("/"); // Navigate to the front page on logout
   };
 
-  const links = [{ to: "/Bicycles", label: "Bicycles" }];
+  const links = [{ to: "/Bicycles", label: "Bicycles" },
+  { to: "/", label: "Frontpage" },
+  ...(loggedInUser
+    ? [{ to: "/Dealers", label: "Dealers"}]
+    : []),
+];
 
   return (
     <HeaderWrapper>
@@ -230,22 +235,15 @@ const Header = () => {
             onMouseLeave={() => setHoveredLink(null)}
           >
             {link.label}
+            {/* Navigate to the front page programmatically */}
           </StyledNavLink>
         ))}
       </Nav>
-      {/* Navigate to the front page programmatically */}
-      <FrontPageText onClick={() => navigate("/")}>
-        Frontpage
-      </FrontPageText>
-      {/* Delete this DealerPAge when login work*/}
-      <DealersPageText onClick={() => navigate("/Dealers")}>
-            Dealers
-          </DealersPageText> 
-      {loggedInUser && (
+      {/* {loggedInUser && (
           <DealersPageText onClick={() => navigate("/Dealers")}>
             Dealers
           </DealersPageText>
-        )}
+        )} */}
       <AuthSection>
         {loggedInUser ? (
           <div>

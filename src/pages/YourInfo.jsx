@@ -3,7 +3,7 @@ import styled from "styled-components";
 import facade from "../util/apiFacade";
 
 const Card = styled.div`
-  background: linear-gradient(135deg, #39b739, #39b739);
+  background: linear-gradient(135deg, darkgreen, darkgreen);
   color: white;
   border-radius: 15px;
   padding: 25px;
@@ -25,7 +25,7 @@ const Avatar = styled.div`
   justify-content: center;
   font-size: 2em;
   font-weight: bold;
-  color: #39b739;
+  color: darkgreen;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 `;
 
@@ -48,20 +48,6 @@ const InfoItem = styled.li`
   border-radius: 8px;
 `;
 
-const LogoutButton = styled.button`
-  background-color: #e74c3c;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  margin-top: 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1em;
-
-  &:hover {
-    background-color: #c0392b;
-  }
-`;
 
 const YourInfo = () => {
   const [username, setUsername] = useState(null);
@@ -85,11 +71,6 @@ const YourInfo = () => {
     }
   }, []);
 
-  const handleLogout = () => {
-    facade.logout();
-    setUsername(null);
-    setRoles([]);
-  };
 
   return (
     <Card>
@@ -98,7 +79,7 @@ const YourInfo = () => {
       {username ? (
         <>
           <InfoList>
-            <InfoItem>Email: {`${username}@example.com`}</InfoItem>
+            {/* <InfoItem>Email: {`${username}@example.com`}</InfoItem> */}
             <InfoItem>Role: {roles.length > 0 ? roles.join(", ") : "No roles assigned"}</InfoItem>
           </InfoList>
         </>

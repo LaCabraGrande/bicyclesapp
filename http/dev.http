@@ -23,7 +23,7 @@ Content-Type: application/json
 
 POST https://bicycle.thegreenway.dk/api/auth/user/addrole/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsYXJzIiwic3ViIjoiUGV0ZXIiLCJleHAiOjE3MzM4MTI5NzIsInJvbGVzIjoidXNlciIsInVzZXJuYW1lIjoiUGV0ZXIifQ.yOSUcxH9iVBpk3XELPMBYj8thP9qOlbrINc3YxKCot8
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsYXJzIiwic3ViIjoiTmljb2xhaSIsImV4cCI6MTczNDUxMDkyNCwicm9sZXMiOiJ1c2VyIiwidXNlcm5hbWUiOiJOaWNvbGFpIn0.AgrGeE5MLalIlGqrzISEzEKNfbYqqJgEMKuh9LtaO44
 
 {
     "role": "admin"

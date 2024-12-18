@@ -78,6 +78,8 @@ const SubmitButton = styled.button`
 const Options = ({ onFormSelect, activeForm }) => {
   const [isNewItemsExpanded, setIsNewItemsExpanded] = useState(false);
   const [isAddItemsExpanded, setIsAddItemsExpanded] = useState(false);
+  const [isChangeItemsExpanded, setIsChangeItemsExpanded] = useState(false);
+
   const [addComponents, setAddComponents] = useState(false);
   const [formData, setFormData] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -90,29 +92,68 @@ const Options = ({ onFormSelect, activeForm }) => {
   const [bicycles, setBicycles] = useState([]);
   const [selectedBicycleId, setSelectedBicycleId] = useState(null);
   const [bicycleDetails, setBicycleDetails] = useState(null);
+  const [formKey, setFormKey] = useState(0);
+
+  const changeFormsConfig = {
+    "Change Frame": { endpoint: "/frames", fields: ["brand", "model", "material", "type", "weight", "size"] },
+    "Change Gear": { endpoint: "/gears", fields: ["brand", "model", "material", "type", "weight"] },
+    "Change Wheel": { endpoint: "/wheels", fields: ["brand", "model", "material", "type", "weight", "size"] },
+    "Change Saddle": { endpoint: "/saddles", fields: ["brand", "model", "material", "weight", "width"] },
+  };
 
   const formsConfig = {
     "New Bicycle": {
       endpoint: "/bicycles",
-      fields: ["brand", "model", "size", "price", "weight", "description"],
+      fields: ["bicycle_brand", "bicycle_model", "bicycle_size", "bicycle_price", "bicycle_weight", "bicycle_description"],
     },
     "New Frame": {
       endpoint: "/frames",
-      fields: ["brand", "model" ,"material", "type", "weight", "size"],
+      fields: ["frame_brand", "frame_model", "frame_material", "frame_type", "frame_weight", "frame_size"],
     },
     "New Gear": {
       endpoint: "/gears",
-      fields: ["brand", "model", "material", "type", "weight"],
+      fields: ["gear_brand", "gear_model", "gear_material", "gear_type", "gear_weight"],
     },
     "New Wheels": {
       endpoint: "/wheels",
-      fields: ["brand", "material", "type", "model", "weight", "size"],
+      fields: ["wheel_brand", "wheel_material", "wheel_type", "wheel_model", "wheel_weight", "wheel_size"],
     },
     "New Saddle": {
       endpoint: "/saddles",
-      fields: ["brand", "material", "model", "weight", "width"],
+      fields: ["saddle_brand", "saddle_material", "saddle_model", "saddle_weight", "saddle_width"],
     },
   };
+  
+const [items, setItems] = useState([]); // List of items for dropdown
+const [selectedItemId, setSelectedItemId] = useState(null); // Selected item ID
+
+useEffect(() => {
+  const fetchItems = async () => {
+    try {
+      const formConfig = changeFormsConfig[activeForm];
+      const response = await fetch(`https://bicycle.thegreenway.dk/api${formConfig.endpoint}`);
+      const data = await response.json();
+      setItems(data); // Populate the dropdown
+    } catch (error) {
+      console.error(`Error fetching ${activeForm} items:`, error);
+    }
+  };
+  if (activeForm) fetchItems();
+}, [activeForm]);
+
+const handleItemSelect = async (id) => {
+  setSelectedItemId(id);
+  if (!id) return;
+
+  try {
+    const formConfig = changeFormsConfig[activeForm];
+    const response = await fetch(`https://bicycle.thegreenway.dk/api${formConfig.endpoint}/${id}`);
+    const data = await response.json();
+    setFormData(data); // Populate formData with fetched details
+  } catch (error) {
+    console.error(`Error fetching item details for ${activeForm}:`, error);
+  }
+};
 
   useEffect(() => {
     const fetchFilters = async () => {
@@ -154,6 +195,12 @@ const Options = ({ onFormSelect, activeForm }) => {
     onFormSelect("");
   };
 
+  const toggleChangeItems = () => {
+    setIsChangeItemsExpanded((prev) => !prev);
+    setIsNewItemsExpanded(false);
+    onFormSelect("");
+  };
+
   const toggleAddItems = () => {
     setIsAddItemsExpanded((prev) => !prev);
     setIsNewItemsExpanded(false);
@@ -183,9 +230,21 @@ const Options = ({ onFormSelect, activeForm }) => {
     }
   };
 
+  const fetchItemsForDropdown = async () => {
+    try {
+      const formConfig = changeFormsConfig[activeForm];
+      const response = await fetch(`https://bicycle.thegreenway.dk/api${formConfig.endpoint}`);
+      const data = await response.json();
+      setItems(data); // Set dropdown items
+    } catch (error) {
+      console.error("Error fetching items:", error);
+    }
+  };
+
+
   const handleFormSelect = (formName) => {
-    onFormSelect(formName);
-    setFormData({});
+    onFormSelect(formName); // Select the form
+    setFormKey((prevKey) => prevKey + 1); // Force form re-render
   };
 
   const handleChange = (e) => {
@@ -270,6 +329,29 @@ const Options = ({ onFormSelect, activeForm }) => {
     }
 };
 
+const handleChangeItemSubmit = async (e) => {
+  e.preventDefault();
+  if (isSubmitting) return;
+
+  setIsSubmitting(true);
+
+  const formConfig = changeFormsConfig[activeForm];
+  if (!formConfig) return;
+
+  try {
+    console.log(`Submitting to ${formConfig.endpoint}:`, formData);
+    await facade.fetchWithAuth(formConfig.endpoint, "PUT", formData);
+    alert(`${activeForm} updated successfully!`);
+    setFormData({});
+    onFormSelect(""); // Reset active form
+  } catch (error) {
+    console.error(`Error updating ${activeForm}:`, error);
+    alert(`Failed to update ${activeForm}. Please try again.`);
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
   if (activeForm === "Change Bicycle") {
     return (
       <FormContainer>
@@ -294,7 +376,7 @@ const Options = ({ onFormSelect, activeForm }) => {
       )}
     
       {bicycleDetails && (
-        <Form onSubmit={handleChangeSubmit}>
+        <Form key={formKey} onSubmit={handleChangeSubmit}>
           <div>
             <label htmlFor="brand">Brand: </label>
             <Input
@@ -443,7 +525,7 @@ const Options = ({ onFormSelect, activeForm }) => {
 
   if (activeForm && formsConfig[activeForm]) {
     return (
-      <Form onSubmit={handleSubmit}>
+      <Form key={formKey} onSubmit={handleSubmit}>
         {formsConfig[activeForm].fields.map((field) => (
           <Input
             key={field}
@@ -457,11 +539,11 @@ const Options = ({ onFormSelect, activeForm }) => {
         ))}
         {activeForm === "New Bicycle" && (
           <>
-            <ActionButton onClick={() => setAddComponents((prev) => !prev)}>
+            {/* <ActionButton onClick={() => setAddComponents((prev) => !prev)}>
               {addComponents ? "Remove Components" : "Add More Components"}
             </ActionButton>
             {addComponents && (
-              <>
+              <> */}
                 {Object.keys(filters).map((key) => (
                   <Select
                     key={key}
@@ -478,8 +560,8 @@ const Options = ({ onFormSelect, activeForm }) => {
                     ))}
                   </Select>
                 ))}
-              </>
-            )}
+              {/* </>
+            )} */}
           </>
         )}
         <SubmitButton type="submit" disabled={isSubmitting}>
@@ -489,6 +571,51 @@ const Options = ({ onFormSelect, activeForm }) => {
     );
   }
 
+  if (activeForm && changeFormsConfig[activeForm]) {
+    return (
+      <>
+        {/* Step 2: Dropdown for Selecting an Item */}
+        <FormContainer>
+          <label htmlFor="itemSelect">Select {activeForm.split(" ")[1]}: </label>
+          <Select
+            id="itemSelect"
+            onChange={(e) => handleItemSelect(e.target.value)}
+            value={selectedItemId || ""}
+            required
+          >
+            <option value="">Select {activeForm.split(" ")[1]}</option>
+            {items.map((item) => (
+              <option key={item.id} value={item.id}>
+                {item.brand} - {item.model}
+              </option>
+            ))}
+          </Select>
+        </FormContainer>
+  
+        {/* Step 3: Form for Editing the Selected Item */}
+        {selectedItemId && (
+          <Form onSubmit={handleChangeItemSubmit}>
+            {changeFormsConfig[activeForm].fields.map((field) => (
+              <div key={field}>
+                <label htmlFor={field}>{field.charAt(0).toUpperCase() + field.slice(1)}:</label>
+                <Input
+                  type="text"
+                  name={field}
+                  placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
+                  value={formData[field] || ""}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+            ))}
+            <SubmitButton type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Submitting..." : `Update ${activeForm.split(" ")[1]}`}
+            </SubmitButton>
+          </Form>
+        )}
+      </>
+    );
+  }
   return (
     <div>
       <ActionButton onClick={toggleNewItems}>
@@ -504,8 +631,19 @@ const Options = ({ onFormSelect, activeForm }) => {
       <ActionButton onClick={() => handleFormSelect("Change Bicycle")}>
         Change Bicycle
       </ActionButton>
-      <ActionButton onClick={() => handleAction("Change Item")}>Change Item</ActionButton>
-      <ActionButton onClick={() => handleAction("Delete Item")}>Delete Item</ActionButton>
+
+{/* Change Items Section */}
+<ActionButton onClick={toggleChangeItems}>
+        {isChangeItemsExpanded ? "Close Change Item" : "Change Item"}
+      </ActionButton>
+      {isChangeItemsExpanded &&
+        Object.keys(changeFormsConfig).map((formName) => (
+          <StyledButton key={formName} onClick={() => handleFormSelect(formName)}>
+            {formName}
+          </StyledButton>
+        ))}      
+        
+        <ActionButton onClick={() => handleAction("Delete Item")}>Delete Item</ActionButton>
     </div>
   );
 };

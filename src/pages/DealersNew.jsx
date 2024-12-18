@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import YourInfo from "./YourInfo";
-import Options from "./OptionsNew1";
+import Options from "./Options3";
 
 const Container = styled.div`
   display: flex;
@@ -22,6 +22,9 @@ const Content = styled.div`
   padding: 1rem;
   height: 80vh;
   box-sizing: border-box;
+  allign-items: center;
+  border: 1px solid #ddd;
+  justify-content: center;
 `;
 
 const Info = styled.h3`
@@ -67,7 +70,7 @@ const Dealers = () => {
             setShowOptions(false); // Hide Options if switching tabs
           }}
         >
-          Your Info
+          Edit Info
         </Info>
         <OptionsTitle onClick={handleOptionsClick}>Options</OptionsTitle>
         {showOptions && <Options onFormSelect={setSelectedForm} />}
