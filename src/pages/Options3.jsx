@@ -79,7 +79,6 @@ const Options = ({ onFormSelect, activeForm }) => {
   const [isNewItemsExpanded, setIsNewItemsExpanded] = useState(false);
   const [isAddItemsExpanded, setIsAddItemsExpanded] = useState(false);
   const [isChangeItemsExpanded, setIsChangeItemsExpanded] = useState(false);
-
   const [addComponents, setAddComponents] = useState(false);
   const [formData, setFormData] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -223,56 +222,56 @@ const Options = ({ onFormSelect, activeForm }) => {
 
   const formsConfig = {
     "New Bicycle": {
-      endpoint: "/bicycles",
+      endpoint: "/bicycles/withcomponents",
       fields: [
-        "bicycle_brand",
-        "bicycle_model",
-        "bicycle_size",
-        "bicycle_price",
-        "bicycle_weight",
-        "bicycle_description",
+        "brand",
+        "model",
+        "size",
+        "price",
+        "weight",
+        "description",
       ],
     },
     "New Frame": {
       endpoint: "/frames",
       fields: [
-        "frame_brand",
-        "frame_model",
-        "frame_material",
-        "frame_type",
-        "frame_weight",
-        "frame_size",
+        "brand",
+        "model",
+        "material",
+        "type",
+        "weight",
+        "size",
       ],
     },
     "New Gear": {
       endpoint: "/gears",
       fields: [
-        "gear_brand",
-        "gear_model",
-        "gear_material",
-        "gear_type",
-        "gear_weight",
+        "brand",
+        "model",
+        "material",
+        "type",
+        "weight",
       ],
     },
     "New Wheels": {
       endpoint: "/wheels",
       fields: [
-        "wheel_brand",
-        "wheel_material",
-        "wheel_type",
-        "wheel_model",
-        "wheel_weight",
-        "wheel_size",
+        "brand",
+        "material",
+        "type",
+        "model",
+        "weight",
+        "size",
       ],
     },
     "New Saddle": {
       endpoint: "/saddles",
       fields: [
-        "saddle_brand",
-        "saddle_material",
-        "saddle_model",
-        "saddle_weight",
-        "saddle_width",
+        "brand",
+        "material",
+        "model",
+        "weight",
+        "width",
       ],
     },
   };
@@ -418,41 +417,64 @@ const Options = ({ onFormSelect, activeForm }) => {
 
     const formConfig = formsConfig[activeForm];
     if (!formConfig) return;
+    const username = "admin";
 
     try {
-      if (activeForm === "New Bicycle" && addComponents) {
-        // Submitting a bicycle with components
-        const endpoint = "/bicycles/withcomponents";
-        const payload = {
-          ...formData,
-          frameId: parseInt(formData.frameId),
-          gearId: parseInt(formData.gearId),
-          wheelId: parseInt(formData.wheelId),
-          saddleId: parseInt(formData.saddleId),
-        };
-        console.log("endpoint:", endpoint);
-        console.log("payload:", payload);
-        await facade.fetchWithAuth(endpoint, "POST", payload);
-      } else if (activeForm === "New Bicycle") {
-        // Submitting a bicycle without components
-        const endpoint = "/bicycles";
-        console.log("endpoint:", endpoint);
-        console.log("formData:", formData);
-        await facade.fetchWithAuth(endpoint, "POST", formData);
-      } else {
-        // Generic submission for other forms
-        await facade.fetchWithAuth(formConfig.endpoint, "POST", formData);
-      }
+  if (activeForm === "New Bicycle" && addComponents) {
+    // Submitting a bicycle with components
+    const endpoint = "/bicycles/withcomponents";
+    const payload = {
+      ...formData,
+      frameId: parseInt(formData.frameId),
+      gearId: parseInt(formData.gearId),
+      wheelId: parseInt(formData.wheelId),
+      saddleId: parseInt(formData.saddleId),
+      username,
+    };
+    console.log("endpoint:", endpoint);
+    console.log("payload:", payload);
+    await facade.fetchWithAuth(endpoint, "POST", payload);
+  } else if (activeForm === "New Bicycle") {
+    // Submitting a bicycle without components
+    const endpoint = "/bicycles";
+    console.log("endpoint:", endpoint);
+    console.log("formData:", formData);
+    await facade.fetchWithAuth(endpoint, "POST", formData);
+  } else {
+    // Generic submission for other forms
+    await facade.fetchWithAuth(formConfig.endpoint, "POST", formData);
+  }
 
-      alert(`${activeForm} successfully added!`);
-      setFormData({});
-      onFormSelect("");
-    } catch (error) {
-      console.error(`Error adding ${activeForm.toLowerCase()}:`, error);
-      alert(`Failed to add ${activeForm.toLowerCase()}. Please try again.`);
-    } finally {
-      setIsSubmitting(false);
-    }
+  alert(`${activeForm} successfully added!`);
+  setFormData({});
+  onFormSelect("");
+} catch (error) {
+  console.error(`Error adding ${activeForm.toLowerCase()}:`, error);
+
+  // Enhanced error handling
+  if (error.response) {
+    // Log detailed server response for debugging
+    console.error("Error response data:", error.response.data);
+    console.error("Error response status:", error.response.status);
+    console.error("Error response headers:", error.response.headers);
+    alert(
+      `Failed to add ${activeForm.toLowerCase()}. Server responded with: ${
+        error.response.data.message || "Invalid data"
+      }`
+    );
+  } else if (error.request) {
+    // No response received from server
+    console.error("No response received:", error.request);
+    alert(`Failed to add ${activeForm.toLowerCase()}. No response from the server.`);
+  } else {
+    // General error message
+    console.error("Error details:", error.message);
+    alert(`Failed to add ${activeForm.toLowerCase()}. Error: ${error.message}`);
+  }
+} finally {
+  setIsSubmitting(false);
+}
+
   };
 
   const handleChangeSubmit = async (e) => {
