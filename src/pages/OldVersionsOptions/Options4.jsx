@@ -75,60 +75,57 @@ const SubmitButton = styled.button`
   }
 `;
 
-const Options = ({ onFormSelect, activeForm }) => {
-  const [isNewItemsExpanded, setIsNewItemsExpanded] = useState(false);
-  const [isAddItemsExpanded, setIsAddItemsExpanded] = useState(false);
-  const [isChangeItemsExpanded, setIsChangeItemsExpanded] = useState(false);
-
-  const [addComponents, setAddComponents] = useState(false);
-  const [formData, setFormData] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [filters, setFilters] = useState({
-    frames: [],
-    gears: [],
-    wheels: [],
-    saddles: [],
-  });
-  const [bicycles, setBicycles] = useState([]);
-  const [selectedBicycleId, setSelectedBicycleId] = useState(null);
-  const [bicycleDetails, setBicycleDetails] = useState(null);
-  const [formKey, setFormKey] = useState(0);
-
-  //Delete ITEMS
-  const [isDeleteItemsExpanded, setIsDeleteItemsExpanded] = useState(false);
-  const [selectedDeleteType, setSelectedDeleteType] = useState(null); // Current type to delete
-  const [deleteItems, setDeleteItems] = useState([]); // List of items for dropdown
-  const [selectedItemIdToDelete, setSelectedItemIdToDelete] = useState(null); // ID of the item to delete
-
-  // Toggle Delete Items section visibility
-  const toggleDeleteItems = () => {
-    setIsDeleteItemsExpanded((prev) => !prev);
-    setSelectedDeleteType(null); // Reset selected type
-    setDeleteItems([]); // Clear previous items
-  };
-
+const Options = ({ onFormSelect, activeForm, username }) => { // Assuming username is passed as a prop
+    const [isNewItemsExpanded, setIsNewItemsExpanded] = useState(false);
+    const [isAddItemsExpanded, setIsAddItemsExpanded] = useState(false);
+    const [isChangeItemsExpanded, setIsChangeItemsExpanded] = useState(false);
+  
+    const [addComponents, setAddComponents] = useState(false);
+    const [formData, setFormData] = useState({});
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [filters, setFilters] = useState({
+      frames: [],
+      gears: [],
+      wheels: [],
+      saddles: [],
+    });
+    const [bicycles, setBicycles] = useState([]);
+    const [selectedBicycleId, setSelectedBicycleId] = useState(null);
+    const [bicycleDetails, setBicycleDetails] = useState(null);
+    const [formKey, setFormKey] = useState(0);
+  
+    //Delete ITEMS
+    const [isDeleteItemsExpanded, setIsDeleteItemsExpanded] = useState(false);
+    const [selectedDeleteType, setSelectedDeleteType] = useState(null); // Current type to delete
+    const [deleteItems, setDeleteItems] = useState([]); // List of items for dropdown
+    const [selectedItemIdToDelete, setSelectedItemIdToDelete] = useState(null); // ID of the item to delete
+  
+    // Toggle Delete Items section visibility
+    const toggleDeleteItems = () => {
+      setIsDeleteItemsExpanded((prev) => !prev);
+      setSelectedDeleteType(null); // Reset selected type
+      setDeleteItems([]); // Clear previous items
+    };
+  
   // Handle selection of delete type and fetch the relevant items
   const handleDeleteTypeSelect = async (deleteType) => {
     setSelectedDeleteType(deleteType); // Set the type of item to delete
     setSelectedItemIdToDelete(null); // Reset selected item ID
     setDeleteItems([]); // Clear previous items
-  
+
     try {
       const endpointMap = {
-        "Delete Bicycle": "/bicycles",
-        "Delete Frame": "/frames",
-        "Delete Gear": "/gears",
-        "Delete Wheel": "/wheels",
-        "Delete Saddle": "/saddles",
+        "Delete Bicycle": `/bicycles/createdByUser/${username}`,
+        "Delete Frame": `/frames/createdByUser/${username}`,
+        "Delete Gear": `/gears/createdByUser/${username}`,
+        "Delete Wheel": `/wheels/createdByUser/${username}`,
+        "Delete Saddle": `/saddles/createdByUser/${username}`,
       };
-  
+
       const endpoint = endpointMap[deleteType];
       console.log("Fetching data from endpoint:", endpoint); // Debug log
-  
-      const response = await fetch(`https://bicycle.thegreenway.dk/api${endpoint}`);
-      if (!response.ok) throw new Error(`Error fetching ${deleteType}`);
-  
-      const data = await response.json();
+
+      const data = await fetchWithAuth(endpoint);
       console.log("Fetched data for delete:", data); // Debug log
       setDeleteItems(data); // Update deleteItems state
     } catch (error) {
@@ -136,39 +133,34 @@ const Options = ({ onFormSelect, activeForm }) => {
       alert(`Failed to fetch items for ${deleteType}.`);
     }
   };
-  
+
   useEffect(() => {
     const fetchItemsDelete = async () => {
       try {
         // Map endpoints based on activeForm
         const endpointMap = {
-          "Delete Bicycle": "/bicycles",
-          "Delete Frame": "/frames",
-          "Delete Gear": "/gears",
-          "Delete Wheel": "/wheels",
-          "Delete Saddle": "/saddles",
+          "Delete Bicycle": `/bicycles/createdByUser/${username}`,
+          "Delete Frame": `/frames/createdByUser/${username}`,
+          "Delete Gear": `/gears/createdByUser/${username}`,
+          "Delete Wheel": `/wheels/createdByUser/${username}`,
+          "Delete Saddle": `/saddles/createdByUser/${username}`,
         };
-  
+
         const endpoint = endpointMap[activeForm]; // Derive endpoint dynamically
         if (!endpoint) return; // Guard clause for invalid activeForm
-  
-        const response = await fetch(`https://bicycle.thegreenway.dk/api${endpoint}`);
-        if (!response.ok) throw new Error(`Failed to fetch items for ${activeForm}`);
-  
-        const data = await response.json();
+
+        const data = await fetchWithAuth(endpoint);
         console.log(`Fetched items for ${activeForm}:`, data); // Debugging
         setDeleteItems(data); // Update the dropdown options
       } catch (error) {
         console.error(`Error fetching items for ${activeForm}:`, error);
       }
     };
-  
+
     if (activeForm && activeForm.startsWith("Delete")) {
       fetchItemsDelete(); // Fetch items when activeForm starts with "Delete"
     }
-  }, [activeForm]);
-  
-  
+  }, [activeForm, username]); // Add username as a dependency
 
   // Handle item deletion
   const handleDeleteItem = async () => {
@@ -179,18 +171,15 @@ const Options = ({ onFormSelect, activeForm }) => {
 
     try {
       const endpointMap = {
-        "Delete Bicycle": "/bicycles",
-        "Delete Frame": "/frames",
-        "Delete Gear": "/gears",
-        "Delete Wheel": "/wheels",
-        "Delete Saddle": "/saddles",
+        "Delete Bicycle": `/bicycles`,
+        "Delete Frame": `/frames`,
+        "Delete Gear": `/gears`,
+        "Delete Wheel": `/wheels`,
+        "Delete Saddle": `/saddles`,
       };
 
       const endpoint = endpointMap[selectedDeleteType];
-      await facade.fetchWithAuth(
-        `${endpoint}/${selectedItemIdToDelete}`,
-        "DELETE"
-      );
+      await fetchWithAuth(`${endpoint}/${selectedItemIdToDelete}`, "DELETE");
       alert(`${selectedDeleteType.split(" ")[1]} deleted successfully!`);
 
       // Refresh the dropdown after deletion
@@ -875,40 +864,6 @@ const Options = ({ onFormSelect, activeForm }) => {
       </StyledButton>
     )
   )}
-
-
-{/* Dropdown and Delete Button
-{selectedDeleteType && (
-  <>
-    <FormContainer>
-      <label htmlFor="deleteSelect">
-        Select {selectedDeleteType.split(" ")[1]} to Delete:
-      </label>
-      <Select
-        id="deleteSelect"
-        onChange={(e) => setSelectedItemIdToDelete(e.target.value)}
-        value={selectedItemIdToDelete || ""}
-        required
-      >
-        <option value="">Select {selectedDeleteType.split(" ")[1]}</option>
-        {deleteItems.map((item) => (
-          <option key={item.id} value={item.id}>
-            {item.brand} - {item.model}
-          </option>
-        ))}
-      </Select>
-    </FormContainer>
-
-    {selectedItemIdToDelete && (
-      <FormContainer>
-        <SubmitButton onClick={handleDeleteItem}>
-          Delete {selectedDeleteType.split(" ")[1]}
-        </SubmitButton>
-      </FormContainer>
-    )}
-  </>
-)} */}
-
     </div>
   );
 };
