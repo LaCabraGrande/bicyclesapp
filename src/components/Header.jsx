@@ -22,7 +22,7 @@ const Nav = styled.nav`
   gap: 1rem;
 `;
 
-const StyledNavLink = styled(({ isActive, isHovered, ...rest }) => <NavLink {...rest} />)`
+const StyledNavLink = styled(NavLink)`
   text-decoration: none;
   color: white;
   font-size: 1.6rem;
@@ -33,20 +33,16 @@ const StyledNavLink = styled(({ isActive, isHovered, ...rest }) => <NavLink {...
     color: white;
   }
 
-  &.active::after, &:hover::after {
-    width: 100%;
-    left: 0;
-  }
-
   &::after {
     content: "";
     position: absolute;
     bottom: 0;
     left: 50%;
-    width: 0;
+    width: ${(props) => (props.isHovered || props.isActive ? "100%" : "0")};
     height: 1px;
     background-color: white;
     transition: width 0.3s ease, left 0.3s ease;
+    left: ${(props) => (props.isHovered || props.isActive ? "0" : "50%")};
   }
 
   @media (max-width: 768px) {
@@ -57,6 +53,7 @@ const StyledNavLink = styled(({ isActive, isHovered, ...rest }) => <NavLink {...
     font-size: 1rem;
   }
 `;
+
 
 
 
