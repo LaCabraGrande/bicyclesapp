@@ -283,6 +283,7 @@ const Options = ({ onFormSelect, activeForm }) => {
     const fetchItems = async () => {
       try {
         const formConfig = changeFormsConfig[activeForm];
+        console.log("Fetching items for:", activeForm);
         const response = await fetch(
           `https://bicycle.thegreenway.dk/api${formConfig.endpoint}`
         );
@@ -390,7 +391,8 @@ const Options = ({ onFormSelect, activeForm }) => {
         gearId: data.gear.id,
         wheelId: data.wheel.id,
         saddleId: data.saddle.id,
-      });
+       
+     });
     } catch (error) {
       console.error("Error fetching bicycle details:", error);
     }
