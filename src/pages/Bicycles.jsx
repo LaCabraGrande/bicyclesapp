@@ -3,8 +3,9 @@ import styled from "styled-components";
 
 const Container = styled.div`
   display: flex;
+  flex-wrap: nowrap; /* Hvis du vil forhindre brydning */
+  overflow-x: hidden; /* For at tillade scrolling i stedet for overlap */
   height: 75vh;
-  flex-wrap: wrap;
   background-image: url('/cyclist-2-ny.png'); 
   background-size: cover;
   background-position: center;
@@ -13,7 +14,7 @@ const Container = styled.div`
 
 const Sidebar = styled.div`
   width: 20%;
-  min-width: 270px;
+  min-width: 295px;
   border-right: 1px solid #ddd;
   padding: 2rem 1.5rem 1.5rem 2rem;
   box-sizing: border-box;
@@ -40,18 +41,20 @@ const Sidebar = styled.div`
 
 const Content = styled.div`
   display: grid;
+  flex-shrink: 0;
   grid-template-columns: repeat(auto-fit, minmax(325px, 0fr));
-  gap: 1rem; /* Mellemrum mellem boksene */
-  padding-top: 0.5rem; /* Padding i containeren */
-  height: 73vh; /* Højden af Content */
-  max-height: 73vh; /* Maksimal højde på Content */
-  margin-left: 10px; /* Mellemrum til kanten af containeren */
-  width: 78%; /* Bredden af Content */
-  overflow-y: auto; /* Scrollbar, hvis indholdet er for højt */
+  gap: 1rem;
+  padding-top: 0.5rem; 
+  height: 73vh; 
+  max-height: 73vh;
+  margin-left: 10px; 
+  width: 78%;
+  overflow-y: scroll;
+  overflow-x: hidden;
   grid-auto-rows: minmax(
     290px,
     290px
-  ); /* Her styrer jeg rækkehøjden og kolonnebredden */
+  ); 
 
   /* WebKit specific styling */
   &::-webkit-scrollbar {

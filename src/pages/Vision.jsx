@@ -50,9 +50,9 @@ const Paragraph = styled.p`
 
 `;
 
-const fullText = `Vi har samarbejde med over 250 forhandlere på landsplan, som løbende opdaterer vores database med de cykler, de aktuelt har til salg.\n
-Hvis du ønsker at søge efter racercykler baseret på komponenter, kan du vælge linket "Bicycles".\n
-Vi håber, du får en god oplevelse!
+const fullText = `Vi samarbejder med mere end 250 forhandlere over hele landet, som løbende opdaterer vores database med de nyeste racercykler til salg.\n
+
+Vi håber, at vores hjemmeside kan hjælpe dig med at få et bedre overblik og finde din næste racercykel!
 `;
 
 function Vision() {
@@ -75,7 +75,7 @@ function Vision() {
           currentText += "<br />";
         } else {
           currentText += currentChar;
-          //playSound(); lyden er ikke til at holde ud at høre på så den her jeg slået fra
+          playSound();
         }
 
         setDisplayText(currentText);
