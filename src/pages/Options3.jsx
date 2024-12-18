@@ -169,13 +169,18 @@ const Options = ({ onFormSelect, activeForm }) => {
   
   
 
-  // Handle item deletion
   const handleDeleteItem = async () => {
+    if (!selectedDeleteType) {
+      console.error("Invalid delete type:", selectedDeleteType);
+      alert("Please select a delete type.");
+      return;
+    }
+  
     if (!selectedItemIdToDelete) {
       alert("Please select an item to delete.");
       return;
     }
-
+  
     try {
       const endpointMap = {
         "Delete Bicycle": "/bicycles",
@@ -184,22 +189,34 @@ const Options = ({ onFormSelect, activeForm }) => {
         "Delete Wheel": "/wheels",
         "Delete Saddle": "/saddles",
       };
-
+  
       const endpoint = endpointMap[selectedDeleteType];
+      if (!endpoint) {
+        console.error("Invalid delete type:", selectedDeleteType);
+        alert("Invalid delete type selected. Please try again.");
+        return;
+      }
+  
+      console.log("Selected delete type:", selectedDeleteType);
+      console.log("Endpoint for deletion:", endpoint);
+      console.log("Deleting item with ID:", selectedItemIdToDelete);
+  
       await facade.fetchWithAuth(
         `${endpoint}/${selectedItemIdToDelete}`,
         "DELETE"
       );
+  
       alert(`${selectedDeleteType.split(" ")[1]} deleted successfully!`);
-
-      // Refresh the dropdown after deletion
+  
+      // Refresh dropdown og ryd valgte item efter sletning
       handleDeleteTypeSelect(selectedDeleteType);
-      setSelectedItemIdToDelete(null); // Clear selection
+      setSelectedItemIdToDelete(null);
     } catch (error) {
       console.error("Error deleting item:", error);
       alert("Failed to delete the selected item. Please try again.");
     }
   };
+  
 
   const changeFormsConfig = {
     "Change Frame": {
@@ -208,15 +225,15 @@ const Options = ({ onFormSelect, activeForm }) => {
     },
     "Change Gear": {
       endpoint: "/gears",
-      fields: ["brand", "model", "material", "type", "weight"],
+      fields: ["brand", "series", "model", "material", "type", "brakes", "weight"],
     },
     "Change Wheel": {
       endpoint: "/wheels",
-      fields: ["brand", "model", "material", "type", "weight", "size"],
+      fields: ["brand", "material", "type", "model", "weight", "size"],
     },
     "Change Saddle": {
       endpoint: "/saddles",
-      fields: ["brand", "model", "material", "weight", "width"],
+      fields: ["brand", "material", "model", "weight", "width"],
     },
   };
 
@@ -230,6 +247,7 @@ const Options = ({ onFormSelect, activeForm }) => {
         "price",
         "weight",
         "description",
+        "username",
       ],
     },
     "New Frame": {
@@ -241,16 +259,20 @@ const Options = ({ onFormSelect, activeForm }) => {
         "type",
         "weight",
         "size",
+        "username",
       ],
     },
     "New Gear": {
       endpoint: "/gears",
       fields: [
         "brand",
+        "series",
         "model",
         "material",
         "type",
+        "brakes",
         "weight",
+        "username",
       ],
     },
     "New Wheels": {
@@ -262,6 +284,7 @@ const Options = ({ onFormSelect, activeForm }) => {
         "model",
         "weight",
         "size",
+        "username",
       ],
     },
     "New Saddle": {
@@ -272,6 +295,7 @@ const Options = ({ onFormSelect, activeForm }) => {
         "model",
         "weight",
         "width",
+        "username",
       ],
     },
   };
@@ -391,6 +415,7 @@ const Options = ({ onFormSelect, activeForm }) => {
         gearId: data.gear.id,
         wheelId: data.wheel.id,
         saddleId: data.saddle.id,
+        username: data.username,
        
      });
     } catch (error) {
@@ -430,18 +455,11 @@ const Options = ({ onFormSelect, activeForm }) => {
       frameId: parseInt(formData.frameId),
       gearId: parseInt(formData.gearId),
       wheelId: parseInt(formData.wheelId),
-      saddleId: parseInt(formData.saddleId),
-      username,
+      saddleId: parseInt(formData.saddleId),    
     };
     console.log("endpoint:", endpoint);
     console.log("payload:", payload);
     await facade.fetchWithAuth(endpoint, "POST", payload);
-  } else if (activeForm === "New Bicycle") {
-    // Submitting a bicycle without components
-    const endpoint = "/bicycles";
-    console.log("endpoint:", endpoint);
-    console.log("formData:", formData);
-    await facade.fetchWithAuth(endpoint, "POST", formData);
   } else {
     // Generic submission for other forms
     await facade.fetchWithAuth(formConfig.endpoint, "POST", formData);
