@@ -111,7 +111,7 @@ const Options = ({ onFormSelect, activeForm }) => {
     setSelectedDeleteType(deleteType); // Set the type of item to delete
     setSelectedItemIdToDelete(null); // Reset selected item ID
     setDeleteItems([]); // Clear previous items
-  
+
     try {
       const endpointMap = {
         "Delete Bicycle": "/bicycles",
@@ -120,13 +120,15 @@ const Options = ({ onFormSelect, activeForm }) => {
         "Delete Wheel": "/wheels",
         "Delete Saddle": "/saddles",
       };
-  
+
       const endpoint = endpointMap[deleteType];
       console.log("Fetching data from endpoint:", endpoint); // Debug log
-  
-      const response = await fetch(`https://bicycle.thegreenway.dk/api${endpoint}`);
+
+      const response = await fetch(
+        `https://bicycle.thegreenway.dk/api${endpoint}`
+      );
       if (!response.ok) throw new Error(`Error fetching ${deleteType}`);
-  
+
       const data = await response.json();
       console.log("Fetched data for delete:", data); // Debug log
       setDeleteItems(data); // Update deleteItems state
@@ -135,7 +137,7 @@ const Options = ({ onFormSelect, activeForm }) => {
       alert(`Failed to fetch items for ${deleteType}.`);
     }
   };
-  
+
   useEffect(() => {
     const fetchItemsDelete = async () => {
       try {
@@ -147,13 +149,16 @@ const Options = ({ onFormSelect, activeForm }) => {
           "Delete Wheel": "/wheels",
           "Delete Saddle": "/saddles",
         };
-  
+
         const endpoint = endpointMap[activeForm]; // Derive endpoint dynamically
         if (!endpoint) return; // Guard clause for invalid activeForm
-  
-        const response = await fetch(`https://bicycle.thegreenway.dk/api${endpoint}`);
-        if (!response.ok) throw new Error(`Failed to fetch items for ${activeForm}`);
-  
+
+        const response = await fetch(
+          `https://bicycle.thegreenway.dk/api${endpoint}`
+        );
+        if (!response.ok)
+          throw new Error(`Failed to fetch items for ${activeForm}`);
+
         const data = await response.json();
         console.log(`Fetched items for ${activeForm}:`, data); // Debugging
         setDeleteItems(data); // Update the dropdown options
@@ -161,26 +166,26 @@ const Options = ({ onFormSelect, activeForm }) => {
         console.error(`Error fetching items for ${activeForm}:`, error);
       }
     };
-  
+
     if (activeForm && activeForm.startsWith("Delete")) {
       fetchItemsDelete(); // Fetch items when activeForm starts with "Delete"
     }
   }, [activeForm]);
-  
-  
 
   const handleDeleteItem = async () => {
+      // Udskriv selectedDeleteType når vi kommer ind i metoden
+  console.log("Selected delete type at the start of the method:", selectedDeleteType);
     if (!selectedDeleteType) {
       console.error("Invalid delete type:", selectedDeleteType);
       alert("Please select a delete type.");
       return;
     }
-  
+
     if (!selectedItemIdToDelete) {
       alert("Please select an item to delete.");
       return;
     }
-  
+
     try {
       const endpointMap = {
         "Delete Bicycle": "/bicycles",
@@ -189,25 +194,25 @@ const Options = ({ onFormSelect, activeForm }) => {
         "Delete Wheel": "/wheels",
         "Delete Saddle": "/saddles",
       };
-  
+
       const endpoint = endpointMap[selectedDeleteType];
       if (!endpoint) {
         console.error("Invalid delete type:", selectedDeleteType);
         alert("Invalid delete type selected. Please try again.");
         return;
       }
-  
+
       console.log("Selected delete type:", selectedDeleteType);
       console.log("Endpoint for deletion:", endpoint);
       console.log("Deleting item with ID:", selectedItemIdToDelete);
-  
+
       await facade.fetchWithAuth(
         `${endpoint}/${selectedItemIdToDelete}`,
         "DELETE"
       );
-  
+
       alert(`${selectedDeleteType.split(" ")[1]} deleted successfully!`);
-  
+
       // Refresh dropdown og ryd valgte item efter sletning
       handleDeleteTypeSelect(selectedDeleteType);
       setSelectedItemIdToDelete(null);
@@ -216,7 +221,6 @@ const Options = ({ onFormSelect, activeForm }) => {
       alert("Failed to delete the selected item. Please try again.");
     }
   };
-  
 
   const changeFormsConfig = {
     "Change Frame": {
@@ -225,7 +229,15 @@ const Options = ({ onFormSelect, activeForm }) => {
     },
     "Change Gear": {
       endpoint: "/gears",
-      fields: ["brand", "series", "model", "material", "type", "brakes", "weight"],
+      fields: [
+        "brand",
+        "series",
+        "model",
+        "material",
+        "type",
+        "brakes",
+        "weight",
+      ],
     },
     "Change Wheel": {
       endpoint: "/wheels",
@@ -289,14 +301,7 @@ const Options = ({ onFormSelect, activeForm }) => {
     },
     "New Saddle": {
       endpoint: "/saddles",
-      fields: [
-        "brand",
-        "material",
-        "model",
-        "weight",
-        "width",
-        "username",
-      ],
+      fields: ["brand", "material", "model", "weight", "width", "username"],
     },
   };
 
@@ -416,8 +421,7 @@ const Options = ({ onFormSelect, activeForm }) => {
         wheelId: data.wheel.id,
         saddleId: data.saddle.id,
         username: data.username,
-       
-     });
+      });
     } catch (error) {
       console.error("Error fetching bicycle details:", error);
     }
@@ -447,54 +451,57 @@ const Options = ({ onFormSelect, activeForm }) => {
     const username = "admin";
 
     try {
-  if (activeForm === "New Bicycle" && addComponents) {
-    // Submitting a bicycle with components
-    const endpoint = "/bicycles/withcomponents";
-    const payload = {
-      ...formData,
-      frameId: parseInt(formData.frameId),
-      gearId: parseInt(formData.gearId),
-      wheelId: parseInt(formData.wheelId),
-      saddleId: parseInt(formData.saddleId),    
-    };
-    console.log("endpoint:", endpoint);
-    console.log("payload:", payload);
-    await facade.fetchWithAuth(endpoint, "POST", payload);
-  } else {
-    // Generic submission for other forms
-    await facade.fetchWithAuth(formConfig.endpoint, "POST", formData);
-  }
+      if (activeForm === "New Bicycle" && addComponents) {
+        // Submitting a bicycle with components
+        const endpoint = "/bicycles/withcomponents";
+        const payload = {
+          ...formData,
+          frameId: parseInt(formData.frameId),
+          gearId: parseInt(formData.gearId),
+          wheelId: parseInt(formData.wheelId),
+          saddleId: parseInt(formData.saddleId),
+        };
+        console.log("endpoint:", endpoint);
+        console.log("payload:", payload);
+        await facade.fetchWithAuth(endpoint, "POST", payload);
+      } else {
+        // Generic submission for other forms
+        await facade.fetchWithAuth(formConfig.endpoint, "POST", formData);
+      }
 
-  alert(`${activeForm} successfully added!`);
-  setFormData({});
-  onFormSelect("");
-} catch (error) {
-  console.error(`Error adding ${activeForm.toLowerCase()}:`, error);
+      alert(`${activeForm} successfully added!`);
+      setFormData({});
+      onFormSelect("");
+    } catch (error) {
+      console.error(`Error adding ${activeForm.toLowerCase()}:`, error);
 
-  // Enhanced error handling
-  if (error.response) {
-    // Log detailed server response for debugging
-    console.error("Error response data:", error.response.data);
-    console.error("Error response status:", error.response.status);
-    console.error("Error response headers:", error.response.headers);
-    alert(
-      `Failed to add ${activeForm.toLowerCase()}. Server responded with: ${
-        error.response.data.message || "Invalid data"
-      }`
-    );
-  } else if (error.request) {
-    // No response received from server
-    console.error("No response received:", error.request);
-    alert(`Failed to add ${activeForm.toLowerCase()}. No response from the server.`);
-  } else {
-    // General error message
-    console.error("Error details:", error.message);
-    alert(`Failed to add ${activeForm.toLowerCase()}. Error: ${error.message}`);
-  }
-} finally {
-  setIsSubmitting(false);
-}
-
+      // Enhanced error handling
+      if (error.response) {
+        // Log detailed server response for debugging
+        console.error("Error response data:", error.response.data);
+        console.error("Error response status:", error.response.status);
+        console.error("Error response headers:", error.response.headers);
+        alert(
+          `Failed to add ${activeForm.toLowerCase()}. Server responded with: ${
+            error.response.data.message || "Invalid data"
+          }`
+        );
+      } else if (error.request) {
+        // No response received from server
+        console.error("No response received:", error.request);
+        alert(
+          `Failed to add ${activeForm.toLowerCase()}. No response from the server.`
+        );
+      } else {
+        // General error message
+        console.error("Error details:", error.message);
+        alert(
+          `Failed to add ${activeForm.toLowerCase()}. Error: ${error.message}`
+        );
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChangeSubmit = async (e) => {
@@ -766,7 +773,7 @@ const Options = ({ onFormSelect, activeForm }) => {
     );
   }
 
-// Change ITEM
+  // Change ITEM
   if (activeForm && changeFormsConfig[activeForm]) {
     return (
       <>
@@ -821,32 +828,40 @@ const Options = ({ onFormSelect, activeForm }) => {
 
   // Delete Items Logic
   if (activeForm && activeForm.startsWith("Delete")) {
+    const selectedDeleteType = activeForm;
     return (
       <>
         {/* Step 2: Dropdown for Selecting an Item */}
         <FormContainer>
-  <label htmlFor="deleteSelect">
-    Select {selectedDeleteType ? selectedDeleteType.split(" ")[1] : ""} to Delete:
-  </label>
-  <Select
-    id="deleteSelect"
-    onChange={(e) => setSelectedItemIdToDelete(e.target.value)}
-    value={selectedItemIdToDelete || ""}
-    required
-  >
-    <option value="">Select {selectedDeleteType ? selectedDeleteType.split(" ")[1] : ""}</option>
-    {deleteItems.length > 0 ? (
-      deleteItems.map((item) => (
-        <option key={item.id} value={item.id}>
-          {item.brand} - {item.model}
-        </option>
-      ))
-    ) : (
-      <option disabled>No items found</option>
-    )}
-  </Select>
-</FormContainer>
-  
+          <label htmlFor="deleteSelect">
+            Select{" "} {selectedDeleteType
+              ? selectedDeleteType.replace("Delete ", "")
+              : ""}{" "}
+            to Delete:
+          </label>
+          
+          <Select
+            id="deleteSelect"
+            onChange={(e) => setSelectedItemIdToDelete(e.target.value)}
+            value={selectedItemIdToDelete || ""}
+            required
+          >
+            <option value="">
+              Select{" "}
+              {selectedDeleteType ? selectedDeleteType.split(" ")[1] : ""}
+            </option>
+            {deleteItems.length > 0 ? (
+              deleteItems.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.brand} - {item.model}
+                </option>
+              ))
+            ) : (
+              <option disabled>No items found</option>
+            )}
+          </Select>
+        </FormContainer>
+
         {/* Step 3: Delete Button */}
         {selectedItemIdToDelete && (
           <FormContainer>
@@ -858,10 +873,6 @@ const Options = ({ onFormSelect, activeForm }) => {
       </>
     );
   }
-  
-  
-  
-  
 
   return (
     <div>
@@ -878,7 +889,7 @@ const Options = ({ onFormSelect, activeForm }) => {
           </StyledButton>
         ))}
 
-        {/* Change Items Section */}
+      {/* Change Items Section */}
       <ActionButton onClick={() => handleFormSelect("Change Bicycle")}>
         Change Bicycle
       </ActionButton>
@@ -897,29 +908,32 @@ const Options = ({ onFormSelect, activeForm }) => {
           </StyledButton>
         ))}
 
-{/* Delete Items Section */}
-<ActionButton onClick={toggleDeleteItems}>
-  {isDeleteItemsExpanded ? "Close Delete Item" : "Delete Item"}
-</ActionButton>
+      {/* Delete Items Section */}
+      <ActionButton onClick={toggleDeleteItems}>
+        {isDeleteItemsExpanded ? "Close Delete Item" : "Delete Item"}
+      </ActionButton>
 
-{/* Render buttons dynamically */}
-{isDeleteItemsExpanded &&
-  ["Delete Bicycle", "Delete Frame", "Delete Gear", "Delete Wheel", "Delete Saddle"].map(
-    (deleteType) => (
-      <StyledButton
-        key={deleteType}
-        onClick={() => {
-          handleDeleteTypeSelect(deleteType); // Fetch items for the delete type
-          onFormSelect(deleteType); // Set activeForm to render in content area
-        }}
-      >
-        {deleteType}
-      </StyledButton>
-    )
-  )}
+      {/* Render buttons dynamically */}
+      {isDeleteItemsExpanded &&
+        [
+          "Delete Bicycle",
+          "Delete Frame",
+          "Delete Gear",
+          "Delete Wheel",
+          "Delete Saddle",
+        ].map((deleteType) => (
+          <StyledButton
+            key={deleteType}
+            onClick={() => {
+              handleDeleteTypeSelect(deleteType); // Fetch items for the delete type
+              onFormSelect(deleteType); // Set activeForm to render in content area
+            }}
+          >
+            {deleteType}
+          </StyledButton>
+        ))}
 
-
-{/* Dropdown and Delete Button
+      {/* Dropdown and Delete Button
 {selectedDeleteType && (
   <>
     <FormContainer>
@@ -950,7 +964,6 @@ const Options = ({ onFormSelect, activeForm }) => {
     )}
   </>
 )} */}
-
     </div>
   );
 };
