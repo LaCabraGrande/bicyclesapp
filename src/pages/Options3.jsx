@@ -117,14 +117,15 @@ const Options = ({ onFormSelect, activeForm }) => {
 
     try {
       const endpointMap = {
-        "Delete Bicycle": "/bicycles",
-        "Delete Frame": "/frames",
-        "Delete Gear": "/gears",
-        "Delete Wheel": "/wheels",
-        "Delete Saddle": "/saddles",
+        "Delete Bicycle": "/bicycles/createdbyuser/",
+        "Delete Frame": "/frames/createdbyuser/",
+        "Delete Gear": "/gears/createdbyuser/",
+        "Delete Wheel": "/wheels/createdbyuser/",
+        "Delete Saddle": "/saddles/createdbyuser/",
       };
 
-      const endpoint = endpointMap[deleteType];
+      let endpoint = endpointMap[deleteType];
+      endpoint += username;
       console.log("Fetching data from endpoint:", endpoint); // Debug log
 
       const response = await fetch(
@@ -153,12 +154,12 @@ const Options = ({ onFormSelect, activeForm }) => {
           "Delete Saddle": "/saddles/createdbyuser/",
         };
 
-        const endpoint = endpointMap[activeForm]; // Derive endpoint dynamically
-        const finishedEndpoint = endpoint + username;
+        let endpoint = endpointMap[activeForm]; // Derive endpoint dynamically
+        endpoint +=  username;
         if (!endpoint) return; // Guard clause for invalid activeForm
 
         const response = await fetch(
-          `https://bicycle.thegreenway.dk/api${finishedEndpoint}`
+          `https://bicycle.thegreenway.dk/api${endpoint}`
         );
         if (!response.ok)
           throw new Error(`Failed to fetch items for ${activeForm}`);
@@ -233,15 +234,7 @@ const Options = ({ onFormSelect, activeForm }) => {
     },
     "Change Gear": {
       endpoint: "/gears",
-      fields: [
-        "brand",
-        "series",
-        "model",
-        "material",
-        "type",
-        "brakes",
-        "weight",
-      ],
+      fields: ["brand", "model", "series", "material", "type", "brakes", "weight"],
     },
     "Change Wheel": {
       endpoint: "/wheels",
@@ -262,50 +255,24 @@ const Options = ({ onFormSelect, activeForm }) => {
         "size",
         "price",
         "weight",
-        "description",
-        "username",
+        "description",        
       ],
     },
     "New Frame": {
       endpoint: "/frames",
-      fields: [
-        "brand",
-        "model",
-        "material",
-        "type",
-        "weight",
-        "size",
-        "username",
-      ],
+      fields: ["brand", "model", "material", "type", "weight", "size",],
     },
     "New Gear": {
       endpoint: "/gears",
-      fields: [
-        "brand",
-        "series",
-        "model",
-        "material",
-        "type",
-        "brakes",
-        "weight",
-        "username",
-      ],
+      fields: ["brand", "model", "series", "material", "type", "brakes", "weight",],
     },
     "New Wheels": {
       endpoint: "/wheels",
-      fields: [
-        "brand",
-        "material",
-        "type",
-        "model",
-        "weight",
-        "size",
-        "username",
-      ],
+      fields: ["brand", "material", "type", "model", "weight", "size",],
     },
     "New Saddle": {
       endpoint: "/saddles",
-      fields: ["brand", "material", "model", "weight", "width", "username"],
+      fields: ["brand", "material", "model", "weight", "width",],
     },
   };
 
@@ -315,11 +282,16 @@ const Options = ({ onFormSelect, activeForm }) => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        const formConfig = changeFormsConfig[activeForm];
-        console.log("Fetching items for:", activeForm);
+        //const formConfig = changeFormsConfig[activeForm];
+        //console.log("formConfig:", formConfig);
+        console.log("Fetching items for activeform:", activeForm);
+        
+        let finishedEndpoint = "/"+ activeForm.split(" ")[1].toLowerCase() +  "s/createdbyuser/" + username;
+        console.log("Finished Endpoint for fetching items:", finishedEndpoint);
+                      
         const response = await fetch(
-          `https://bicycle.thegreenway.dk/api${formConfig.endpoint}`
-        );
+          `https://bicycle.thegreenway.dk/api${finishedEndpoint}`
+          );
         const data = await response.json();
         setItems(data); // Populate the dropdown
       } catch (error) {
@@ -327,11 +299,15 @@ const Options = ({ onFormSelect, activeForm }) => {
       }
     };
     console.log("Active Form inden split:", activeForm);
-    if (activeForm && activeForm.split(" ")[0] === "Change" ) fetchItems();
+    fetchItems();
+    if (activeForm && activeForm.split(" ")[0] === "Change" ) {
+      fetchItems(); // Fetch items when activeForm starts with
+    } 
   }, [activeForm]);
 
+  // Her opdaterer vi et item
   const handleItemSelect = async (id) => {
-    setFormData({}); // Clear form data  
+    setFormData({}); // Clear form data
     setIsSubmitting(false);
     setSelectedItemId(null); // Reset selected item ID    
     setSelectedItemId(id);
@@ -349,6 +325,20 @@ const Options = ({ onFormSelect, activeForm }) => {
     }
   };
 
+  // Her henter vi alle cykler som brugeren har oprettet
+  const fetchBicycles = async () => {
+    try {
+      const username = localStorage.getItem("loggedInUser");
+      console.log("Username:", username);
+      const res = await fetch(`https://bicycle.thegreenway.dk/api/bicycles/createdbyuser/${username}`);
+      const data = await res.json();
+      setBicycles(data);
+    } catch (error) {
+      console.error("Error fetching bicycles:", error);
+    }
+  };
+
+  // Her henter vi alle filtre og cykler
   useEffect(() => {
     const fetchFilters = async () => {
       try {
@@ -374,17 +364,6 @@ const Options = ({ onFormSelect, activeForm }) => {
         });
       } catch (error) {
         console.error("Error fetching filters:", error);
-      }
-    };
-
-    const fetchBicycles = async () => {
-      try {
-        //const res = await fetch("https://bicycle.thegreenway.dk/api/bicycles/createdbyuser/${username}");
-        const res = await fetch(`https://bicycle.thegreenway.dk/api/bicycles/createdbyuser/${username}`);
-        const data = await res.json();
-        setBicycles(data);
-      } catch (error) {
-        console.error("Error fetching bicycles:", error);
       }
     };
 
@@ -422,7 +401,7 @@ const Options = ({ onFormSelect, activeForm }) => {
         gearId: data.gear.id,
         wheelId: data.wheel.id,
         saddleId: data.saddle.id,
-        username: data.username,
+       
       });
     } catch (error) {
       console.error("Error fetching bicycle details:", error);
@@ -430,6 +409,7 @@ const Options = ({ onFormSelect, activeForm }) => {
   };
 
   const handleFormSelect = (formName) => {
+    setFormData({}); // Clear form data
     onFormSelect(formName); // Select the form
     setFormKey((prevKey) => prevKey + 1); // Force form re-render
   };
@@ -442,6 +422,7 @@ const Options = ({ onFormSelect, activeForm }) => {
     }));
   };
 
+  // Her opretter vi en ny cykel med komponenter
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (isSubmitting) return;
@@ -450,60 +431,61 @@ const Options = ({ onFormSelect, activeForm }) => {
 
     const formConfig = formsConfig[activeForm];
     if (!formConfig) return;
-    const username = facade.getToken().username;
-    console.log("Username:", username);
-
+   
     try {
+      const username = localStorage.getItem("loggedInUser");
+      console.log("Username:", username);
       if (activeForm === "New Bicycle" && addComponents) {
         // Submitting a bicycle with components
         const endpoint = "/bicycles/withcomponents";
+        const username = localStorage.getItem("loggedInUser");
+        console.log("Username:", username);
         const payload = {
           ...formData,
           frameId: parseInt(formData.frameId),
           gearId: parseInt(formData.gearId),
           wheelId: parseInt(formData.wheelId),
           saddleId: parseInt(formData.saddleId),
+          username: username, // Her tilføjer jeg username til payload
         };
-        console.log("endpoint:", endpoint);
-        console.log("payload:", payload);
-        await facade.fetchWithAuth(endpoint, "POST", payload);
+        
+        await facade.fetchWithAuth(endpoint, "POST", payload);       
       } else {
         // Generic submission for other forms
-        await facade.fetchWithAuth(formConfig.endpoint, "POST", formData);
+        await facade.fetchWithAuth(formConfig.endpoint, "POST", {...formData, username, });
       }
 
       alert(`${activeForm} successfully added!`);
-      setFormData({});
-     
+           
     } catch (error) {
       console.error(`Error adding ${activeForm.toLowerCase()}:`, error);
 
-      // Enhanced error handling
-      if (error.response) {
-        // Log detailed server response for debugging
+       if (error.response) {
         console.error("Error response data:", error.response.data);
-        console.error("Error response status:", error.response.status);
-        console.error("Error response headers:", error.response.headers);
         alert(
           `Failed to add ${activeForm.toLowerCase()}. Server responded with: ${
             error.response.data.message || "Invalid data"
           }`
         );
       } else if (error.request) {
-        // No response received from server
         console.error("No response received:", error.request);
         alert(
           `Failed to add ${activeForm.toLowerCase()}. No response from the server.`
         );
       } else {
-        // General error message
         console.error("Error details:", error.message);
         alert(
           `Failed to add ${activeForm.toLowerCase()}. Error: ${error.message}`
         );
       }
     } finally {
-      setIsSubmitting(false);
+      console.log("Finally block reached");
+      await fetchBicycles(); // Refresh bicycles after adding a new one
+      setFormData({}); // Clear form data
+      setSelectedBicycleId(null); // Reset selected bicycle ID
+      setBicycleDetails(null); // Clear bicycle details
+      setIsSubmitting(false); // Reset submitting state
+    
     }
   };
 
@@ -552,13 +534,15 @@ const Options = ({ onFormSelect, activeForm }) => {
     if (isSubmitting) return;
 
     setIsSubmitting(true);
+    setFormData({}); // Clear form data 
+    setFilters({}); // Clear filters
 
     const formConfig = changeFormsConfig[activeForm];
     console.log("Form Config:", formConfig);
     if (!formConfig) return;
 
-     // Tilføj ID til endpoint-URL'en
-  const endpointWithId = `${formConfig.endpoint}/${selectedItemId}`;
+    // Tilføj ID til endpoint-URL'en
+    const endpointWithId = `${formConfig.endpoint}/${selectedItemId}`;
 
     try {
       await facade.fetchWithAuth(endpointWithId, "PUT", formData);
@@ -569,6 +553,7 @@ const Options = ({ onFormSelect, activeForm }) => {
       alert(`Failed to update ${activeForm}. Please try again.`);
     } finally {
       setFormData({}); // Clear form data  
+      
       setIsSubmitting(false);
       setSelectedItemId(null); // Reset selected item ID
     }
@@ -755,11 +740,7 @@ const Options = ({ onFormSelect, activeForm }) => {
         ))}
         {activeForm === "New Bicycle" && (
           <>
-            {/* <ActionButton onClick={() => setAddComponents((prev) => !prev)}>
-              {addComponents ? "Remove Components" : "Add More Components"}
-            </ActionButton>
-            {addComponents && (
-              <> */}
+           
             {Object.keys(filters).map((key) => (
               <Select
                 key={key}
