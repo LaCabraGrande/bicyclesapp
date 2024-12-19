@@ -20,6 +20,22 @@ function apiFacade() {
         return localStorage.getItem("jwtToken");
     };
 
+    // Get user from token
+    const getUser = () => {
+        const token = getToken();
+        if (token) {
+            try {
+                const payloadBase64 = token.split(".")[1];
+                const decodedClaims = JSON.parse(window.atob(payloadBase64));
+                return decodedClaims.sub;
+            } catch (error) {
+                console.error("Error decoding JWT:", error);
+                return null;
+            }
+        }
+        return null;
+    };
+
     // Check if user is logged in
     const loggedIn = () => {
         return getToken() != null;
@@ -102,6 +118,7 @@ function apiFacade() {
     return {
         setToken,
         getToken,
+        getUser,
         loggedIn,
         logout,
         getUserRoles,

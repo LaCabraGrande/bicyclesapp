@@ -99,15 +99,18 @@ const Options = ({ onFormSelect, activeForm }) => {
   const [deleteItems, setDeleteItems] = useState([]); // List of items for dropdown
   const [selectedItemIdToDelete, setSelectedItemIdToDelete] = useState(null); // ID of the item to delete
 
+  const username = localStorage.getItem("loggedInUser");
+
   // Toggle Delete Items section visibility
   const toggleDeleteItems = () => {
     setIsDeleteItemsExpanded((prev) => !prev);
-    setSelectedDeleteType(null); // Reset selected type
+    //setSelectedDeleteType(null); // Reset selected type
     setDeleteItems([]); // Clear previous items
   };
 
   // Handle selection of delete type and fetch the relevant items
   const handleDeleteTypeSelect = async (deleteType) => {
+    console.log("Selected delete type:", deleteType); // Debug log
     setSelectedDeleteType(deleteType); // Set the type of item to delete
     setSelectedItemIdToDelete(null); // Reset selected item ID
     setDeleteItems([]); // Clear previous items
@@ -162,6 +165,7 @@ const Options = ({ onFormSelect, activeForm }) => {
         const data = await response.json();
         console.log(`Fetched items for ${activeForm}:`, data); // Debugging
         setDeleteItems(data); // Update the dropdown options
+        setSelectedDeleteType(activeForm);
       } catch (error) {
         console.error(`Error fetching items for ${activeForm}:`, error);
       }
@@ -206,8 +210,7 @@ const Options = ({ onFormSelect, activeForm }) => {
       console.log("Endpoint for deletion:", endpoint);
       console.log("Deleting item with ID:", selectedItemIdToDelete);
 
-      await facade.fetchWithAuth(
-        `${endpoint}/${selectedItemIdToDelete}`,
+      await facade.fetchWithAuth( `${endpoint}/${selectedItemIdToDelete}`,
         "DELETE"
       );
 
@@ -322,10 +325,14 @@ const Options = ({ onFormSelect, activeForm }) => {
         console.error(`Error fetching ${activeForm} items:`, error);
       }
     };
-    if (activeForm) fetchItems();
+    console.log("Active Form inden split:", activeForm);
+    if (activeForm && activeForm.split(" ")[0] === "Change" ) fetchItems();
   }, [activeForm]);
 
   const handleItemSelect = async (id) => {
+    setFormData({}); // Clear form data  
+    setIsSubmitting(false);
+    setSelectedItemId(null); // Reset selected item ID    
     setSelectedItemId(id);
     if (!id) return;
 
@@ -371,7 +378,8 @@ const Options = ({ onFormSelect, activeForm }) => {
 
     const fetchBicycles = async () => {
       try {
-        const res = await fetch("https://bicycle.thegreenway.dk/api/bicycles");
+        //const res = await fetch("https://bicycle.thegreenway.dk/api/bicycles/createdbyuser/${username}");
+        const res = await fetch(`https://bicycle.thegreenway.dk/api/bicycles/createdbyuser/${username}`);
         const data = await res.json();
         setBicycles(data);
       } catch (error) {
@@ -386,20 +394,13 @@ const Options = ({ onFormSelect, activeForm }) => {
   const toggleNewItems = () => {
     setIsNewItemsExpanded((prev) => !prev);
     setIsAddItemsExpanded(false);
-    onFormSelect("");
+    
   };
 
   const toggleChangeItems = () => {
     setIsChangeItemsExpanded((prev) => !prev);
     setIsNewItemsExpanded(false);
-    onFormSelect("");
-  };
-
-  const toggleAddItems = () => {
-    setIsAddItemsExpanded((prev) => !prev);
-    setIsNewItemsExpanded(false);
-    onFormSelect("");
-  };
+   };
 
   const handleBicycleSelect = async (id) => {
     setSelectedBicycleId(id);
@@ -448,7 +449,8 @@ const Options = ({ onFormSelect, activeForm }) => {
 
     const formConfig = formsConfig[activeForm];
     if (!formConfig) return;
-    const username = "admin";
+    const username = facade.getToken().username;
+    console.log("Username:", username);
 
     try {
       if (activeForm === "New Bicycle" && addComponents) {
@@ -471,7 +473,7 @@ const Options = ({ onFormSelect, activeForm }) => {
 
       alert(`${activeForm} successfully added!`);
       setFormData({});
-      onFormSelect("");
+     
     } catch (error) {
       console.error(`Error adding ${activeForm.toLowerCase()}:`, error);
 
@@ -504,6 +506,7 @@ const Options = ({ onFormSelect, activeForm }) => {
     }
   };
 
+  // Her opdaterer vi en cykel
   const handleChangeSubmit = async (e) => {
     e.preventDefault();
 
@@ -534,9 +537,15 @@ const Options = ({ onFormSelect, activeForm }) => {
         // Generic error message
         alert(`Failed to update bicycle: ${error.message}`);
       }
+    } finally {
+      setFormData({}); // Clear form data
+      setIsSubmitting(false);
+      setSelectedBicycleId(null); // Reset selected bicycle ID
+      setBicycleDetails(null); // Clear bicycle details
     }
   };
 
+  // Her opdaterer vi et item
   const handleChangeItemSubmit = async (e) => {
     e.preventDefault();
     if (isSubmitting) return;
@@ -544,19 +553,23 @@ const Options = ({ onFormSelect, activeForm }) => {
     setIsSubmitting(true);
 
     const formConfig = changeFormsConfig[activeForm];
+    console.log("Form Config:", formConfig);
     if (!formConfig) return;
 
+     // Tilføj ID til endpoint-URL'en
+  const endpointWithId = `${formConfig.endpoint}/${selectedItemId}`;
+
     try {
-      console.log(`Submitting to ${formConfig.endpoint}:`, formData);
-      await facade.fetchWithAuth(formConfig.endpoint, "PUT", formData);
+      await facade.fetchWithAuth(endpointWithId, "PUT", formData);
       alert(`${activeForm} updated successfully!`);
-      setFormData({});
-      onFormSelect(""); // Reset active form
+   
     } catch (error) {
       console.error(`Error updating ${activeForm}:`, error);
       alert(`Failed to update ${activeForm}. Please try again.`);
     } finally {
+      setFormData({}); // Clear form data  
       setIsSubmitting(false);
+      setSelectedItemId(null); // Reset selected item ID
     }
   };
 
@@ -828,10 +841,10 @@ const Options = ({ onFormSelect, activeForm }) => {
 
   // Delete Items Logic
   if (activeForm && activeForm.startsWith("Delete")) {
-    const selectedDeleteType = activeForm;
+    
     return (
       <>
-        {/* Step 2: Dropdown for Selecting an Item */}
+        {/* Step 2: Dropdown for Selecting an Item to Delete */}
         <FormContainer>
           <label htmlFor="deleteSelect">
             Select{" "} {selectedDeleteType
