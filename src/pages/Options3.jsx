@@ -146,18 +146,19 @@ const Options = ({ onFormSelect, activeForm }) => {
       try {
         // Map endpoints based on activeForm
         const endpointMap = {
-          "Delete Bicycle": "/bicycles",
-          "Delete Frame": "/frames",
-          "Delete Gear": "/gears",
-          "Delete Wheel": "/wheels",
-          "Delete Saddle": "/saddles",
+          "Delete Bicycle": "/bicycles/createdbyuser/",
+          "Delete Frame": "/frames/createdbyuser/",
+          "Delete Gear": "/gears/createdbyuser/",
+          "Delete Wheel": "/wheels/createdbyuser/",
+          "Delete Saddle": "/saddles/createdbyuser/",
         };
 
         const endpoint = endpointMap[activeForm]; // Derive endpoint dynamically
+        const finishedEndpoint = endpoint + username;
         if (!endpoint) return; // Guard clause for invalid activeForm
 
         const response = await fetch(
-          `https://bicycle.thegreenway.dk/api${endpoint}`
+          `https://bicycle.thegreenway.dk/api${finishedEndpoint}`
         );
         if (!response.ok)
           throw new Error(`Failed to fetch items for ${activeForm}`);
