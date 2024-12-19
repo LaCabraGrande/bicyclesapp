@@ -430,16 +430,14 @@ const Options = ({ onFormSelect, activeForm }) => {
     }
   };
 
-
+  // Her opdaterer vi et item
   const handleFormSelect = (formName) => {
-     setFormData({}); // Clear form data
-    setSelectedBicycleId(null); // Reset selected bicycle ID
-    setBicycleDetails(null); // Clear bicycle details
-    setFilters({}); // Clear filters
+    
     onFormSelect(formName); // Select the form
     setFormKey((prevKey) => prevKey + 1); // Force form re-render
   };
 
+  
   const handleChange = (e) => {
     
     const { name, value } = e.target;
@@ -552,7 +550,7 @@ const Options = ({ onFormSelect, activeForm }) => {
       }
     } finally {
       setFormData({}); // Clear form data
-      setIsSubmitting(false);
+      setIsSubmitting(false); // Reset submitting state
       setSelectedBicycleId(null); // Reset selected bicycle ID
       setBicycleDetails(null); // Clear bicycle details
     }
@@ -577,14 +575,13 @@ const Options = ({ onFormSelect, activeForm }) => {
     try {
       await facade.fetchWithAuth(endpointWithId, "PUT", formData);
       alert(`${activeForm} updated successfully!`);
-   
+      setFormData({}); // Clear form data  
     } catch (error) {
       console.error(`Error updating ${activeForm}:`, error);
       alert(`Failed to update ${activeForm}. Please try again.`);
     } finally {
       setFormData({}); // Clear form data  
-      
-      setIsSubmitting(false);
+      setIsSubmitting(false); // Reset submitting state
       setSelectedItemId(null); // Reset selected item ID
     }
   };
@@ -604,7 +601,7 @@ const Options = ({ onFormSelect, activeForm }) => {
             </option>
           ))}
         </Select>
-
+        
         {bicycleDetails && <div>{/* Kommentareret indhold fjernet */}</div>}
 
         {bicycleDetails && (
