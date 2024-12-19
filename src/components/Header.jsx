@@ -169,11 +169,11 @@ const Header = () => {
           <StyledNavLink
             key={link.to}
             to={link.to}
-            className={({ isActive }) => (isActive ? "active" : "")}
-            isActive={
+            className={({ isactive }) => (isactive ? "active" : "")}
+            isactive={
               hoveredLink === null && window.location.pathname === link.to
             }
-            isHovered={hoveredLink === link.to}
+            ishovered={hoveredLink === link.to}
             onMouseEnter={() => setHoveredLink(link.to)}
             onMouseLeave={() => setHoveredLink(null)}
           >

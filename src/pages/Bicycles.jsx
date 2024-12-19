@@ -41,7 +41,7 @@ const Sidebar = styled.div`
 
 const Content = styled.div`
   display: grid;
-  flex-shrink: 0;
+  flex-shrink: 1;
   grid-template-columns: repeat(auto-fit, minmax(325px, 0fr));
   gap: 1rem;
   padding-top: 0.5rem; 
@@ -55,7 +55,7 @@ const Content = styled.div`
     290px,
     290px
   ); 
-
+ 
   /* WebKit specific styling */
   &::-webkit-scrollbar {
     width: 6px; /* Scrollbar bredde */

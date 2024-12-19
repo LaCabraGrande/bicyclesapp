@@ -33,20 +33,43 @@ const StyledButton = styled.button`
   }
 `;
 
+// Reusable container for forms
 const FormContainer = styled.div`
-  max-height: 70vh;
-  overflow-y: auto;
-  padding: 1rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 600px;
   background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `;
 
 const Form = styled.form`
   display: flex;
+  width: 100%;
+  max-width: 800px; /* Begrænser bredden på større skærme */
+  margin: 0 auto; /* Centrerer formen på skærmen */
+  border: 1px solid #ddd;
   flex-direction: column;
   gap: 1rem;
+  padding: 2rem; /* Øger lidt på den indre afstand */
+  background-color: white;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Øget skyggeeffekt for mere dybde */
+  border-radius: 8px; /* Runde hjørner for en blødere visuel effekt */
+  overflow: hidden; /* Skjuler elementer der går udenfor formen */
+  
+  @media (max-width: 768px) {
+    width: 90%; /* Gør formen lidt smallere på små skærme */
+    padding: 1.5rem; /* Mindre padding på små skærme */
+  }
+  
+  /* Tilføj hover-effekt på submit-knappen */
+  button[type="submit"]:hover {
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+  }
 `;
+
 
 const Input = styled.input`
   padding: 0.5rem;
@@ -282,8 +305,7 @@ const Options = ({ onFormSelect, activeForm }) => {
   useEffect(() => {
     const fetchItems = async () => {
       try {
-        //const formConfig = changeFormsConfig[activeForm];
-        //console.log("formConfig:", formConfig);
+        const username = localStorage.getItem("loggedInUser");
         console.log("Fetching items for activeform:", activeForm);
         
         let finishedEndpoint = "/"+ activeForm.split(" ")[1].toLowerCase() +  "s/createdbyuser/" + username;
@@ -308,8 +330,7 @@ const Options = ({ onFormSelect, activeForm }) => {
   // Her opdaterer vi et item
   const handleItemSelect = async (id) => {
     setFormData({}); // Clear form data
-    setIsSubmitting(false);
-    setSelectedItemId(null); // Reset selected item ID    
+       
     setSelectedItemId(id);
     if (!id) return;
 
@@ -319,6 +340,7 @@ const Options = ({ onFormSelect, activeForm }) => {
         `https://bicycle.thegreenway.dk/api${formConfig.endpoint}/${id}`
       );
       const data = await response.json();
+      setFormData({}); // Clear form data
       setFormData(data); // Populate formData with fetched details
     } catch (error) {
       console.error(`Error fetching item details for ${activeForm}:`, error);
@@ -408,13 +430,18 @@ const Options = ({ onFormSelect, activeForm }) => {
     }
   };
 
+
   const handleFormSelect = (formName) => {
-    setFormData({}); // Clear form data
+     setFormData({}); // Clear form data
+    setSelectedBicycleId(null); // Reset selected bicycle ID
+    setBicycleDetails(null); // Clear bicycle details
+    setFilters({}); // Clear filters
     onFormSelect(formName); // Select the form
     setFormKey((prevKey) => prevKey + 1); // Force form re-render
   };
 
   const handleChange = (e) => {
+    
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
@@ -433,6 +460,8 @@ const Options = ({ onFormSelect, activeForm }) => {
     if (!formConfig) return;
    
     try {
+      
+      
       const username = localStorage.getItem("loggedInUser");
       console.log("Username:", username);
       if (activeForm === "New Bicycle" && addComponents) {
@@ -483,6 +512,7 @@ const Options = ({ onFormSelect, activeForm }) => {
       await fetchBicycles(); // Refresh bicycles after adding a new one
       setFormData({}); // Clear form data
       setSelectedBicycleId(null); // Reset selected bicycle ID
+      setSelectedItemId(null); // Reset selected item ID    
       setBicycleDetails(null); // Clear bicycle details
       setIsSubmitting(false); // Reset submitting state
     
@@ -535,7 +565,7 @@ const Options = ({ onFormSelect, activeForm }) => {
 
     setIsSubmitting(true);
     setFormData({}); // Clear form data 
-    setFilters({}); // Clear filters
+    setFilters({}); // 
 
     const formConfig = changeFormsConfig[activeForm];
     console.log("Form Config:", formConfig);
@@ -927,38 +957,6 @@ const Options = ({ onFormSelect, activeForm }) => {
             {deleteType}
           </StyledButton>
         ))}
-
-      {/* Dropdown and Delete Button
-{selectedDeleteType && (
-  <>
-    <FormContainer>
-      <label htmlFor="deleteSelect">
-        Select {selectedDeleteType.split(" ")[1]} to Delete:
-      </label>
-      <Select
-        id="deleteSelect"
-        onChange={(e) => setSelectedItemIdToDelete(e.target.value)}
-        value={selectedItemIdToDelete || ""}
-        required
-      >
-        <option value="">Select {selectedDeleteType.split(" ")[1]}</option>
-        {deleteItems.map((item) => (
-          <option key={item.id} value={item.id}>
-            {item.brand} - {item.model}
-          </option>
-        ))}
-      </Select>
-    </FormContainer>
-
-    {selectedItemIdToDelete && (
-      <FormContainer>
-        <SubmitButton onClick={handleDeleteItem}>
-          Delete {selectedDeleteType.split(" ")[1]}
-        </SubmitButton>
-      </FormContainer>
-    )}
-  </>
-)} */}
     </div>
   );
 };
