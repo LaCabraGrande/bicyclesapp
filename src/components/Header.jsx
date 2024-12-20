@@ -61,7 +61,6 @@ const AuthSection = styled.div`
   color: white;
 
   @media (max-width: 768px) {
-    
     gap: 0.5rem;
   }
 `;
@@ -69,21 +68,19 @@ const AuthSection = styled.div`
 const UserInfo = styled.div`
   display: flex;
   align-items: center;
-  gap: 0rem;
-  font-size: 0.8rem;  /* Ændret her for at styre brugernavnets størrelse */
-
+  gap: 0.3rem;
+  font-size: 0.8rem;
   @media (max-width: 768px) {
-    font-size: 0.8rem;  /* Størrelse for tablet */
-
+    font-size: 0.8rem;
   }
 
   @media (max-width: 480px) {
-    font-size: 0.5rem; /* Størrelse for mobil */
+    font-size: 0.5rem;
   }
 `;
 
 const UserName = styled.div`
-  font-size: 0.8rem;  /* Ændret her for at styre brugernavnets størrelse specifikt */
+  font-size: 0.8rem;
   
   @media (max-width: 768px) {
     font-size: 0.8rem;
@@ -94,45 +91,74 @@ const UserName = styled.div`
   }
 `;
 
-const LoginForm = styled.form`
-  display: flex;
-  gap: 0.2rem;
-    
-  
-  @media (max-width: 768px) {
-    flex-direction: column;
-  }
+// Modal styling
+const ModalBackdrop = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: ${({ isVisible }) => (isVisible ? "flex" : "none")};
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
 `;
 
-const LoginInput = styled.input`
-  padding: 0.3rem;
+const ModalContainer = styled.div`
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 300px;
+  max-height: 300px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease-in-out;
+  transform: ${({ isVisible }) => (isVisible ? "scale(1)" : "scale(0.8)")};
+`;
+
+const ModalForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+`;
+
+const ModalInput = styled.input`
+  padding: 0.5rem;
   border: 1px solid #ccc;
   border-radius: 4px;
-  width: 100%; /* Inputfelterne fylder 100% af containeren */
-  max-width: 7rem; /* Maksimal bredde for inputfelterne */
-  font-size: 0.7rem;
+  font-size: 0.8rem;
+  background-color: #e6f7ff;
+`;
 
-   /* Fjern fokusramme */
-   &:focus {
-    outline: none;
-    background-color: #e6f7ff; /* Lys blå baggrundsfarve ved fokus */
-    border: 1px solid #ccc; /* Optional, hvis du stadig ønsker en subtil grå kant ved fokus */
-  }
+const ModalButton = styled.button`
+  padding: 0.5rem;
+  border: none;
+  border-radius: 4px;
+  background-color: darkgreen;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
 
-  /* Juster størrelsen på inputfelterne på tablet (maks. bredde på 768px) */
-  @media (max-width: 1068px) {
-    width: 70%; /* Inputfelterne fylder 90% af containeren */
-    max-width: 6rem; /* Maksimal bredde på tablet */
-    font-size: 0.6rem;
-  }
-
-  /* Juster størrelsen på inputfelterne på mobil (maks. bredde på 480px) */
-  @media (max-width: 480px) {
-    width: 80%; /* Inputfelterne fylder 80% af containeren */
-    max-width: 15rem; /* Maksimal bredde på mobil */
+  &:hover {
+    background-color: #006400;
   }
 `;
 
+const CloseButton = styled.button`
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 1.5rem;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+
+  &:hover {
+    color: #333;
+  }
+`;
 
 const Button = styled.button`
   padding: 0.4rem 0.8rem;
@@ -140,22 +166,11 @@ const Button = styled.button`
   border-radius: 4px;
   background-color: #007bff;
   color: white;
-  font-size: 0.7rem;  /* Ændret her for at styre knapstørrelsen */
-  margin-left: 7px;
+  font-size: 0.7rem;
   cursor: pointer;
 
   &:hover {
     background-color: #0056b3;
-  }
-
-  @media (max-width: 768px) {
-    font-size: 0.7rem; /* Lidt mindre på tablet */
-    padding: 0.3rem 0.5rem;
-  }
-
-  @media (max-width: 480px) {
-    font-size: 0.7rem; /* Lidt mindre på mobil */
-    padding: 0.3rem 0.5rem;
   }
 `;
 
@@ -163,6 +178,7 @@ const Header = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loggedInUser, setLoggedInUser] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [hoveredLink, setHoveredLink] = useState(null);
   const navigate = useNavigate();
   
@@ -182,6 +198,7 @@ const Header = () => {
         setLoggedInUser(username);
         localStorage.setItem("loggedInUser", username); // Save to local storage
         navigate("/Dealers"); // Navigate to the Dealers page on successful login
+        setIsModalOpen(false); // Close modal on successful login
       })
       .catch(() => alert("Login failed"));
   };
@@ -194,6 +211,9 @@ const Header = () => {
     localStorage.removeItem("loggedInUser"); // Remove from local storage
     navigate("/"); // Navigate to the front page on logout
   };
+
+  const openLoginModal = () => setIsModalOpen(true);
+  const closeLoginModal = () => setIsModalOpen(false);
 
   const links = [{ to: "/Bicycles", label: "Bicycles" },
   { to: "/", label: "Frontpage" },
@@ -226,21 +246,31 @@ const Header = () => {
             <Button onClick={logout}>Logout</Button>
           </UserInfo>
         ) : (
-          <LoginForm onSubmit={login}>
-            <LoginInput
-              type="text"
-              placeholder="Username"
-              onChange={(e) => setUsername(e.target.value)}
-            />
-            <LoginInput
-              type="password"
-              placeholder="Password"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <Button type="submit">Login</Button>
-          </LoginForm>
+          <Button onClick={openLoginModal}>Login</Button>
         )}
       </AuthSection>
+
+      {/* Modal for login */}
+      <ModalBackdrop isVisible={isModalOpen} onClick={closeLoginModal}>
+        <ModalContainer isVisible={isModalOpen} onClick={(e) => e.stopPropagation()}>
+          <CloseButton onClick={closeLoginModal}>&times;</CloseButton>
+          <ModalForm onSubmit={login}>
+            <ModalInput
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <ModalInput
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <ModalButton type="submit">Login</ModalButton>
+          </ModalForm>
+        </ModalContainer>
+      </ModalBackdrop>
     </HeaderWrapper>
   );
 };

@@ -13,9 +13,9 @@ const Container = styled.div`
   
 
   @media (max-width: 760px) {
-    flex-direction: column;
-    justify-content: center;
-    align-items: center; /* Ændrer retning til kolonne */
+      flex-direction: column;
+  
+      
   }
 
 `;
@@ -23,37 +23,50 @@ const SidebarContainer = styled.div`
   display: flex;
   flex-shrink: 1;
   width: 18%;
-  min-width: 22vh;
+  min-width: 20vh;
   min-height: 73vh;
   border-right: 1px solid #ddd;
   padding: 0%;
   box-sizing: border-box;
-  overflow-y: hidden;
+  overflow-y: auto;
   max-height: 72vh;
   margin-right: 3px;
   margin-top: 5px;
   align-items: center;
   justify-content: center;
   
+  /* WebKit specific styling */
+  &::-webkit-scrollbar {
+    width: 6px; /* Scrollbar bredde */
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #45a049; /* Thumb farve */
+    border-radius: 2px; /* Runde hjørner */
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: #45a049; /* Hover effekt */
+  }
+  &::-webkit-scrollbar-track {
+    background-color: #f0f0f0; /* Track farve */
+  }
 
   @media (max-width: 760px) {
-    margin: 0;
-    width: 75%; /* Gør sidebar fuld bredde */
-    min-height: 30vh;
-    max-height: unset; /* Fjern max-height */
-    margin-bottom: 2vh; /* Fjern margin */
-    max-height: 30vh;
-    flex-direction: column;
+    width: 100%;
+    height: 50%; /* Hver tager halvdelen af højden */
+    border-right: none; /* Fjern kantlinjen */
+    margin: 0; /* Fjern margin */
+    min-height: unset; /* Fjern min-højde */
+    max-height: unset; /* Fjern max-højde */
     align-items: center;
     justify-content: center;
-   
-
+    border: 1px solid #ddd;
+    
   }
+    
 `;  
 
 
 const Sidebar = styled.div`
- 
   width: 100%;
   min-width: 100%;
   display: flex;
@@ -80,11 +93,16 @@ const Sidebar = styled.div`
   }
 
   @media (max-width: 760px) {
-    width: 50%; /* Gør content fuld bredde */
-    height: auto; /* Juster højden automatisk */
-    max-height: unset; /* Fjern max-height */
-   
+    width: 70%; /* Gør content fuld bredde */
+    height: 100%; /* Juster højden automatisk */
+    border: 1px solid #ddd;
+    min-height: unset; /* Fjern min-højde */
+    max-height: unset; /* Fjern max-højde */
+    min-width: unset;
     align-items: left;
+    justify-content: center;
+  
+  }
 
 
 `;
@@ -122,10 +140,11 @@ const Content = styled.div`
   }
 
   @media (max-width: 760px) {
-    width: 100%; /* Gør content fuld bredde */
+    width: 100%;
+    height: 50%; /* Hver tager halvdelen af højden */
     margin-left: 0; /* Fjern margin */
-    height: auto; /* Juster højden automatisk */
-    max-height: unset; /* Fjern max-height */
+    overflow-y: auto; /* Tillad scrolling hvis nødvendigt */
+    max-height: unset; /* Fjern max-højde */
     align-items: center;
     justify-content: center;
   }
@@ -185,6 +204,10 @@ const FilterButton = styled.button`
         ? "#4CAF50" // Grøn baggrund, når valgt
         : "white"; // Hvid baggrund ellers
     }};
+
+@media (max-width: 760px) {
+    font-size: 0.9rem; /* Mindre skriftstørrelse */
+  }
   }
 
   .checkbox-icon {
