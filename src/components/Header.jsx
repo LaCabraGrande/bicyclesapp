@@ -7,8 +7,7 @@ import facade from "../util/apiFacade";
 const HeaderWrapper = styled.header`
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
+  padding: 1rem 1rem;
   background-color: darkgreen;
   border-bottom: 1px solid #ddd;
 
@@ -25,7 +24,7 @@ const Nav = styled.nav`
 const StyledNavLink = styled(NavLink)`
   text-decoration: none;
   color: white;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   padding: 5px 10px;
   position: relative;
 
@@ -47,11 +46,11 @@ const StyledNavLink = styled(NavLink)`
   }
 
   @media (max-width: 768px) {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
 
   @media (max-width: 480px) {
-    font-size: 1rem;
+    font-size: 0.7rem;
   }
 `;
 
@@ -62,7 +61,7 @@ const AuthSection = styled.div`
   color: white;
 
   @media (max-width: 768px) {
-    flex-direction: column;
+    
     gap: 0.5rem;
   }
 `;
@@ -74,23 +73,24 @@ const UserInfo = styled.div`
   font-size: 0.8rem;  /* Ændret her for at styre brugernavnets størrelse */
 
   @media (max-width: 768px) {
-    font-size: 1rem;  /* Størrelse for tablet */
+    font-size: 0.8rem;  /* Størrelse for tablet */
+
   }
 
   @media (max-width: 480px) {
-    font-size: 0.9rem; /* Størrelse for mobil */
+    font-size: 0.5rem; /* Størrelse for mobil */
   }
 `;
 
 const UserName = styled.div`
-  font-size: 1.0rem;  /* Ændret her for at styre brugernavnets størrelse specifikt */
+  font-size: 0.8rem;  /* Ændret her for at styre brugernavnets størrelse specifikt */
   
   @media (max-width: 768px) {
-    font-size: 1.2rem;
+    font-size: 0.8rem;
   }
 
   @media (max-width: 480px) {
-    font-size: 1rem;
+    font-size: 0.6rem;
   }
 `;
 
@@ -149,12 +149,12 @@ const Button = styled.button`
   }
 
   @media (max-width: 768px) {
-    font-size: 0.9rem; /* Lidt mindre på tablet */
-    padding: 0.4rem 0.6rem;
+    font-size: 0.7rem; /* Lidt mindre på tablet */
+    padding: 0.3rem 0.5rem;
   }
 
   @media (max-width: 480px) {
-    font-size: 0.8rem; /* Lidt mindre på mobil */
+    font-size: 0.7rem; /* Lidt mindre på mobil */
     padding: 0.3rem 0.5rem;
   }
 `;

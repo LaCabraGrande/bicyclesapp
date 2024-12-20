@@ -76,7 +76,7 @@ const Form = styled.form`
 
 const Input = styled.input`
   padding: 0.5rem;
-  width: 60vh;
+  width: 100%;
   border: 1px solid #ddd;
   border-radius: 4px;
   background-color: white;
@@ -762,7 +762,6 @@ const Options = ({ onFormSelect, activeForm }) => {
         ))}
         {activeForm === "New Bicycle" && (
           <>
-           
             {Object.keys(filters).map((key) => (
               <Select
                 key={key}

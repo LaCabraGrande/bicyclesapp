@@ -14,7 +14,7 @@ const Container = styled.div`
 
 const Sidebar = styled.div`
   width: 20%;
-  min-width: 295px;
+  min-width: 285px;
   border-right: 1px solid #ddd;
   padding: 2rem 1.5rem 1.5rem 2rem;
   box-sizing: border-box;
@@ -134,7 +134,7 @@ const FilterButton = styled.button`
 
   .count {
     margin-left: 10px;
-    font-size: 0.9rem;
+    font-size: 0.7rem;
     color: ${(props) => (props.disabled ? "#bbb" : "#888")};
   }
 `;

@@ -2,7 +2,6 @@ import { useState } from "react";
 import styled from "styled-components";
 import YourInfo from "./YourInfo";
 import Options from "./Options3";
-// import Options from "./OldVersionsOptions/Options2"
 
 const Container = styled.div`
   display: flex;
@@ -59,6 +58,20 @@ const OptionsTitle = styled.h3`
   }
 `;
 
+const SelectedFormTitle = styled.h3`
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 0.2rem;
+  text-align: center;
+  
+
+  /* Ekstra stil for hover-effekt, hvis det ønskes */
+  &:hover {
+    color: #007acc;
+  }
+`;
+
 const Dealers = () => {
   const [activeTab, setActiveTab] = useState("YourInfo");
   const [selectedForm, setSelectedForm] = useState("");
@@ -92,7 +105,7 @@ const Dealers = () => {
       <Content>
         {selectedForm ? (
           <div>
-            <h3>{selectedForm}</h3>
+            <SelectedFormTitle>{selectedForm}</SelectedFormTitle>
             {/* Render only the form for the selected option */}
             <Options activeForm={selectedForm} />
           </div>
