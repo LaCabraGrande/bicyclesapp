@@ -6,12 +6,31 @@ const Card = styled.div`
   background: linear-gradient(135deg, darkgreen, darkgreen);
   color: white;
   border-radius: 15px;
-  padding: 25px;
+  padding: 2rem; /* Justeret padding for bedre responsivitet */
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-  max-width: 400px;
-  margin: 30px auto;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  width: 90%; /* Gør bredden fleksibel */
+  max-width: 400px; /* Maksimal bredde */
+  height: auto; /* Lad højden tilpasse sig indholdet */
+  font-family: Arial, sans-serif;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto; /* Centrerer kortet horisontalt */
+  box-sizing: border-box;
+  min-height: 300px; /* Sæt en minimumshøjde for at sikre, at der er nok plads til indhold */
+
+  /* Responsiv tilpasning */
+  @media (max-width: 768px) {
+    width: 95%; /* Justerer bredden på mindre skærme */
+    padding: 1.5rem; /* Justerer padding */
+  }
+
+  @media (max-width: 480px) {
+    width: 100%; /* Fuldbredde på mobil */
+    padding: 1rem; /* Mindre padding på mobil */
+  }
 `;
 
 const Avatar = styled.div`
@@ -30,8 +49,17 @@ const Avatar = styled.div`
 `;
 
 const Name = styled.h2`
-  font-size: 1.8em;
+  font-size: 1.3rem;
   margin: 10px 0;
+
+  /* Responsiv font-størrelse */
+  @media (max-width: 768px) {
+    font-size: 1.1rem; /* Gør fonten lidt mindre */
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1rem; /* Endnu mindre på mobil */
+  }
 `;
 
 const InfoList = styled.ul`
@@ -46,8 +74,16 @@ const InfoItem = styled.li`
   background-color: rgba(255, 255, 255, 0.2);
   padding: 10px;
   border-radius: 8px;
-`;
 
+  /* Responsiv font-størrelse */
+  @media (max-width: 768px) {
+    font-size: 1em; /* Mindre skrift på mindre skærme */
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.9em; /* Endnu mindre på mobil */
+  }
+`;
 
 const YourInfo = () => {
   const [username, setUsername] = useState(null);
@@ -71,18 +107,15 @@ const YourInfo = () => {
     }
   }, []);
 
-
   return (
     <Card>
       <Avatar>{username ? username[0].toUpperCase() : "?"}</Avatar>
       <Name>{username ? `Welcome, ${username}` : "Guest"}</Name>
       {username ? (
-        <>
-          <InfoList>
-            {/* <InfoItem>Email: {`${username}@example.com`}</InfoItem> */}
-            <InfoItem>Role: {roles.length > 0 ? roles.join(", ") : "No roles assigned"}</InfoItem>
-          </InfoList>
-        </>
+        <InfoList>
+          {/* <InfoItem>Email: {`${username}@example.com`}</InfoItem> */}
+          <InfoItem>Role: {roles.length > 0 ? roles.join(", ") : "No roles assigned"}</InfoItem>
+        </InfoList>
       ) : (
         <InfoItem>Please log in to see your details.</InfoItem>
       )}

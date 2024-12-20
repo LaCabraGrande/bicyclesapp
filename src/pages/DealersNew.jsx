@@ -6,31 +6,43 @@ import Options from "./Options3";
 
 const Container = styled.div`
   display: flex;
-  height: 80vh;
+  height: 100%;
+  width: 100%;
+  background-image: url('/cyclist-2-ny.png'); 
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 `;
 
 const Sidebar = styled.div`
-  width: 20%;
+  width: 25%;
   border-right: 1px solid #ddd;
   padding: 1rem;
   box-sizing: border-box;
   overflow-y: auto;
   max-height: 100vh;
+  align-items: center;
+
+  @media (max-width: 1068px) {
+    width: 30%;
+  }
 `;
 
 const Content = styled.div`
-  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
   padding: 1rem;
-  height: 80vh;
+  height: 75vh;
+  width: 85%;
   box-sizing: border-box;
-  allign-items: center;
-  border: 1px solid #ddd;
+  align-items: center;
   justify-content: center;
 `;
 
 const Info = styled.h3`
   cursor: pointer;
   margin-bottom: 1rem;
+  font-size: 1.3rem;
 
   &:hover {
     color: #007acc;
@@ -40,6 +52,7 @@ const Info = styled.h3`
 const OptionsTitle = styled.h3`
   cursor: pointer;
   margin-bottom: 1rem;
+  font-size: 1.3rem;
 
   &:hover {
     color: #007acc;

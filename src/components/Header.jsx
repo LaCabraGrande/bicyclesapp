@@ -37,12 +37,13 @@ const StyledNavLink = styled(NavLink)`
     content: "";
     position: absolute;
     bottom: 0;
-    left: 50%;
-    width: ${(props) => (props.isHovered || props.isActive ? "100%" : "0")};
+    left: ${({ $isHovered, $isActive }) =>
+      $isHovered || $isActive ? "0" : "50%"};
+    width: ${({ $isHovered, $isActive }) =>
+      $isHovered || $isActive ? "100%" : "0"};
     height: 1px;
     background-color: white;
     transition: width 0.3s ease, left 0.3s ease;
-    left: ${(props) => (props.isHovered || props.isActive ? "0" : "50%")};
   }
 
   @media (max-width: 768px) {
@@ -54,13 +55,10 @@ const StyledNavLink = styled(NavLink)`
   }
 `;
 
-
-
-
 const AuthSection = styled.div`
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0rem;
   color: white;
 
   @media (max-width: 768px) {
@@ -69,39 +67,80 @@ const AuthSection = styled.div`
   }
 `;
 
+const UserInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 0rem;
+  font-size: 0.8rem;  /* Ændret her for at styre brugernavnets størrelse */
+
+  @media (max-width: 768px) {
+    font-size: 1rem;  /* Størrelse for tablet */
+  }
+
+  @media (max-width: 480px) {
+    font-size: 0.9rem; /* Størrelse for mobil */
+  }
+`;
+
+const UserName = styled.div`
+  font-size: 1.0rem;  /* Ændret her for at styre brugernavnets størrelse specifikt */
+  
+  @media (max-width: 768px) {
+    font-size: 1.2rem;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1rem;
+  }
+`;
+
 const LoginForm = styled.form`
   display: flex;
-  gap: 0.5rem;
-
+  gap: 0.2rem;
+    
+  
   @media (max-width: 768px) {
     flex-direction: column;
   }
 `;
 
 const LoginInput = styled.input`
-  padding: 0.4rem;
+  padding: 0.3rem;
   border: 1px solid #ccc;
   border-radius: 4px;
+  width: 100%; /* Inputfelterne fylder 100% af containeren */
+  max-width: 7rem; /* Maksimal bredde for inputfelterne */
   font-size: 0.7rem;
-  width: 10vh;
 
-  @media (max-width: 768px) {
-    font-size: 0.8rem; /* Slightly larger font size on tablets */
+   /* Fjern fokusramme */
+   &:focus {
+    outline: none;
+    background-color: #e6f7ff; /* Lys blå baggrundsfarve ved fokus */
+    border: 1px solid #ccc; /* Optional, hvis du stadig ønsker en subtil grå kant ved fokus */
   }
 
+  /* Juster størrelsen på inputfelterne på tablet (maks. bredde på 768px) */
+  @media (max-width: 1068px) {
+    width: 70%; /* Inputfelterne fylder 90% af containeren */
+    max-width: 6rem; /* Maksimal bredde på tablet */
+    font-size: 0.6rem;
+  }
+
+  /* Juster størrelsen på inputfelterne på mobil (maks. bredde på 480px) */
   @media (max-width: 480px) {
-    font-size: 0.7rem; /* Smaller font size on mobile */
-    padding: 0.3rem;
+    width: 80%; /* Inputfelterne fylder 80% af containeren */
+    max-width: 15rem; /* Maksimal bredde på mobil */
   }
 `;
 
+
 const Button = styled.button`
-  padding: 0.4rem 0.5rem;
+  padding: 0.4rem 0.8rem;
   border: none;
   border-radius: 4px;
   background-color: #007bff;
   color: white;
-  font-size: 0.7rem;
+  font-size: 0.7rem;  /* Ændret her for at styre knapstørrelsen */
   margin-left: 7px;
   cursor: pointer;
 
@@ -110,12 +149,12 @@ const Button = styled.button`
   }
 
   @media (max-width: 768px) {
-    font-size: 0.8rem; /* Slightly larger button text on tablet */
+    font-size: 0.9rem; /* Lidt mindre på tablet */
     padding: 0.4rem 0.6rem;
   }
 
   @media (max-width: 480px) {
-    font-size: 0.7rem; /* Smaller button text on mobile */
+    font-size: 0.8rem; /* Lidt mindre på mobil */
     padding: 0.3rem 0.5rem;
   }
 `;
@@ -126,6 +165,7 @@ const Header = () => {
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [hoveredLink, setHoveredLink] = useState(null);
   const navigate = useNavigate();
+  
   useEffect(() => {
     // Check local storage for logged-in user
     const storedUser = localStorage.getItem("loggedInUser");
@@ -169,30 +209,22 @@ const Header = () => {
           <StyledNavLink
             key={link.to}
             to={link.to}
-            className={({ isactive }) => (isactive ? "active" : "")}
-            isactive={
-              hoveredLink === null && window.location.pathname === link.to
-            }
-            ishovered={hoveredLink === link.to}
+            $isActive={hoveredLink === null && window.location.pathname === link.to}
+            $isHovered={hoveredLink === link.to}
             onMouseEnter={() => setHoveredLink(link.to)}
             onMouseLeave={() => setHoveredLink(null)}
           >
             {link.label}
-            {/* Navigate to the front page programmatically */}
           </StyledNavLink>
         ))}
       </Nav>
-      {/* {loggedInUser && (
-          <DealersPageText onClick={() => navigate("/Dealers")}>
-            Dealers
-          </DealersPageText>
-        )} */}
+
       <AuthSection>
         {loggedInUser ? (
-          <div>
-            {loggedInUser}
+          <UserInfo>
+            <UserName>{loggedInUser}</UserName>  
             <Button onClick={logout}>Logout</Button>
-          </div>
+          </UserInfo>
         ) : (
           <LoginForm onSubmit={login}>
             <LoginInput

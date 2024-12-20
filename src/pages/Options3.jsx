@@ -35,17 +35,20 @@ const StyledButton = styled.button`
 
 // Reusable container for forms
 const FormContainer = styled.div`
+  display: flex;
   padding: 20px;
-  margin: 20px auto;
-  max-width: 600px;
-  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  width: 60vh;
+  max-width: 60%;
+  background-color: lightgray;
   border-radius: 10px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  align-content: center;
 `;
 
 const Form = styled.form`
   display: flex;
-  width: 100%;
+  width: 50vh;
   max-width: 800px; /* Begrænser bredden på større skærme */
   margin: 0 auto; /* Centrerer formen på skærmen */
   border: 1px solid #ddd;
@@ -73,6 +76,7 @@ const Form = styled.form`
 
 const Input = styled.input`
   padding: 0.5rem;
+  width: 60vh;
   border: 1px solid #ddd;
   border-radius: 4px;
   background-color: white;
@@ -82,7 +86,7 @@ const Select = styled.select`
   padding: 0.5rem;
   border: 1px solid #ddd;
   border-radius: 4px;
-  background-color: white;
+  background-color: white
 `;
 
 const SubmitButton = styled.button`
@@ -100,9 +104,9 @@ const SubmitButton = styled.button`
 
 const Options = ({ onFormSelect, activeForm }) => {
   const [isNewItemsExpanded, setIsNewItemsExpanded] = useState(false);
-  const [isAddItemsExpanded, setIsAddItemsExpanded] = useState(false);
+  //const [isAddItemsExpanded, setIsAddItemsExpanded] = useState(false);
   const [isChangeItemsExpanded, setIsChangeItemsExpanded] = useState(false);
-  const [addComponents, setAddComponents] = useState(false);
+  //const [addComponents, setAddComponents] = useState(false);
   const [formData, setFormData] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [filters, setFilters] = useState({
@@ -164,11 +168,11 @@ const Options = ({ onFormSelect, activeForm }) => {
       alert(`Failed to fetch items for ${deleteType}.`);
     }
   };
-
+  
+  // afvikles når der vælges et item til sletning
   useEffect(() => {
     const fetchItemsDelete = async () => {
       try {
-        // Map endpoints based on activeForm
         const endpointMap = {
           "Delete Bicycle": "/bicycles/createdbyuser/",
           "Delete Frame": "/frames/createdbyuser/",
@@ -177,9 +181,9 @@ const Options = ({ onFormSelect, activeForm }) => {
           "Delete Saddle": "/saddles/createdbyuser/",
         };
 
-        let endpoint = endpointMap[activeForm]; // Derive endpoint dynamically
+        let endpoint = endpointMap[activeForm];
         endpoint +=  username;
-        if (!endpoint) return; // Guard clause for invalid activeForm
+        if (!endpoint) return;
 
         const response = await fetch(
           `https://bicycle.thegreenway.dk/api${endpoint}`
@@ -199,11 +203,9 @@ const Options = ({ onFormSelect, activeForm }) => {
     if (activeForm && activeForm.startsWith("Delete")) {
       fetchItemsDelete(); // Fetch items when activeForm starts with "Delete"
     }
-  }, [activeForm]);
+  }, [activeForm, username]);
 
   const handleDeleteItem = async () => {
-      // Udskriv selectedDeleteType når vi kommer ind i metoden
-  console.log("Selected delete type at the start of the method:", selectedDeleteType);
     if (!selectedDeleteType) {
       console.error("Invalid delete type:", selectedDeleteType);
       alert("Please select a delete type.");
@@ -230,10 +232,6 @@ const Options = ({ onFormSelect, activeForm }) => {
         alert("Invalid delete type selected. Please try again.");
         return;
       }
-
-      console.log("Selected delete type:", selectedDeleteType);
-      console.log("Endpoint for deletion:", endpoint);
-      console.log("Deleting item with ID:", selectedItemIdToDelete);
 
       await facade.fetchWithAuth( `${endpoint}/${selectedItemIdToDelete}`,
         "DELETE"
@@ -299,8 +297,8 @@ const Options = ({ onFormSelect, activeForm }) => {
     },
   };
 
-  const [items, setItems] = useState([]); // List of items for dropdown
-  const [selectedItemId, setSelectedItemId] = useState(null); // Selected item ID
+  const [items, setItems] = useState([]);
+  const [selectedItemId, setSelectedItemId] = useState(null);
 
   useEffect(() => {
     const fetchItems = async () => {
@@ -309,29 +307,27 @@ const Options = ({ onFormSelect, activeForm }) => {
         console.log("Fetching items for activeform:", activeForm);
         
         let finishedEndpoint = "/"+ activeForm.split(" ")[1].toLowerCase() +  "s/createdbyuser/" + username;
-        console.log("Finished Endpoint for fetching items:", finishedEndpoint);
-                      
+                              
         const response = await fetch(
           `https://bicycle.thegreenway.dk/api${finishedEndpoint}`
           );
         const data = await response.json();
-        setItems(data); // Populate the dropdown
+        setItems(data);
       } catch (error) {
         console.error(`Error fetching ${activeForm} items:`, error);
       }
     };
-    console.log("Active Form inden split:", activeForm);
     fetchItems();
     if (activeForm && activeForm.split(" ")[0] === "Change" ) {
-      fetchItems(); // Fetch items when activeForm starts with
+      fetchItems();
     } 
   }, [activeForm]);
 
   // Her opdaterer vi et item
   const handleItemSelect = async (id) => {
-    setFormData({}); // Clear form data
-       
+    setFormData({});       
     setSelectedItemId(id);
+    
     if (!id) return;
 
     try {
@@ -340,7 +336,7 @@ const Options = ({ onFormSelect, activeForm }) => {
         `https://bicycle.thegreenway.dk/api${formConfig.endpoint}/${id}`
       );
       const data = await response.json();
-      setFormData({}); // Clear form data
+      setFormData({});
       setFormData(data); // Populate formData with fetched details
     } catch (error) {
       console.error(`Error fetching item details for ${activeForm}:`, error);
@@ -357,6 +353,7 @@ const Options = ({ onFormSelect, activeForm }) => {
       setBicycles(data);
     } catch (error) {
       console.error("Error fetching bicycles:", error);
+      alert("You do not have any bicycles in our database!");
     }
   };
 
@@ -394,9 +391,7 @@ const Options = ({ onFormSelect, activeForm }) => {
   }, []);
 
   const toggleNewItems = () => {
-    setIsNewItemsExpanded((prev) => !prev);
-    setIsAddItemsExpanded(false);
-    
+    setIsNewItemsExpanded((prev) => !prev);    
   };
 
   const toggleChangeItems = () => {
@@ -462,7 +457,7 @@ const Options = ({ onFormSelect, activeForm }) => {
       
       const username = localStorage.getItem("loggedInUser");
       console.log("Username:", username);
-      if (activeForm === "New Bicycle" && addComponents) {
+      if (activeForm === "New Bicycle") {
         // Submitting a bicycle with components
         const endpoint = "/bicycles/withcomponents";
         const username = localStorage.getItem("loggedInUser");

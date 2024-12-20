@@ -13,7 +13,7 @@ const router = createBrowserRouter(
     <Route index element={<Vision />}/>
     <Route path = 'Bicycles' element = {<Bicycles />}/>
     <Route path = 'Components' element = {<Components />}/>
-    <Route path='Dealers' element={<Dealers />}/>
+    <Route path = 'Dealers' element = {<Dealers />}/>
   </Route>
  )
 )

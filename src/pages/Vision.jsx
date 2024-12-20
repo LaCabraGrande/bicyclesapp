@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const Container = styled.div`
   max-width: 100vh;
-  min-height: 60vh;
+  min-height: 75vh;
   margin: 0 auto;
   padding: 80px 80px;
   background-color: rgba(255, 255, 255, 0.7);
@@ -32,6 +32,7 @@ const Container = styled.div`
 `;
 
 const Paragraph = styled.p`
+  padding: 10vh;
   font-size: 1.2rem;
   line-height: 1.3;
   color: #555;
@@ -50,10 +51,12 @@ const Paragraph = styled.p`
 
 `;
 
-const fullText = `Vi samarbejder med mere end 250 forhandlere over hele landet, som løbende opdaterer vores database med de nyeste racercykler til salg.\n
+const fullText = 
+  "Vi samarbejder med mere end 250 forhandlere over hele landet, " +
+  "som løbende opdaterer vores database med de nyeste racercykler " +
+  "til salg.\n\n Vi håber, at vores hjemmeside kan hjælpe dig med at få " +
+  "et bedre overblik og finde din næste racercykel!";
 
-Vi håber, at vores hjemmeside kan hjælpe dig med at få et bedre overblik og finde din næste racercykel!
-`;
 
 function Vision() {
   const [displayText, setDisplayText] = useState("");

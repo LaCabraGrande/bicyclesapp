@@ -43,10 +43,10 @@ const Footer = styled.footer`
 
   p:hover {
     color: transparent; /* Makes the text color transparent for gradient effect */
-    background-image: linear-gradient(90deg, #ffcc66, #ff4f00, #ffcc66); /* Lighter yellow and red-orange */
+    background-image: linear-gradient(90deg, #fde3ae, #fa5204, #fde3ae); /* Lighter yellow and red-orange */
     background-size: 200% 100%;
     background-position: 0% 50%; /* Starts from left */
-    animation: tennisBall 3s ease-in-out infinite; /* Slow down the animation */
+    animation: tennisBall 4s ease-in-out infinite; /* Slow down the animation */
   }
 
   // Animation to move the gradient left-right (like a tennis ball)
@@ -96,7 +96,7 @@ function MainLayout() {
             &copy; Pejtersen & Grønberg
           </p>
           <p>
-            Bicycle API Documentation
+            Bicycle APP
           </p>
         </Footer>
       </Container>
