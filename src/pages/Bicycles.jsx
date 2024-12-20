@@ -10,18 +10,59 @@ const Container = styled.div`
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  
+
+  @media (max-width: 760px) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* Ændrer retning til kolonne */
+  }
+
 `;
+const SidebarContainer = styled.div`
+  display: flex;
+  flex-shrink: 1;
+  width: 18%;
+  min-width: 22vh;
+  min-height: 73vh;
+  border-right: 1px solid #ddd;
+  padding: 0%;
+  box-sizing: border-box;
+  overflow-y: hidden;
+  max-height: 72vh;
+  margin-right: 3px;
+  margin-top: 5px;
+  align-items: center;
+  justify-content: center;
+  
+
+  @media (max-width: 760px) {
+    margin: 0;
+    width: 75%; /* Gør sidebar fuld bredde */
+    min-height: 30vh;
+    max-height: unset; /* Fjern max-height */
+    margin-bottom: 2vh; /* Fjern margin */
+    max-height: 30vh;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+   
+
+  }
+`;  
+
 
 const Sidebar = styled.div`
-  width: 20%;
-  min-width: 285px;
-  border-right: 1px solid #ddd;
-  padding: 2rem 1.5rem 1.5rem 2rem;
+ 
+  width: 100%;
+  min-width: 100%;
+  display: flex;
+  flex-direction: column;
   box-sizing: border-box;
   overflow-y: auto;
   max-height: 72vh;
-  margin-right: 10px;
   margin-top: 5px;
+  min-height: 63vh;
 
   /* WebKit specific styling */
   &::-webkit-scrollbar {
@@ -37,6 +78,15 @@ const Sidebar = styled.div`
   &::-webkit-scrollbar-track {
     background-color: #f0f0f0; /* Track farve */
   }
+
+  @media (max-width: 760px) {
+    width: 50%; /* Gør content fuld bredde */
+    height: auto; /* Juster højden automatisk */
+    max-height: unset; /* Fjern max-height */
+   
+    align-items: left;
+
+
 `;
 
 const Content = styled.div`
@@ -49,7 +99,7 @@ const Content = styled.div`
   max-height: 73vh;
   margin-left: 10px; 
   width: 78%;
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
   grid-auto-rows: minmax(
     290px,
@@ -70,6 +120,15 @@ const Content = styled.div`
   &::-webkit-scrollbar-track {
     background-color: #f0f0f0; /* Track farve */
   }
+
+  @media (max-width: 760px) {
+    width: 100%; /* Gør content fuld bredde */
+    margin-left: 0; /* Fjern margin */
+    height: auto; /* Juster højden automatisk */
+    max-height: unset; /* Fjern max-height */
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
 const FilterCategory = styled.div`
@@ -82,7 +141,11 @@ const FilterTitle = styled.h4`
   margin-bottom: 2px;
   font-size: 1.1rem;
   font-weight: 400;
-  color: darkgreen
+  color: darkgreen;
+
+  @media (max-width: 760px) {
+    font-size: 0.9rem; /* Mindre skriftstørrelse */
+  }
 `;
 
 const FilterOptions = styled.div`
@@ -401,6 +464,7 @@ const Bicycles = () => {
 
   return (
     <Container>
+      <SidebarContainer>
       <Sidebar>
         {Object.keys(filters).map((category) => (
           <FilterCategory key={category}>
@@ -432,6 +496,7 @@ const Bicycles = () => {
           </FilterCategory>
         ))}
       </Sidebar>
+      </SidebarContainer>
 
       <Content>
         {bicycles.length === 0 ? (

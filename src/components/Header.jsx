@@ -11,7 +11,7 @@ const HeaderWrapper = styled.header`
   background-color: darkgreen;
   border-bottom: 1px solid #ddd;
 
-  @media (max-width: 768px) {
+  @media (max-width: 850px) {
     padding: 1rem;
   }
 `;
@@ -45,7 +45,7 @@ const StyledNavLink = styled(NavLink)`
     transition: width 0.3s ease, left 0.3s ease;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 850px) {
     font-size: 1rem;
   }
 
