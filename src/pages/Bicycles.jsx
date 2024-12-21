@@ -24,7 +24,7 @@ const SidebarContainer = styled.div`
   min-height: 73vh;
   padding: 0%;
   box-sizing: border-box;
-  overflow-y: auto;
+  overflow-y: hidden;
   max-height: 72vh;
   margin-right: 5px;
   margin-top: 5px;
@@ -32,31 +32,19 @@ const SidebarContainer = styled.div`
   justify-content: center;
   padding-left: 15px;
   
-  /* WebKit specific styling */
-  &::-webkit-scrollbar {
-    width: 6px; /* Scrollbar bredde */
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: #45a049; /* Thumb farve */
-    border-radius: 2px; /* Runde hjørner */
-  }
-  &::-webkit-scrollbar-thumb:hover {
-    background-color: #45a049; /* Hover effekt */
-  }
-  &::-webkit-scrollbar-track {
-    background-color: #f0f0f0; /* Track farve */
-  }
+  
 
   @media (max-width: 760px) {
     width: 100%;
-    height: 50%; /* Hver tager halvdelen af højden */
+    height: 40%; /* Hver tager halvdelen af højden */
     border-right: none; /* Fjern kantlinjen */
     margin: 0; /* Fjern margin */
     min-height: unset; /* Fjern min-højde */
     max-height: unset; /* Fjern max-højde */
+    min-width: unset;
     align-items: center;
     justify-content: center;
-    border: 1px solid #ddd;    
+      
   }    
 `;  
 
@@ -88,14 +76,16 @@ const Sidebar = styled.div`
   }
 
   @media (max-width: 760px) {
-    width: 70%; /* Gør content fuld bredde */
+    width: 100%; /* Gør content fuld bredde */
     height: 100%; /* Juster højden automatisk */
-    border: 1px solid #ddd;
+    padding-top: 0;
+    margin-top: 20px;
+    padding-left: 50px;
     min-height: unset; /* Fjern min-højde */
     max-height: unset; /* Fjern max-højde */
     min-width: unset;
     align-items: left;
-    justify-content: center;  
+     
   }
 `;
 
