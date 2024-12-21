@@ -5,35 +5,32 @@ const Container = styled.div`
   display: flex;
   flex-wrap: nowrap; /* Hvis du vil forhindre brydning */
   overflow-x: hidden; /* For at tillade scrolling i stedet for overlap */
-  height: 75vh;
+  height: 74vh;
   background-image: url('/cyclist-2-ny.png'); 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   
-
   @media (max-width: 760px) {
-      flex-direction: column;
-  
-      
+    flex-direction: column;  
   }
-
 `;
+
 const SidebarContainer = styled.div`
   display: flex;
   flex-shrink: 1;
   width: 18%;
-  min-width: 20vh;
+  min-width: 21vh;
   min-height: 73vh;
-  border-right: 1px solid #ddd;
   padding: 0%;
   box-sizing: border-box;
   overflow-y: auto;
   max-height: 72vh;
-  margin-right: 3px;
+  margin-right: 5px;
   margin-top: 5px;
   align-items: center;
   justify-content: center;
+  padding-left: 15px;
   
   /* WebKit specific styling */
   &::-webkit-scrollbar {
@@ -59,12 +56,9 @@ const SidebarContainer = styled.div`
     max-height: unset; /* Fjern max-højde */
     align-items: center;
     justify-content: center;
-    border: 1px solid #ddd;
-    
-  }
-    
+    border: 1px solid #ddd;    
+  }    
 `;  
-
 
 const Sidebar = styled.div`
   width: 100%;
@@ -76,6 +70,7 @@ const Sidebar = styled.div`
   max-height: 72vh;
   margin-top: 5px;
   min-height: 63vh;
+  padding-right: 10px;
 
   /* WebKit specific styling */
   &::-webkit-scrollbar {
@@ -100,11 +95,8 @@ const Sidebar = styled.div`
     max-height: unset; /* Fjern max-højde */
     min-width: unset;
     align-items: left;
-    justify-content: center;
-  
+    justify-content: center;  
   }
-
-
 `;
 
 const Content = styled.div`
@@ -116,9 +108,12 @@ const Content = styled.div`
   height: 73vh; 
   max-height: 73vh;
   margin-left: 10px; 
-  width: 78%;
+  margin-right: 10px;
+  width: 81%;
   overflow-y: auto;
   overflow-x: hidden;
+  border-left: 1px solid #ddd;
+  padding-left: 15px;
   grid-auto-rows: minmax(
     290px,
     290px
@@ -156,11 +151,11 @@ const FilterCategory = styled.div`
 
 const FilterTitle = styled.h4`
   cursor: pointer;
-  margin-left: 4px;
-  margin-bottom: 2px;
+  margin-left: 6px;
+  margin-bottom: 5px;
   font-size: 1.1rem;
   font-weight: 400;
-  color: darkgreen;
+  color: black;
 
   @media (max-width: 760px) {
     font-size: 0.9rem; /* Mindre skriftstørrelse */
@@ -400,13 +395,14 @@ const Bicycles = () => {
         );
         const data = await response.json();
         setFilters({
-          gearSeries: data.gearSeriesCount,
-          saddleBrand: data.saddleBrandCount,
-          wheelBrand: data.wheelBrandCount,
+          priceInterval: data.priceIntervalCount,
           bicycleBrand: data.bicycleBrandCount,
+          gearSeries: data.gearSeriesCount,
+          wheelBrand: data.wheelBrandCount,
+          saddleBrand: data.saddleBrandCount,
           bicycleType: data.bicycleTypeCount,
           wheelType: data.wheelTypeCount,
-          priceInterval: data.priceIntervalCount,
+          
         });
       } catch (error) {
         console.error("Error fetching filters:", error);

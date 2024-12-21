@@ -41,9 +41,9 @@ header {
 }
 
 main {
-    padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+    padding: 0.3rem 0.3rem 0.3rem 0.3rem;
     margin:0.5rem 0.5rem 0.5rem 0.5rem;
-    width: 95%;
+    width: 96%;
     max-width: var(--large-device);
     min-height: 50vh;
     border: 1px solid silver;

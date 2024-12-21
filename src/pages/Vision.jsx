@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 const Container = styled.div`
   max-width: 100vh;
-  min-height: 75vh;
+  min-height: 74vh;
   margin: 0 auto;
   padding: 80px 80px;
   background-color: rgba(255, 255, 255, 0.7);
@@ -64,37 +64,38 @@ function Vision() {
   useEffect(() => {
     let index = 0;
     let currentText = "";
-
+      
     const playSound = () => {
       const sound = new Audio("/sounds/typing-sound-1.mp3");
       sound.play().catch(() => {});
     };
-
+  
     const typewriter = () => {
       if (index < fullText.length) {
         const currentChar = fullText.charAt(index);
-
+  
         if (currentChar === "\n") {
           currentText += "<br />";
         } else {
           currentText += currentChar;
           playSound();
         }
-
+  
         setDisplayText(currentText);
         index++;
-
-        const randomDelay = Math.random() * (30) + 20;
+  
+        const randomDelay = Math.random() * 100 + 100;
         setTimeout(typewriter, randomDelay);
       }
     };
-
+  
     typewriter();
-
+  
     return () => {
       index = fullText.length;
     };
   }, []);
+  
 
   return (
     <Container>
