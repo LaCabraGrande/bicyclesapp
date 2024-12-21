@@ -315,7 +315,7 @@ const BicycleTableRow = styled.tr`
 `;
 
 const BicycleTableData = styled.td`
-  font-size: 0.7rem;
+  font-size: 0.65rem;
   color: #555;
   padding: 0.3rem;
 

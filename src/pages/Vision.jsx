@@ -84,7 +84,7 @@ function Vision() {
         setDisplayText(currentText);
         index++;
   
-        const randomDelay = Math.random() * 100 + 100;
+        const randomDelay = Math.random() * 150 + 100;
         setTimeout(typewriter, randomDelay);
       }
     };
