@@ -2,22 +2,39 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
+position: relative; /* Gør Container til reference for absolut positionering */
   display: flex;
+  flex-direction: column; /* Tilføj filter-div øverst */
   flex-wrap: nowrap; /* Hvis du vil forhindre brydning */
   overflow-x: hidden; /* For at tillade scrolling i stedet for overlap */
-  height: 74vh;
+  overflow-y: hidden;
+  height: 76vh;
+  padding-top: 10px;
   background-image: url('/cyclist-2-ny.png'); 
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  
+    
   @media (max-width: 760px) {
     flex-direction: column;  
   }
 `;
 
-const SidebarContainer = styled.div`
+const FilterDiv = styled.div`
+  height: 30px;
+  width: 100%;
+  background-color: white;
   display: flex;
+  align-items: center;
+  font-size: 1.2rem;  
+  padding: 0px 10px 0px 20px; /* Plads til knappen */
+  
+`;
+
+const SidebarContainer = styled.div`
+  position: absolute; /* Gør sidebaren absolut i forhold til Container */
+  top: 35px; /* Start under FilterDiv */
+  left: ${(props) => (props.isOpen ? "0" : "-330px")}; /* Skub sidebaren ud af synet */
   flex-shrink: 1;
   width: 18%;
   min-width: 21vh;
@@ -31,19 +48,17 @@ const SidebarContainer = styled.div`
   align-items: center;
   justify-content: center;
   padding-left: 15px;
+  background-color: white;
+  
+  z-index: 10;
+  transition: left 0.4s ease; /* Glidende animation */
   
   
 
   @media (max-width: 760px) {
     width: 100%;
-    height: 40%; /* Hver tager halvdelen af højden */
-    border-right: none; /* Fjern kantlinjen */
-    margin: 0; /* Fjern margin */
-    min-height: unset; /* Fjern min-højde */
-    max-height: unset; /* Fjern max-højde */
-    min-width: unset;
-    align-items: center;
-    justify-content: center;
+    left: ${(props) => (props.isOpen ? "0" : "-370px")}; /* Skub sidebaren ud af synet */
+    top: 50px; /* Start under FilterDiv */
       
   }    
 `;  
@@ -90,25 +105,23 @@ const Sidebar = styled.div`
 `;
 
 const Content = styled.div`
+  margin-left: ${(props) => (props.isOpen ? "340px" : "0")};
+  transition: margin-left 0.4s ease; /* Flyt indholdet når Sidebar er åben */
+  flex-grow: 1; /* Fylder resten af Container */
   display: grid;
-  flex-shrink: 1;
   grid-template-columns: repeat(auto-fit, minmax(325px, 0fr));
   gap: 1rem;
-  padding-top: 0.5rem; 
-  height: 73vh; 
-  max-height: 73vh;
-  margin-left: 10px; 
-  margin-right: 10px;
-  width: 81%;
+  padding-left: 15px;
+  margin-top: 15px;
   overflow-y: auto;
   overflow-x: hidden;
-  border-left: 1px solid #ddd;
-  padding-left: 15px;
-  grid-auto-rows: minmax(
-    290px,
-    290px
-  ); 
- 
+  grid-auto-rows: minmax(290px, 290px);
+
+  @media (max-width: 760px) {
+    margin-left: 0; /* Ingen margin på små skærme */
+  }
+
+
   /* WebKit specific styling */
   &::-webkit-scrollbar {
     width: 6px; /* Scrollbar bredde */
@@ -156,8 +169,19 @@ const FilterOptions = styled.div`
   display: ${(props) => (props.isOpen ? "block" : "none")};
 `;
 
+const SidebarButton = styled.button`
+  background-color: white; /* Grøn baggrund */
+  color: black; /* Hvid tekst */
+  border: none; /* Ingen kant */
+  font-size: 0.9rem; /* Skriftstørrelse */
+  cursor: pointer; /* Markør skifter til hånd */
+  border-radius: 5px; /* Bløde hjørner */
+ 
+`;
+
 const FilterButton = styled.button`
   display: flex;
+  z-index: 11; /* Sørg for, at knappen er over alt andet */
   align-items: center;
   background-color: transparent; /* Knappen selv har stadig en transparent baggrund */
   color: ${(props) => (props.disabled ? "#bbb" : "black")};
@@ -209,6 +233,7 @@ const FilterButton = styled.button`
     color: ${(props) => (props.disabled ? "#bbb" : "#888")};
   }
 `;
+
 
 const BicycleBox = styled.div`
   min-height: 280px; /* Sikrer at hver boks har en minimumshøjde */
@@ -339,6 +364,12 @@ const StyledLink = styled.a`
 `;
 
 const Bicycles = () => {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen((prev) => !prev);
+  };
+
   const [filters, setFilters] = useState({
     gearSeries: {},
     saddleBrand: {},
@@ -473,7 +504,13 @@ const Bicycles = () => {
 
   return (
     <Container>
-      <SidebarContainer>
+      <FilterDiv>
+        <SidebarButton onClick={toggleSidebar}>
+          {isSidebarOpen ? "Close Filter" : "Filter"}
+        </SidebarButton>
+      </FilterDiv>
+     
+      <SidebarContainer isOpen={isSidebarOpen}>
       <Sidebar>
         {Object.keys(filters).map((category) => (
           <FilterCategory key={category}>
@@ -507,7 +544,7 @@ const Bicycles = () => {
       </Sidebar>
       </SidebarContainer>
 
-      <Content>
+      <Content isOpen={isSidebarOpen}>
         {bicycles.length === 0 ? (
           <p>No bicycles found. Please adjust your filters.</p>
         ) : (
@@ -672,6 +709,7 @@ const Bicycles = () => {
         )}
       </Content>
     </Container>
+    
   );
 };
 

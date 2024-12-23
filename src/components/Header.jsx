@@ -164,13 +164,14 @@ const Button = styled.button`
   padding: 0.4rem 0.8rem;
   border: none;
   border-radius: 4px;
-  background-color: #007bff;
+  background-color: #0056b3;;
   color: white;
   font-size: 0.7rem;
   cursor: pointer;
+  transition: background-color 0.8s ease;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #007bff;
   }
 `;
 

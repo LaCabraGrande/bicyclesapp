@@ -22,7 +22,7 @@ const GlobalStyle = createGlobalStyle`
     --text-color-dark: white;
     --small-device: 640px;
     --medium-device: 968px;
-    --large-device: 1900px;
+    --large-device: 1830px;
 }
 
 /* Wireframe */
@@ -45,7 +45,7 @@ main {
     margin:0.5rem 0.5rem 0.5rem 0.5rem;
     width: 96%;
     max-width: var(--large-device);
-    min-height: 50vh;
+    min-height: 77vh;
     border: 1px solid silver;
     border-radius: 0px;
     background-color: white;
