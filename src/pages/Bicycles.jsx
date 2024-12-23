@@ -34,21 +34,23 @@ const FilterDiv = styled.div`
 const SidebarContainer = styled.div`
   position: absolute; /* Gør sidebaren absolut i forhold til Container */
   top: 35px; /* Start under FilterDiv */
-  left: ${(props) => (props.isOpen ? "0" : "-330px")}; /* Skub sidebaren ud af synet */
+  left: ${(props) => (props.isOpen ? "0" : "-340px")}; /* Skub sidebaren ud af synet */
   flex-shrink: 1;
-  width: 18%;
+  width: 19%;
   min-width: 21vh;
-  min-height: 73vh;
+  min-height: 60vh;
+  max-height: 75vh;
   padding: 0%;
   box-sizing: border-box;
   overflow-y: hidden;
-  max-height: 72vh;
+  
   margin-right: 5px;
   margin-top: 5px;
   align-items: center;
   justify-content: center;
-  padding-left: 15px;
+  padding-left: 35px;
   background-color: white;
+ 
   
   z-index: 10;
   transition: left 0.4s ease; /* Glidende animation */
@@ -70,7 +72,7 @@ const Sidebar = styled.div`
   flex-direction: column;
   box-sizing: border-box;
   overflow-y: auto;
-  max-height: 72vh;
+  max-height: 71vh;
   margin-top: 5px;
   min-height: 63vh;
   padding-right: 10px;
@@ -111,7 +113,7 @@ const Content = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(325px, 0fr));
   gap: 1rem;
-  padding-left: 15px;
+  padding-left: 10px;
   margin-top: 15px;
   overflow-y: auto;
   overflow-x: hidden;
