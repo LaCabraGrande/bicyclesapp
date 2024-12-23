@@ -14,10 +14,8 @@ position: relative; /* Gør Container til reference for absolut positionering */
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-    
-  @media (max-width: 760px) {
-    flex-direction: column;  
-  }
+ 
+ 
 `;
 
 const FilterDiv = styled.div`
@@ -32,47 +30,35 @@ const FilterDiv = styled.div`
 `;
 
 const SidebarContainer = styled.div`
-  position: absolute; /* Gør sidebaren absolut i forhold til Container */
-  top: 35px; /* Start under FilterDiv */
-  left: ${(props) => (props.isOpen ? "0" : "-340px")}; /* Skub sidebaren ud af synet */
-  flex-shrink: 1;
-  width: 19%;
-  min-width: 21vh;
-  min-height: 60vh;
-  max-height: 75vh;
-  padding: 0%;
-  box-sizing: border-box;
-  overflow-y: hidden;
-  
-  margin-right: 5px;
-  margin-top: 5px;
-  align-items: center;
-  justify-content: center;
-  padding-left: 35px;
+  position: absolute;
+  top: 40px;
+  left: ${(props) => (props.isOpen ? "0" : "-300px")};
+  width: 295px;
+  height: 100vh;
   background-color: white;
+  z-index: 20;
+  overflow-y: auto;
+  transition: left 0.4s ease;
+  display: ${(props) => (props.isOpen || props.isMobile ? "block" : "none")};
+  padding-left: 20px;
+  margin-right: 0%;
  
-  
-  z-index: 10;
-  transition: left 0.4s ease; /* Glidende animation */
-  
-  
 
-  @media (max-width: 760px) {
+  @media (max-width: 860px) {
+    left: ${(props) => (props.isOpen ? "0" : "-100%")};
     width: 100%;
-    left: ${(props) => (props.isOpen ? "0" : "-370px")}; /* Skub sidebaren ud af synet */
-    top: 50px; /* Start under FilterDiv */
-      
-  }    
-`;  
+  }
+`;
+
 
 const Sidebar = styled.div`
   width: 100%;
-  min-width: 100%;
+  min-width: 275px;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
   overflow-y: auto;
-  max-height: 71vh;
+  max-height: 70vh;
   margin-top: 5px;
   min-height: 63vh;
   padding-right: 10px;
@@ -92,24 +78,15 @@ const Sidebar = styled.div`
     background-color: #f0f0f0; /* Track farve */
   }
 
-  @media (max-width: 760px) {
-    width: 100%; /* Gør content fuld bredde */
-    height: 100%; /* Juster højden automatisk */
-    padding-top: 0;
-    margin-top: 20px;
-    padding-left: 50px;
-    min-height: unset; /* Fjern min-højde */
-    max-height: unset; /* Fjern max-højde */
-    min-width: unset;
-    align-items: left;
-     
-  }
+  
 `;
 
 const Content = styled.div`
-  margin-left: ${(props) => (props.isOpen ? "340px" : "0")};
+
+  margin-left: ${(props) =>
+  props.isMobile ? "0" : props.isOpen ? "300px" : "0"}; /* Ingen margin på mobile */
   transition: margin-left 0.4s ease; /* Flyt indholdet når Sidebar er åben */
-  flex-grow: 1; /* Fylder resten af Container */
+  flex-grow: 1;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(325px, 0fr));
   gap: 1rem;
@@ -118,9 +95,15 @@ const Content = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   grid-auto-rows: minmax(290px, 290px);
+  
 
-  @media (max-width: 760px) {
-    margin-left: 0; /* Ingen margin på små skærme */
+  @media (max-width: 860px) {
+    display: flex;
+    flex-direction: column; /* Kolonnevisning for mindre skærme */
+    align-items: center; /* Centrerer indholdet horisontalt */
+   
+    padding-left: 0; /* Fjern venstre padding */
+    padding-top: 10px; /* Tilføj lidt top padding */
   }
 
 
@@ -139,15 +122,7 @@ const Content = styled.div`
     background-color: #f0f0f0; /* Track farve */
   }
 
-  @media (max-width: 760px) {
-    width: 100%;
-    height: 50%; /* Hver tager halvdelen af højden */
-    margin-left: 0; /* Fjern margin */
-    overflow-y: auto; /* Tillad scrolling hvis nødvendigt */
-    max-height: unset; /* Fjern max-højde */
-    align-items: center;
-    justify-content: center;
-  }
+
 `;
 
 const FilterCategory = styled.div`
@@ -367,6 +342,7 @@ const StyledLink = styled.a`
 
 const Bicycles = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 860);
 
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
@@ -402,6 +378,18 @@ const Bicycles = () => {
     wheelType: false,
     priceInterval: false,
   });
+
+
+  useEffect(() => {
+  const handleResize = () => {
+    const mobileView = window.innerWidth < 860;
+    setIsMobile(mobileView);
+  };
+
+  window.addEventListener("resize", handleResize);
+  return () => window.removeEventListener("resize", handleResize);
+}, []);
+  
 
   useEffect(() => {
     const fetchFilters = async () => {
@@ -474,6 +462,8 @@ const Bicycles = () => {
     });
   };
 
+  
+
   const toggleCategory = (category) => {
     setOpenCategories((prev) => ({
       ...prev,
@@ -507,12 +497,12 @@ const Bicycles = () => {
   return (
     <Container>
       <FilterDiv>
-        <SidebarButton onClick={toggleSidebar}>
+      <SidebarButton onClick={toggleSidebar} isOpen={isSidebarOpen}>
           {isSidebarOpen ? "Close Filter" : "Filter"}
         </SidebarButton>
       </FilterDiv>
      
-      <SidebarContainer isOpen={isSidebarOpen}>
+      <SidebarContainer isOpen={isSidebarOpen} isMobile={isMobile}>
       <Sidebar>
         {Object.keys(filters).map((category) => (
           <FilterCategory key={category}>
@@ -546,7 +536,7 @@ const Bicycles = () => {
       </Sidebar>
       </SidebarContainer>
 
-      <Content isOpen={isSidebarOpen}>
+      <Content isOpen={isSidebarOpen} isMobile={isMobile}>
         {bicycles.length === 0 ? (
           <p>No bicycles found. Please adjust your filters.</p>
         ) : (
