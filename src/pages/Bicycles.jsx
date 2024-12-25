@@ -2,66 +2,97 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
-position: relative; /* Gør Container til reference for absolut positionering */
+  position: relative; /* Gør Container til reference for absolut positionering */
   display: flex;
   flex-direction: column; /* Tilføj filter-div øverst */
   flex-wrap: nowrap; /* Hvis du vil forhindre brydning */
   overflow-x: hidden; /* For at tillade scrolling i stedet for overlap */
   overflow-y: hidden;
-  height: 76vh;
+  height: 77vh;
   padding-top: 10px;
-  background-image: url('/cyclist-2-ny.png'); 
+  margin: 0px 10px 10px 10px;
+  background-image: url("/cyclist-2-ny.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
- 
- 
 `;
 
 const FilterDiv = styled.div`
   height: 30px;
   width: 100%;
   background-color: white;
-  display: flex;
-  align-items: center;
-  font-size: 1.2rem;  
-  padding: 0px 10px 0px 20px; /* Plads til knappen */
-  
+  display: flex;   
+  padding: 0px 0px 30px 10px; /* Plads til knappen */
+  margin: 0px 0px 0px 0px;
+  border-bottom: 1px solid #ddd; /* Tilsæt en bundlinje */
+  position: relative;
 `;
 
-const SidebarContainer = styled.div`
+const BicycleCount = styled.div`
   position: absolute;
-  top: 40px;
-  left: ${(props) => (props.isOpen ? "0" : "-300px")};
-  width: 295px;
-  height: 100vh;
-  background-color: white;
-  z-index: 20;
-  overflow-y: auto;
-  transition: left 0.4s ease;
-  display: ${(props) => (props.isOpen || props.isMobile ? "block" : "none")};
-  padding-left: 20px;
-  margin-right: 0%;
- 
+  left: 310px; /* Placerer tælleren 100px inde */
+  color: black;
+  font-size: 1rem;
 
-  @media (max-width: 860px) {
-    left: ${(props) => (props.isOpen ? "0" : "-100%")};
-    width: 100%;
+  @media (max-width: 660px) {
+    font-size: 0.8rem;
+    left: 130px; /* Placerer tælleren 100px inde */
   }
 `;
 
 
+const SidebarContainer = styled.div`
+  position: absolute;
+  top: 36px;
+  display: flex;
+  left: ${(props) => (props.isOpen ? "0" : "-300px")};
+  width: 285px;
+  height: 77vh;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  z-index: 0;
+  overflow-y: auto;
+  transition: left 0.4s ease;
+  display: ${(props) => (props.isOpen || props.isMobile ? "block" : "none")};
+  padding-left: 20px;
+  margin-top: 20px;
+  margin-left: 10px;
+  
+
+  @media (max-width: 860px) {
+    left: ${(props) => (props.isOpen ? "0" : "-100%")};
+    width: 100%;
+    border-right: none;  
+  }
+`;
+
 const Sidebar = styled.div`
-  width: 100%;
-  min-width: 275px;
+  width: 260px; /* Standard bredde */
+  max-width: 260px; /* Standard max bredde */
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
   overflow-y: auto;
-  max-height: 70vh;
+  max-height: 73vh;
   margin-top: 5px;
   min-height: 63vh;
   padding-right: 10px;
+  padding-top: 30px;
+  padding-left: 10px;
+
+  @media (max-width: 860px) {
+    max-width: unset;;
+    width: 98%; /* Matcher SidebarContainer's bredde */
+    padding-left: 100px;  
+  }
+
+  @media (max-width: 505px) {
+    max-width: unset;;
+    width: 97%; /* Matcher SidebarContainer's bredde */
+    padding-left: 50px;  
+  }
+  
 
   /* WebKit specific styling */
   &::-webkit-scrollbar {
@@ -77,35 +108,42 @@ const Sidebar = styled.div`
   &::-webkit-scrollbar-track {
     background-color: #f0f0f0; /* Track farve */
   }
-
-  
 `;
 
 const Content = styled.div`
-
   margin-left: ${(props) =>
-  props.isMobile ? "0" : props.isOpen ? "300px" : "0"}; /* Ingen margin på mobile */
+    props.isMobile
+      ? "0"
+      : props.isOpen
+      ? "295px"
+      : "0"}; /* Ingen margin på mobile */
   transition: margin-left 0.4s ease; /* Flyt indholdet når Sidebar er åben */
   flex-grow: 1;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(325px, 0fr));
   gap: 1rem;
-  padding-left: 10px;
+  padding-left: 15px;
   margin-top: 15px;
   overflow-y: auto;
   overflow-x: hidden;
   grid-auto-rows: minmax(290px, 290px);
-  
+
+  @media (max-width: 900px) {
+    display: flex;
+    flex-direction: column; /* Kolonnevisning for mindre skærme */
+    align-items: center; /* Centrerer indholdet horisontalt */
+    padding-left: 0; /* Fjern venstre padding */
+    padding-top: 10px; /* Tilføj lidt top padding */
+  }
+
 
   @media (max-width: 860px) {
     display: flex;
     flex-direction: column; /* Kolonnevisning for mindre skærme */
     align-items: center; /* Centrerer indholdet horisontalt */
-   
     padding-left: 0; /* Fjern venstre padding */
     padding-top: 10px; /* Tilføj lidt top padding */
   }
-
 
   /* WebKit specific styling */
   &::-webkit-scrollbar {
@@ -121,8 +159,6 @@ const Content = styled.div`
   &::-webkit-scrollbar-track {
     background-color: #f0f0f0; /* Track farve */
   }
-
-
 `;
 
 const FilterCategory = styled.div`
@@ -150,10 +186,13 @@ const SidebarButton = styled.button`
   background-color: white; /* Grøn baggrund */
   color: black; /* Hvid tekst */
   border: none; /* Ingen kant */
-  font-size: 0.9rem; /* Skriftstørrelse */
+  font-size: 1rem; /* Skriftstørrelse */
   cursor: pointer; /* Markør skifter til hånd */
   border-radius: 5px; /* Bløde hjørner */
- 
+
+  @media (max-width: 660px) {
+    font-size: 0.8rem;
+  }
 `;
 
 const FilterButton = styled.button`
@@ -191,9 +230,9 @@ const FilterButton = styled.button`
         : "white"; // Hvid baggrund ellers
     }};
 
-@media (max-width: 760px) {
-    font-size: 0.9rem; /* Mindre skriftstørrelse */
-  }
+    @media (max-width: 760px) {
+      font-size: 0.9rem; /* Mindre skriftstørrelse */
+    }
   }
 
   .checkbox-icon {
@@ -210,7 +249,6 @@ const FilterButton = styled.button`
     color: ${(props) => (props.disabled ? "#bbb" : "#888")};
   }
 `;
-
 
 const BicycleBox = styled.div`
   min-height: 280px; /* Sikrer at hver boks har en minimumshøjde */
@@ -230,6 +268,7 @@ const BicycleBox = styled.div`
   scrollbar-width: thin;
   padding-right: 5px;
   
+
   &:hover {
     transform: translateY(-5px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -247,7 +286,7 @@ const Tooltip = styled.div`
   position: absolute;
   top: 1rem; /* Positioner tooltip lidt nede fra toppen */
   right: 1.5rem; /* Placerer tooltip lidt væk fra højre kant */
-  
+
   color: darkgreen;
   /*color: #4CAF50;*/
   text-align: center;
@@ -265,7 +304,7 @@ const BicycleBoxContent = styled.div`
   flex-direction: column;
   overflow-y: auto;
   margin-right: 10px;
-
+  
   /* WebKit specific styling */
   &::-webkit-scrollbar {
     width: 5px; /* Scrollbar bredde */
@@ -379,17 +418,15 @@ const Bicycles = () => {
     priceInterval: false,
   });
 
-
   useEffect(() => {
-  const handleResize = () => {
-    const mobileView = window.innerWidth < 860;
-    setIsMobile(mobileView);
-  };
+    const handleResize = () => {
+      const mobileView = window.innerWidth < 860;
+      setIsMobile(mobileView);
+    };
 
-  window.addEventListener("resize", handleResize);
-  return () => window.removeEventListener("resize", handleResize);
-}, []);
-  
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   useEffect(() => {
     const fetchFilters = async () => {
@@ -413,7 +450,6 @@ const Bicycles = () => {
           saddleBrand: data.saddleBrandCount,
           bicycleType: data.bicycleTypeCount,
           wheelType: data.wheelTypeCount,
-          
         });
       } catch (error) {
         console.error("Error fetching filters:", error);
@@ -462,8 +498,6 @@ const Bicycles = () => {
     });
   };
 
-  
-
   const toggleCategory = (category) => {
     setOpenCategories((prev) => ({
       ...prev,
@@ -497,43 +531,44 @@ const Bicycles = () => {
   return (
     <Container>
       <FilterDiv>
-      <SidebarButton onClick={toggleSidebar} isOpen={isSidebarOpen}>
+        <SidebarButton onClick={toggleSidebar} isOpen={isSidebarOpen}>
           {isSidebarOpen ? "Close Filter" : "Filter"}
         </SidebarButton>
+        <BicycleCount>{bicycles.length} Bicycles</BicycleCount>
       </FilterDiv>
-     
+
       <SidebarContainer isOpen={isSidebarOpen} isMobile={isMobile}>
-      <Sidebar>
-        {Object.keys(filters).map((category) => (
-          <FilterCategory key={category}>
-            <FilterTitle onClick={() => toggleCategory(category)}>
-              {categoryTitles[category] ||
-                category.charAt(0).toUpperCase() + category.slice(1)}
-            </FilterTitle>
-            <FilterOptions isOpen={openCategories[category]}>
-              {Object.keys(filters[category]).map((brand) => (
-                <FilterButton
-                  key={brand}
-                  onClick={() =>
-                    filters[category][brand] > 0 &&
-                    handleFilterChange(category, brand)
-                  }
-                  selected={selectedFilters[category].includes(brand)}
-                  disabled={filters[category][brand] === 0}
-                >
-                  <div className="checkbox">
-                    {selectedFilters[category].includes(brand) && (
-                      <span className="checkbox-icon">✔</span>
-                    )}
-                  </div>
-                  {brand}
-                  <span className="count">({filters[category][brand]})</span>
-                </FilterButton>
-              ))}
-            </FilterOptions>
-          </FilterCategory>
-        ))}
-      </Sidebar>
+        <Sidebar>
+          {Object.keys(filters).map((category) => (
+            <FilterCategory key={category}>
+              <FilterTitle onClick={() => toggleCategory(category)}>
+                {categoryTitles[category] ||
+                  category.charAt(0).toUpperCase() + category.slice(1)}
+              </FilterTitle>
+              <FilterOptions isOpen={openCategories[category]}>
+                {Object.keys(filters[category]).map((brand) => (
+                  <FilterButton
+                    key={brand}
+                    onClick={() =>
+                      filters[category][brand] > 0 &&
+                      handleFilterChange(category, brand)
+                    }
+                    selected={selectedFilters[category].includes(brand)}
+                    disabled={filters[category][brand] === 0}
+                  >
+                    <div className="checkbox">
+                      {selectedFilters[category].includes(brand) && (
+                        <span className="checkbox-icon">✔</span>
+                      )}
+                    </div>
+                    {brand}
+                    <span className="count">({filters[category][brand]})</span>
+                  </FilterButton>
+                ))}
+              </FilterOptions>
+            </FilterCategory>
+          ))}
+        </Sidebar>
       </SidebarContainer>
 
       <Content isOpen={isSidebarOpen} isMobile={isMobile}>
@@ -701,7 +736,6 @@ const Bicycles = () => {
         )}
       </Content>
     </Container>
-    
   );
 };
 

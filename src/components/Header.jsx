@@ -46,11 +46,11 @@ const StyledNavLink = styled(NavLink)`
   }
 
   @media (max-width: 850px) {
-    font-size: 1rem;
+    font-size: 1.3rem;
   }
 
-  @media (max-width: 480px) {
-    font-size: 0.7rem;
+  @media (max-width: 505px) {
+    font-size: 1.2rem;
   }
 `;
 
@@ -216,8 +216,8 @@ const Header = () => {
   const openLoginModal = () => setIsModalOpen(true);
   const closeLoginModal = () => setIsModalOpen(false);
 
-  const links = [{ to: "/Bicycles", label: "Bicycles" },
-  { to: "/", label: "Frontpage" },
+  const links = [{ to: "/Vision", label: "Vision" },
+  { to: "/", label: "Bicycles" },
   ...(loggedInUser
     ? [{ to: "/Dealers", label: "Dealers"}]
     : []),

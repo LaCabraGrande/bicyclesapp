@@ -73,9 +73,9 @@ const Footer = styled.footer`
   }
 
   /* Mobile media query */
-  @media (max-width: 480px) {
+  @media (max-width: 505px) {
     p {
-      font-size: 0.6rem; 
+      font-size: 0.8rem; 
     }
   }
 `;

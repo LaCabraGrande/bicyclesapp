@@ -45,7 +45,7 @@ main {
     margin:0.5rem 0.5rem 0.5rem 0.5rem;
     width: 96%;
     max-width: var(--large-device);
-    min-height: 77vh;
+    min-height: 78vh;
     border: 1px solid silver;
     border-radius: 0px;
     background-color: white;

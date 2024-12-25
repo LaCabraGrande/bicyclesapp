@@ -10,8 +10,9 @@ import Dealers from './pages/DealersNew.jsx'
 const router = createBrowserRouter(
  createRoutesFromElements(
   <Route path='/' element={<MainLayout />}>
-    <Route index element={<Vision />}/>
+    <Route index element={<Bicycles />}/>
     <Route path = 'Bicycles' element = {<Bicycles />}/>
+    <Route path = 'Vision' element = {<Vision />}/>
     <Route path = 'Components' element = {<Components />}/>
     <Route path = 'Dealers' element = {<Dealers />}/>
   </Route>
