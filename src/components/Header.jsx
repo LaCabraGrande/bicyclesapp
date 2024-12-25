@@ -46,11 +46,11 @@ const StyledNavLink = styled(NavLink)`
   }
 
   @media (max-width: 850px) {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
   }
 
   @media (max-width: 505px) {
-    font-size: 1.2rem;
+    font-size: 1rem;
   }
 `;
 
@@ -80,7 +80,7 @@ const UserInfo = styled.div`
 `;
 
 const UserName = styled.div`
-  font-size: 0.8rem;
+  font-size: 0.9rem;
   
   @media (max-width: 768px) {
     font-size: 0.8rem;
@@ -166,7 +166,7 @@ const Button = styled.button`
   border-radius: 4px;
   background-color: #0056b3;;
   color: white;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   cursor: pointer;
   transition: background-color 0.8s ease;
 

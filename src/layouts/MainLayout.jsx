@@ -8,7 +8,7 @@ const Container = styled.div`
   display: grid;
   place-items: center;
   max-width: var(--large-device);
-  width: 90%;
+  width: 95%;
   margin-top: 2rem;
   padding: 0;
   border: 1px solid silver;
