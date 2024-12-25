@@ -22,7 +22,7 @@ const GlobalStyle = createGlobalStyle`
     --text-color-dark: white;
     --small-device: 640px;
     --medium-device: 968px;
-    --large-device: 1830px;
+    --large-device: 1860px;
 }
 
 /* Wireframe */

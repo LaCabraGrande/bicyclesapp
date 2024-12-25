@@ -8,13 +8,18 @@ const Container = styled.div`
   flex-wrap: nowrap; /* Hvis du vil forhindre brydning */
   overflow-x: hidden; /* For at tillade scrolling i stedet for overlap */
   overflow-y: hidden;
-  height: 77vh;
+  height: 76vh;
   padding-top: 10px;
   margin: 0px 10px 10px 10px;
   background-image: url("/cyclist-2-ny.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+
+  @media (max-width: 860px) {
+     border-right: none;
+     height: 74vh;
+  }
 `;
 
 const FilterDiv = styled.div`
@@ -35,18 +40,17 @@ const BicycleCount = styled.div`
   font-size: 1rem;
 
   @media (max-width: 660px) {
-    font-size: 0.8rem;
-    left: 130px; /* Placerer tælleren 100px inde */
+    font-size: 0.9rem;
+    left: 60%; /* Placerer tælleren 100px inde */
   }
 `;
-
 
 const SidebarContainer = styled.div`
   position: absolute;
   top: 36px;
   display: flex;
   left: ${(props) => (props.isOpen ? "0" : "-300px")};
-  width: 285px;
+  width: 320px;
   height: 77vh;
   align-items: center;
   justify-content: center;
@@ -58,18 +62,18 @@ const SidebarContainer = styled.div`
   padding-left: 20px;
   margin-top: 20px;
   margin-left: 10px;
-  
+  border-right: 1px solid #ddd;  
 
   @media (max-width: 860px) {
-    left: ${(props) => (props.isOpen ? "0" : "-100%")};
+    left: ${(props) => (props.isOpen ? "0" : "-101%")};
     width: 100%;
     border-right: none;  
   }
 `;
 
 const Sidebar = styled.div`
-  width: 260px; /* Standard bredde */
-  max-width: 260px; /* Standard max bredde */
+  width: 280px; /* Standard bredde */
+  max-width: 280px; /* Standard max bredde */
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -77,24 +81,22 @@ const Sidebar = styled.div`
   max-height: 73vh;
   margin-top: 5px;
   min-height: 63vh;
-  padding-right: 10px;
+  padding-right: 20px;
   padding-top: 30px;
   padding-left: 10px;
 
   @media (max-width: 860px) {
     max-width: unset;;
-    width: 98%; /* Matcher SidebarContainer's bredde */
+    width: 98%;
     padding-left: 100px;  
   }
 
   @media (max-width: 505px) {
     max-width: unset;;
-    width: 97%; /* Matcher SidebarContainer's bredde */
+    width: 97%; 
     padding-left: 50px;  
-  }
-  
+  }  
 
-  /* WebKit specific styling */
   &::-webkit-scrollbar {
     width: 6px; /* Scrollbar bredde */
   }
@@ -115,37 +117,26 @@ const Content = styled.div`
     props.isMobile
       ? "0"
       : props.isOpen
-      ? "295px"
-      : "0"}; /* Ingen margin på mobile */
-  transition: margin-left 0.4s ease; /* Flyt indholdet når Sidebar er åben */
+      ? "325px"
+      : "0"}; 
+  transition: margin-left 0.4s ease; 
   flex-grow: 1;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(325px, 0fr));
   gap: 1rem;
-  padding-left: 15px;
+  padding-left: 25px;
   margin-top: 15px;
   overflow-y: auto;
   overflow-x: hidden;
   grid-auto-rows: minmax(290px, 290px);
 
-  @media (max-width: 900px) {
-    display: flex;
-    flex-direction: column; /* Kolonnevisning for mindre skærme */
-    align-items: center; /* Centrerer indholdet horisontalt */
-    padding-left: 0; /* Fjern venstre padding */
-    padding-top: 10px; /* Tilføj lidt top padding */
-  }
-
-
   @media (max-width: 860px) {
     display: flex;
-    flex-direction: column; /* Kolonnevisning for mindre skærme */
-    align-items: center; /* Centrerer indholdet horisontalt */
-    padding-left: 0; /* Fjern venstre padding */
-    padding-top: 10px; /* Tilføj lidt top padding */
+    flex-direction: column;
+    align-items: center;
+    padding-left: 0;     
   }
-
-  /* WebKit specific styling */
+  
   &::-webkit-scrollbar {
     width: 6px; /* Scrollbar bredde */
   }
@@ -162,7 +153,7 @@ const Content = styled.div`
 `;
 
 const FilterCategory = styled.div`
-  margin-bottom: 1rem;
+  margin-bottom: 1rem; 
 `;
 
 const FilterTitle = styled.h4`
@@ -172,26 +163,44 @@ const FilterTitle = styled.h4`
   font-size: 1.1rem;
   font-weight: 400;
   color: black;
+  position: relative;
+ 
+  &::after {
+    content: '';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%) ${(props) =>
+      props.isOpen ? 'rotate(45deg)' : 'rotate(-135deg)'};
+    width: 7px;
+    height: 7px;
+    border: solid 2px black;
+    background: white;
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+  }
 
   @media (max-width: 760px) {
-    font-size: 0.9rem; /* Mindre skriftstørrelse */
+    font-size: 1.1rem;
   }
 `;
+
+
+
 
 const FilterOptions = styled.div`
   display: ${(props) => (props.isOpen ? "block" : "none")};
 `;
 
 const SidebarButton = styled.button`
-  background-color: white; /* Grøn baggrund */
-  color: black; /* Hvid tekst */
-  border: none; /* Ingen kant */
-  font-size: 1rem; /* Skriftstørrelse */
-  cursor: pointer; /* Markør skifter til hånd */
-  border-radius: 5px; /* Bløde hjørner */
+  background-color: white; 
+  color: black; 
+  border: none; 
+  font-size: 1rem; 
+  cursor: pointer; 
+  border-radius: 5px;
 
   @media (max-width: 660px) {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
   }
 `;
 
@@ -199,7 +208,7 @@ const FilterButton = styled.button`
   display: flex;
   z-index: 11; /* Sørg for, at knappen er over alt andet */
   align-items: center;
-  background-color: transparent; /* Knappen selv har stadig en transparent baggrund */
+  background-color: transparent; 
   color: ${(props) => (props.disabled ? "#bbb" : "black")};
   padding: 2px 4px;
   font-size: 0.7rem;
@@ -219,19 +228,18 @@ const FilterButton = styled.button`
     align-items: center;
     font-size: 1.9rem;
 
-    background-color: ${(props) => {
-      console.log("Count:", props.count); // Log værdien af count
+    background-color: ${(props) => {      
       return props.disabled
-        ? "#ddd" // Grå baggrund, når disabled
+        ? "#ddd" 
         : props.count === 0
-        ? "#ddd" // Grå baggrund, når count er 0
+        ? "#ddd" 
         : props.selected
-        ? "#4CAF50" // Grøn baggrund, når valgt
-        : "white"; // Hvid baggrund ellers
+        ? "#4CAF50" 
+        : "white"; 
     }};
 
     @media (max-width: 760px) {
-      font-size: 0.9rem; /* Mindre skriftstørrelse */
+      font-size: 0.9rem; 
     }
   }
 
@@ -251,7 +259,7 @@ const FilterButton = styled.button`
 `;
 
 const BicycleBox = styled.div`
-  min-height: 280px; /* Sikrer at hver boks har en minimumshøjde */
+  min-height: 280px;
   width: 325px;
   height: 290px;
   border: 1px solid #ddd;
@@ -266,8 +274,7 @@ const BicycleBox = styled.div`
   box-sizing: border-box;
   overflow-x: hidden;
   scrollbar-width: thin;
-  padding-right: 5px;
-  
+  padding-right: 5px;  
 
   &:hover {
     transform: translateY(-5px);
@@ -275,7 +282,7 @@ const BicycleBox = styled.div`
   }
 
   &:hover .tooltip {
-    visibility: visible; /* Gør tooltip synlig ved hover */
+    visibility: visible; 
     opacity: 1;
   }
 `;
@@ -284,9 +291,8 @@ const Tooltip = styled.div`
   visibility: hidden;
   opacity: 0;
   position: absolute;
-  top: 1rem; /* Positioner tooltip lidt nede fra toppen */
-  right: 1.5rem; /* Placerer tooltip lidt væk fra højre kant */
-
+  top: 1rem; 
+  right: 1.5rem; 
   color: darkgreen;
   /*color: #4CAF50;*/
   text-align: center;
@@ -294,7 +300,7 @@ const Tooltip = styled.div`
   border-radius: 4px;
   font-size: 0.7rem;
   transition: opacity 0.2s ease;
-  pointer-events: none; /* Forhindrer interaktion med tooltip */
+  pointer-events: none;
 `;
 
 const BicycleBoxContent = styled.div`
@@ -303,21 +309,20 @@ const BicycleBoxContent = styled.div`
   display: flex;
   flex-direction: column;
   overflow-y: auto;
-  margin-right: 10px;
+  margin-right: 10px;  
   
-  /* WebKit specific styling */
   &::-webkit-scrollbar {
-    width: 5px; /* Scrollbar bredde */
+    width: 5px; 
   }
   &::-webkit-scrollbar-thumb {
-    background-color: #45a049; /* Thumb farve */
-    border-radius: 2px; /* Runde hjørner */
+    background-color: #45a049; 
+    border-radius: 2px;
   }
   &::-webkit-scrollbar-thumb:hover {
-    background-color: #45a049; /* Hover effekt */
+    background-color: #45a049; 
   }
   &::-webkit-scrollbar-track {
-    background-color: #f0f0f0; /* Track farve */
+    background-color: #f0f0f0; 
   }
 `;
 
@@ -331,7 +336,7 @@ const BicycleBrand = styled.h4`
 
 const BicycleTableContainer = styled.div`
   width: 100%;
-  max-height: 230px; /* Fastsætter maksimalhøjden */
+  max-height: 230px; 
   height: 230px;
 `;
 
@@ -349,33 +354,32 @@ const BicycleTableData = styled.td`
   font-size: 0.65rem;
   color: #555;
   padding: 0.3rem;
-
-  /* Definerer kolonnebredderne */
+ 
   &:first-child {
-    width: 29%; /* Første kolonne får 30% af bredden */
+    width: 29%; 
     text-align: left;
     font-weight: bold;
   }
 
   &:nth-child(2) {
-    width: 71%; /* Anden kolonne får 70% af bredden */
+    width: 71%; 
     text-align: left;
   }
 `;
 
 const StyledLink = styled.a`
-  color: #45a049; /* Blå farve */
+  color: #45a049; 
   text-decoration: none;
   font-weight: bold;
   font-size: 0.7rem;
 
   &:hover {
     text-decoration: none;
-    color: #0056b3; /* Mørkere blå ved hover */
+    color: #0056b3; 
   }
 
   &:visited {
-    color: #551a8b; /* Ændrer farven på besøgte links */
+    color: #551a8b;
   }
 `;
 
@@ -412,10 +416,10 @@ const Bicycles = () => {
     gearSeries: false,
     saddleBrand: false,
     wheelBrand: false,
-    bicycleBrand: false,
+    bicycleBrand: true,
     bicycleType: false,
     wheelType: false,
-    priceInterval: false,
+    priceInterval: true,
   });
 
   useEffect(() => {
@@ -541,7 +545,7 @@ const Bicycles = () => {
         <Sidebar>
           {Object.keys(filters).map((category) => (
             <FilterCategory key={category}>
-              <FilterTitle onClick={() => toggleCategory(category)}>
+              <FilterTitle isOpen={openCategories[category]} onClick={() => toggleCategory(category)}>
                 {categoryTitles[category] ||
                   category.charAt(0).toUpperCase() + category.slice(1)}
               </FilterTitle>
