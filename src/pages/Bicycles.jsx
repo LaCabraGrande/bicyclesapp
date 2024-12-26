@@ -11,7 +11,7 @@ const Container = styled.div`
   height: 76vh;
   padding-top: 10px;
   margin: 0px 10px 10px 10px;
-  background-image: url("/cyclist-2-ny.png");
+  background-image: url("cyclist-2-ny.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -35,7 +35,7 @@ const FilterDiv = styled.div`
 
 const BicycleCount = styled.div`
   position: absolute;
-  left: 310px; /* Placerer tælleren 100px inde */
+  left: 350px; /* Placerer tælleren 100px inde */
   color: black;
   font-size: 1rem;
 
@@ -183,9 +183,6 @@ const FilterTitle = styled.h4`
     font-size: 1.1rem;
   }
 `;
-
-
-
 
 const FilterOptions = styled.div`
   display: ${(props) => (props.isOpen ? "block" : "none")};
@@ -416,7 +413,7 @@ const Bicycles = () => {
     gearSeries: false,
     saddleBrand: false,
     wheelBrand: false,
-    bicycleBrand: true,
+    bicycleBrand: false,
     bicycleType: false,
     wheelType: false,
     priceInterval: true,

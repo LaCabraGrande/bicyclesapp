@@ -32,7 +32,7 @@ const Content = styled.div`
   flex-wrap: wrap;
   padding: 1rem;
   height: 75vh;
-  width: 85%;
+  width: 75%;
   box-sizing: border-box;
   align-items: center;
   justify-content: center;

@@ -97,10 +97,14 @@ const Select = styled.select`
   width: 100%;  
   border: 1px solid silver;
   background-color: white;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Øget skyggeeffekt for mere dybde */
+  
 
   &:focus {
     outline: none;    
+    box-shadow: 0px 3px 4px rgba(100, 149, 237, 0.3), 
+                0px -2px 4px rgba(100, 149, 237, 0.2),
+                -4px 0px 4px rgba(100, 149, 237, 0.2),
+                4px 0px 4px rgba(100, 149, 237, 0.2);
   }
 
 `;
