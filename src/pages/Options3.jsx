@@ -33,31 +33,32 @@ const StyledButton = styled.button`
   }
 `;
 
-// Reusable container for forms
+// ydre div til at indeholde formen og dens indhold
 const FormContainer = styled.div`
   display: flex;
-  padding: 20px;
-  border: 1px solid #ddd;
-  width: 60vh;
-  max-width: 60%;
-  background-color: lightgray;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  align-content: center;
+  flex-direction: column;
+  padding: 30px;
+  border: 1px solid silver;
+  width: 50vh;
+  max-width: 100%;
+  
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);  
 `;
 
 const Form = styled.form`
   display: flex;
-  width: 50vh;
-  max-width: 800px; /* Begrænser bredden på større skærme */
-  margin: 0 auto; /* Centrerer formen på skærmen */
-  border: 1px solid #ddd;
+  width: 100%;
+  min-width: 35vh;
+  max-width: 65vh; /* Begrænser bredden på større skærme */
+  border: 1px solid silver;
   flex-direction: column;
-  gap: 1rem;
-  padding: 2rem; /* Øger lidt på den indre afstand */
+  gap: 0.5rem; /* Afstand mellem elementerne */
+  padding: 1rem; /* Øger lidt på den indre afstand */
   background-color: white;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Øget skyggeeffekt for mere dybde */
-  border-radius: 8px; /* Runde hjørner for en blødere visuel effekt */
+  
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2); /* Øget skyggeeffekt for mere dybde */
+  
   overflow: hidden; /* Skjuler elementer der går udenfor formen */
   
   @media (max-width: 768px) {
@@ -73,20 +74,35 @@ const Form = styled.form`
   }
 `;
 
-
 const Input = styled.input`
-  padding: 0.5rem;
+  padding: 0.4rem;
   width: 100%;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: 1px solid silver;
   background-color: white;
+  color: black;
+
+  &:focus {
+    outline: none;    
+    box-shadow: 0px 3px 4px rgba(100, 149, 237, 0.3), 
+                0px -2px 4px rgba(100, 149, 237, 0.2),
+                -4px 0px 4px rgba(100, 149, 237, 0.2),
+                4px 0px 4px rgba(100, 149, 237, 0.2);
+  }
 `;
 
 const Select = styled.select`
   padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  background-color: white
+  margin-bottom: 0.7rem;
+  align-items: center;
+  width: 100%;  
+  border: 1px solid silver;
+  background-color: white;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Øget skyggeeffekt for mere dybde */
+
+  &:focus {
+    outline: none;    
+  }
+
 `;
 
 const SubmitButton = styled.button`
@@ -276,7 +292,7 @@ const Options = ({ onFormSelect, activeForm }) => {
         "size",
         "price",
         "weight",
-        "description",        
+        "link",        
       ],
     },
     "New Frame": {
@@ -317,6 +333,8 @@ const Options = ({ onFormSelect, activeForm }) => {
         console.error(`Error fetching ${activeForm} items:`, error);
       }
     };
+    setFormData({});
+    setSelectedItemId(null);  
     fetchItems();
     if (activeForm && activeForm.split(" ")[0] === "Change" ) {
       fetchItems();
@@ -746,8 +764,10 @@ const Options = ({ onFormSelect, activeForm }) => {
     );
   }
 
+  // Her opretter vi nye items og nye cykler
   if (activeForm && formsConfig[activeForm]) {
     return (
+      
       <Form key={formKey} onSubmit={handleSubmit}>
         {formsConfig[activeForm].fields.map((field) => (
           <Input
@@ -786,6 +806,7 @@ const Options = ({ onFormSelect, activeForm }) => {
           {isSubmitting ? "Submitting..." : `Add ${activeForm}`}
         </SubmitButton>
       </Form>
+     
     );
   }
 
@@ -811,7 +832,7 @@ const Options = ({ onFormSelect, activeForm }) => {
               </option>
             ))}
           </Select>
-        </FormContainer>
+        
 
         {/* Step 3: Form for Editing the Selected Item */}
         {selectedItemId && (
@@ -837,7 +858,9 @@ const Options = ({ onFormSelect, activeForm }) => {
                 : `Update ${activeForm.split(" ")[1]}`}
             </SubmitButton>
           </Form>
+         
         )}
+         </FormContainer>
       </>
     );
   }
