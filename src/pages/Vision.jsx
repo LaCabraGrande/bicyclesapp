@@ -63,8 +63,8 @@ function Vision() {
     let currentText = "";
       
     const playSound = () => {
-      const sound = new Audio("/sounds/typing-sound-1.mp3");
-      sound.play().catch(() => {});
+      //const sound = new Audio("/sounds/typing-sound-1.mp3");
+      //sound.play().catch(() => {});
     };
   
     const typewriter = () => {
@@ -81,7 +81,7 @@ function Vision() {
         setDisplayText(currentText);
         index++;
   
-        const randomDelay = Math.random() * 150 + 100;
+        const randomDelay = Math.random() * 50 + 30;
         setTimeout(typewriter, randomDelay);
       }
     };
