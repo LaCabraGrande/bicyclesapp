@@ -18,17 +18,13 @@ const Container = styled.div`
   }
 
   @media (max-width: 510px) {
-    padding: 35px 25px;
-    min-height: 50vh;
-  }
-
-  @media (max-width: 420px) {
-    min-height: 50vh;
-  }
-
-  @media (max-width: 390px) {
+    padding: 25px 25px;
     min-height: 60vh;
   }
+
+  @media (max-width: 460px) {
+    min-height: 60vh;
+  } 
 `;
 
 const Paragraph = styled.p`
@@ -39,22 +35,23 @@ const Paragraph = styled.p`
   margin-bottom: 15px;
 
   @media (max-width: 768px) {
-    font-size: 0.8rem;
+    font-size: 0.8rem;    
   }
 
-  @media (max-width: 480px) {
-    font-size: 0.65rem;
+  @media (max-width: 460px) {
+    font-size: 0.85rem;
+    padding: 2.5vh 0.5vh 0.5vh 0.5vh;
   }
-  @media (max-width: 380px) {
-    font-size: 0.60rem;
+  @media (max-width: 400px) {
+    font-size: 0.75rem;    
   }
-
 `;
 
 const fullText = 
-  "Vi samarbejder med mere end 250 forhandlere over hele landet, " +
-  "som løbende opdaterer vores database med de nyeste racercykler " +
-  "til salg.\n\n Vi håber, at vores hjemmeside kan hjælpe dig med at få " +
+  "Vi samarbejder med mere end 30 forhandlere over hele landet, " +
+  "som løbende opdaterer vores database med de nyeste racercykler til salg.\n\n Indtil " +
+  "videre har vi valgt ikke at inkludere gravel- og crosscykler men udelukkende at fokusere på racercykler til brug på landevejen." +
+  "\n\n Vi håber, at vores hjemmeside kan hjælpe dig med at få " +
   "et bedre overblik og finde din næste racercykel!";
 
 

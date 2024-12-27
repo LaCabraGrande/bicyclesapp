@@ -45,12 +45,18 @@ const StyledNavLink = styled(NavLink)`
     transition: width 0.3s ease, left 0.3s ease;
   }
 
-  @media (max-width: 850px) {
+  @media (max-width: 860px) {
     font-size: 1.2rem;
   }
 
   @media (max-width: 505px) {
-    font-size: 1rem;
+    font-size: 1.3rem;
+    padding: 5px 0px;
+  }
+
+  @media (max-width: 400px) {
+    font-size: 1.1rem;
+    padding: 0px 0px;
   }
 `;
 

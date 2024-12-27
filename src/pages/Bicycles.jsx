@@ -19,6 +19,13 @@ const Container = styled.div`
   @media (max-width: 860px) {
      border-right: none;
      height: 74vh;
+    
+  }
+
+  @media (max-width: 460px) {
+     height: 74vh;
+     width: 100%;
+     margin: 0;
   }
 `;
 
@@ -31,6 +38,15 @@ const FilterDiv = styled.div`
   margin: 0px 0px 0px 0px;
   border-bottom: 1px solid #ddd; /* Tilsæt en bundlinje */
   position: relative;
+
+  @media (max-width: 660px) {
+    font-size: 0.9rem;    
+  } 
+
+  @media (max-width: 460px) {
+    padding: 0px 0px 30px 20px; /* Plads til knappen */
+    
+  }  
 `;
 
 const BicycleCount = styled.div`
@@ -39,9 +55,19 @@ const BicycleCount = styled.div`
   color: black;
   font-size: 1rem;
 
-  @media (max-width: 660px) {
-    font-size: 0.9rem;
-    left: 60%; /* Placerer tælleren 100px inde */
+  @media (max-width: 860px) {    
+    left: 80%; /* Placerer tælleren 100px inde */
+  }
+
+
+
+  @media (max-width: 660px) {    
+    left: 65%; /* Placerer tælleren 100px inde */
+  }
+
+  @media (max-width: 460px) {
+    left: 65%; /* Placerer tælleren 100px inde */
+    font-size: 0.8rem;
   }
 `;
 
@@ -67,7 +93,27 @@ const SidebarContainer = styled.div`
   @media (max-width: 860px) {
     left: ${(props) => (props.isOpen ? "0" : "-101%")};
     width: 100%;
-    border-right: none;  
+    border-right: none;    
+    top: 30px;  
+  }
+
+  @media (max-width: 505px) {
+    width: 100%; 
+    padding-left: 0px;
+    margin-left: 0%;
+    top: 30px;
+  }
+
+  @media (max-width: 460px) {
+     height: 74vh;
+     width: 100%;
+     margin: 0;
+     padding-left: 0px; 
+     top: 50px;  
+  }
+
+  @media (max-width: 400px) {
+     
   }
 `;
 
@@ -88,14 +134,20 @@ const Sidebar = styled.div`
   @media (max-width: 860px) {
     max-width: unset;;
     width: 98%;
-    padding-left: 100px;  
+    padding-left: 0px;  
   }
 
   @media (max-width: 505px) {
-    max-width: unset;;
-    width: 97%; 
-    padding-left: 50px;  
-  }  
+    max-width: unset;
+    width: 100%; 
+    padding-left: 20px;
+  }
+
+  @media (max-width: 450px) {
+    max-width: unset;
+    width: 100%; 
+    padding-left: 20px;
+  }   
 
   &::-webkit-scrollbar {
     width: 6px; /* Scrollbar bredde */
@@ -134,7 +186,8 @@ const Content = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-left: 0;     
+    padding-left: 0;
+    width: 100%;
   }
   
   &::-webkit-scrollbar {
@@ -153,7 +206,13 @@ const Content = styled.div`
 `;
 
 const FilterCategory = styled.div`
-  margin-bottom: 1rem; 
+  
+`;
+
+const FilterTitleContainer = styled.div`
+  margin-bottom: 0.5rem; 
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 5px;
 `;
 
 const FilterTitle = styled.h4`
@@ -164,6 +223,7 @@ const FilterTitle = styled.h4`
   font-weight: 400;
   color: black;
   position: relative;
+  
  
   &::after {
     content: '';
@@ -186,6 +246,7 @@ const FilterTitle = styled.h4`
 
 const FilterOptions = styled.div`
   display: ${(props) => (props.isOpen ? "block" : "none")};
+  margin-bottom: 20px;
 `;
 
 const SidebarButton = styled.button`
@@ -196,8 +257,16 @@ const SidebarButton = styled.button`
   cursor: pointer; 
   border-radius: 5px;
 
+  @media (max-width: 860px) {
+    font-size: 0.9rem;
+  }
+
   @media (max-width: 660px) {
     font-size: 0.9rem;
+  }
+
+  @media (max-width: 460px) {
+    font-size: 0.8rem;
   }
 `;
 
@@ -282,6 +351,12 @@ const BicycleBox = styled.div`
     visibility: visible; 
     opacity: 1;
   }
+
+  @media (max-width: 400px) {
+    width: 290px;
+    padding: 0.7rem;
+  }
+
 `;
 
 const Tooltip = styled.div`
@@ -321,6 +396,10 @@ const BicycleBoxContent = styled.div`
   &::-webkit-scrollbar-track {
     background-color: #f0f0f0; 
   }
+
+  @media (max-width: 400px) {
+    width: 295px;
+  }
 `;
 
 const BicycleBrand = styled.h4`
@@ -335,12 +414,21 @@ const BicycleTableContainer = styled.div`
   width: 100%;
   max-height: 230px; 
   height: 230px;
+
+  @media (max-width: 400px) {
+    width: 95%;
+  }
+
 `;
 
 const BicycleTable = styled.table`
   width: 280px;
   margin-top: 0.4rem;
   border-collapse: collapse;
+
+  @media (max-width: 400px) {
+    width: 265px;
+  }
 `;
 
 const BicycleTableRow = styled.tr`
@@ -361,6 +449,13 @@ const BicycleTableData = styled.td`
   &:nth-child(2) {
     width: 71%; 
     text-align: left;
+  }
+
+  @media (max-width: 400px) {
+    font-size: 0.65rem;
+    &:first-child {
+    width: 26%;     
+    }
   }
 `;
 
@@ -542,10 +637,12 @@ const Bicycles = () => {
         <Sidebar>
           {Object.keys(filters).map((category) => (
             <FilterCategory key={category}>
+              <FilterTitleContainer>
               <FilterTitle isOpen={openCategories[category]} onClick={() => toggleCategory(category)}>
                 {categoryTitles[category] ||
                   category.charAt(0).toUpperCase() + category.slice(1)}
               </FilterTitle>
+              </FilterTitleContainer>
               <FilterOptions isOpen={openCategories[category]}>
                 {Object.keys(filters[category]).map((brand) => (
                   <FilterButton
@@ -574,7 +671,7 @@ const Bicycles = () => {
 
       <Content isOpen={isSidebarOpen} isMobile={isMobile}>
         {bicycles.length === 0 ? (
-          <p>No bicycles found. Please adjust your filters.</p>
+          <p>  </p>
         ) : (
           bicycles.map((bicycle) => (
             <BicycleBox
