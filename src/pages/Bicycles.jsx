@@ -354,7 +354,7 @@ const BicycleBox = styled.div`
 
   @media (max-width: 435px) {
     width: 325px;
-    padding: 0.6rem;
+    padding: 0.5rem;
   }
 
 `;
@@ -397,7 +397,7 @@ const BicycleBoxContent = styled.div`
     background-color: #f0f0f0; 
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: 435px) {
     width: 295px;
   }
 `;
@@ -426,7 +426,7 @@ const BicycleTable = styled.table`
   border-collapse: collapse;
 
   @media (max-width: 435px) {
-    width: 290px;
+    width: 295px;
   }
 `;
 
