@@ -373,6 +373,14 @@ const Tooltip = styled.div`
   font-size: 0.7rem;
   transition: opacity 0.2s ease;
   pointer-events: none;
+
+  @media (max-width: 435px) {
+   top: 0.5rem;
+   visibility: visible;
+   font-size: 0.5rem;
+   right: 1.6rem;
+  }
+
 `;
 
 const BicycleBoxContent = styled.div`
