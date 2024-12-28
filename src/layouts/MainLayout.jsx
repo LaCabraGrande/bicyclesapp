@@ -16,9 +16,10 @@ const Container = styled.div`
   background-color: darkgreen;
   box-shadow: 0 0 55px rgba(0, 0, 0, 0.3), 0 0 55px rgba(0, 0, 0, 0.3);
 
+
   // Mobile media query
-  @media (max-width: 480px) {
-    padding: 10px;
+  @media (max-width: 505px) {
+    padding: 10px;    
   }
 `;
 

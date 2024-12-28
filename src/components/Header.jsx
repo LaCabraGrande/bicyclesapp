@@ -7,10 +7,10 @@ import facade from "../util/apiFacade";
 const HeaderWrapper = styled.header`
   display: flex;
   justify-content: space-between;
-  padding: 1rem 1rem;
+  padding: 1rem 1rem 1rem 1rem;
   background-color: darkgreen;
   border-bottom: 1px solid #ddd;
-
+  
   @media (max-width: 850px) {
     padding: 1.0rem 0.3rem 1.0rem 0.3rem;
   }
