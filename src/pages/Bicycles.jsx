@@ -434,7 +434,7 @@ const BicycleTable = styled.table`
   border-collapse: collapse;
 
   @media (max-width: 435px) {
-    width: 290px;
+    width: 285px;
   }
 `;
 
@@ -461,14 +461,14 @@ const BicycleTableData = styled.td`
   @media (max-width: 435px) {
     font-size: 0.65rem;
     &:first-child {
-    width: 24%;     
+    width: 23%;     
     }
   }
 
   @media (max-width: 400px) {
     font-size: 0.65rem;
     &:first-child {
-    width: 24%;     
+    width: 23%;     
     }
   }
 `;
