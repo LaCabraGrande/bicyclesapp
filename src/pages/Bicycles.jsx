@@ -353,8 +353,8 @@ const BicycleBox = styled.div`
   }
 
   @media (max-width: 435px) {
-    width: 315px;
-    padding: 0.7rem;
+    width: 325px;
+    padding: 0.6rem;
   }
 
 `;
