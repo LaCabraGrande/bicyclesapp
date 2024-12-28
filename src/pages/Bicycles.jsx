@@ -240,11 +240,11 @@ const FilterTitle = styled.h4`
   }
 
   @media (max-width: 860px) {
-    font-size: 0.9rem;
+    font-size: 1.0rem;
   }
 
   @media (max-width: 505px) {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
   }
 `;
 
