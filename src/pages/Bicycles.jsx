@@ -434,7 +434,7 @@ const BicycleTable = styled.table`
   border-collapse: collapse;
 
   @media (max-width: 435px) {
-    width: 280px;
+    width: 290px;
   }
 `;
 
