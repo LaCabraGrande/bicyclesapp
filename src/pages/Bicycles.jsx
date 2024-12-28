@@ -363,10 +363,9 @@ const Tooltip = styled.div`
   visibility: hidden;
   opacity: 0;
   position: absolute;
-  top: 1rem; 
-  right: 1.5rem; 
-  color: darkgreen;
-  /*color: #4CAF50;*/
+  top: 0.2rem; 
+  right: 1.0rem; 
+  color: black;
   text-align: center;
   padding: 0.3rem 0.5rem;
   border-radius: 4px;
@@ -375,10 +374,11 @@ const Tooltip = styled.div`
   pointer-events: none;
 
   @media (max-width: 435px) {
-   top: 0.6rem;
+   top: 0.2rem;
    visibility: visible;
+   opacity: 1;
    font-size: 0.6rem;
-   right: 1.6rem;
+   right: 1.0rem;
   }
 
 `;
@@ -485,7 +485,7 @@ const StyledLink = styled.a`
   }
 
   &:visited {
-    color: #551a8b;
+    color: #0056b3;
   }
 `;
 
