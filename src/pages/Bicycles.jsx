@@ -453,14 +453,14 @@ const BicycleTableData = styled.td`
   @media (max-width: 435px) {
     font-size: 0.65rem;
     &:first-child {
-    width: 25%;     
+    width: 24%;     
     }
   }
 
   @media (max-width: 400px) {
     font-size: 0.65rem;
     &:first-child {
-    width: 25%;     
+    width: 24%;     
     }
   }
 `;
