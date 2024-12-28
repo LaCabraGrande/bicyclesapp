@@ -35,11 +35,10 @@ const Paragraph = styled.p`
   margin-bottom: 15px;
 
   @media (max-width: 768px) {
-    font-size: 0.8rem;    
+    font-size: 0.85rem;    
   }
 
-  @media (max-width: 460px) {
-    font-size: 0.85rem;
+  @media (max-width: 505px) {
     padding: 2.5vh 0.5vh 0.5vh 0.5vh;
   }
   @media (max-width: 400px) {

@@ -12,7 +12,7 @@ const HeaderWrapper = styled.header`
   border-bottom: 1px solid #ddd;
 
   @media (max-width: 850px) {
-    padding: 1rem;
+    padding: 1.0rem 0.3rem 1.0rem 0.3rem;
   }
 `;
 
@@ -179,6 +179,12 @@ const Button = styled.button`
   &:hover {
     background-color: #007bff;
   }
+
+  @media (max-width: 768px) {
+    font-size: 0.7rem;
+  }
+
+
 `;
 
 const Header = () => {
