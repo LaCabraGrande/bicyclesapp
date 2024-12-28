@@ -418,7 +418,6 @@ const BicycleTableContainer = styled.div`
   @media (max-width: 400px) {
     width: 95%;
   }
-
 `;
 
 const BicycleTable = styled.table`
@@ -449,6 +448,13 @@ const BicycleTableData = styled.td`
   &:nth-child(2) {
     width: 71%; 
     text-align: left;
+  }
+
+  @media (max-width: 435px) {
+    font-size: 0.65rem;
+    &:first-child {
+    width: 26%;     
+    }
   }
 
   @media (max-width: 400px) {
