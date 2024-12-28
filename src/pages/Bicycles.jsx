@@ -353,7 +353,7 @@ const BicycleBox = styled.div`
   }
 
   @media (max-width: 435px) {
-    width: 325px;
+    width: 320px;
     padding: 0.5rem;
   }
 
