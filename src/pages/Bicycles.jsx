@@ -34,13 +34,13 @@ const FilterDiv = styled.div`
   width: 100%;
   background-color: white;
   display: flex;   
-  padding: 0px 0px 30px 10px; /* Plads til knappen */
+  padding: 0px 0px 30px 30px; /* Plads til knappen */
   margin: 0px 0px 0px 0px;
   border-bottom: 1px solid #ddd; /* Tilsæt en bundlinje */
   position: relative;
 
   @media (max-width: 660px) {
-    font-size: 0.9rem;    
+    font-size: 0.8rem;    
   } 
 
   @media (max-width: 460px) {
@@ -53,20 +53,20 @@ const BicycleCount = styled.div`
   position: absolute;
   left: 350px; /* Placerer tælleren 100px inde */
   color: black;
-  font-size: 1rem;
+  font-size: 0.9rem;
 
   @media (max-width: 860px) {    
     left: 80%; /* Placerer tælleren 100px inde */
+    font-size: 0.8rem;
   }
 
-
-
   @media (max-width: 660px) {    
-    left: 65%; /* Placerer tælleren 100px inde */
+    left: 75%; /* Placerer tælleren 100px inde */
+    font-size: 0.8rem;
   }
 
   @media (max-width: 460px) {
-    left: 65%; /* Placerer tælleren 100px inde */
+    left: 75%; /* Placerer tælleren 100px inde */
     font-size: 0.8rem;
   }
 `;
@@ -253,16 +253,16 @@ const SidebarButton = styled.button`
   background-color: white; 
   color: black; 
   border: none; 
-  font-size: 1rem; 
+  font-size: 0.9rem; 
   cursor: pointer; 
   border-radius: 5px;
 
   @media (max-width: 860px) {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
 
   @media (max-width: 660px) {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
 
   @media (max-width: 460px) {
@@ -346,12 +346,12 @@ const BicycleBox = styled.div`
     transform: translateY(-5px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   }
-
+  
   &:hover .tooltip {
     visibility: visible; 
     opacity: 1;
   }
-
+  
   @media (max-width: 435px) {
     width: 320px;
     padding: 0.5rem;
@@ -370,13 +370,11 @@ const Tooltip = styled.div`
   padding: 0.3rem 0.5rem;
   border-radius: 4px;
   font-size: 0.7rem;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.5s ease;
   pointer-events: none;
 
-  @media (max-width: 435px) {
+  @media (max-width: 1035px) {
    top: 0.2rem;
-   visibility: visible;
-   opacity: 1;
    font-size: 0.6rem;
    right: 1.0rem;
   }
@@ -444,7 +442,7 @@ const BicycleTableRow = styled.tr`
 
 const BicycleTableData = styled.td`
   font-size: 0.65rem;
-  color: #555;
+  color: black;
   padding: 0.3rem;
  
   &:first-child {
