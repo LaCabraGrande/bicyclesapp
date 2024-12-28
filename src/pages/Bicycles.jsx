@@ -416,7 +416,7 @@ const BicycleTableContainer = styled.div`
   height: 230px;
 
   @media (max-width: 435px) {
-    width: 95%;
+    width: 100%;
   }
 `;
 
