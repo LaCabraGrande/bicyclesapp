@@ -54,7 +54,7 @@ const StyledNavLink = styled(NavLink)`
     padding: 5px 0px;
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: 435px) {
     font-size: 1.1rem;
     padding: 0px 0px;
   }
