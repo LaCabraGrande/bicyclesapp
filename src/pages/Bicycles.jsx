@@ -406,7 +406,7 @@ const BicycleBoxContent = styled.div`
   }
 
   @media (max-width: 435px) {
-    width: 295px;
+    width: 305px;
   }
 `;
 
