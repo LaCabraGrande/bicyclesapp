@@ -452,6 +452,7 @@ const BicycleTableData = styled.td`
 
   @media (max-width: 435px) {
     font-size: 0.65rem;
+    padding: 0.2rem;
     &:first-child {
     width: 26%;     
     }
