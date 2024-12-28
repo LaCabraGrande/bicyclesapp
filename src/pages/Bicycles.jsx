@@ -415,7 +415,7 @@ const BicycleTableContainer = styled.div`
   max-height: 230px; 
   height: 230px;
 
-  @media (max-width: 400px) {
+  @media (max-width: 435px) {
     width: 95%;
   }
 `;
@@ -426,7 +426,7 @@ const BicycleTable = styled.table`
   border-collapse: collapse;
 
   @media (max-width: 435px) {
-    width: 265px;
+    width: 285px;
   }
 `;
 
