@@ -8,7 +8,7 @@ const Container = styled.div`
   flex-wrap: nowrap; /* Hvis du vil forhindre brydning */
   overflow-x: hidden; /* For at tillade scrolling i stedet for overlap */
   overflow-y: hidden;
-  height: 76vh;
+  height: 77vh;
   padding-top: 10px;
   margin: 0px 10px 10px 10px;
   background-image: url("cyclist-2-ny.png");
@@ -34,7 +34,7 @@ const FilterDiv = styled.div`
   width: 100%;
   background-color: white;
   display: flex;   
-  padding: 0px 0px 30px 30px; /* Plads til knappen */
+  padding: 0px 0px 30px 25px; /* Plads til knappen */
   margin: 0px 0px 0px 0px;
   border-bottom: 1px solid #ddd; /* Tilsæt en bundlinje */
   position: relative;
@@ -85,7 +85,7 @@ const SidebarContainer = styled.div`
   overflow-y: auto;
   transition: left 0.4s ease;
   display: ${(props) => (props.isOpen || props.isMobile ? "block" : "none")};
-  padding-left: 20px;
+  padding-left: 10px;
   margin-top: 20px;
   margin-left: 10px;
   border-right: 1px solid #ddd;  
@@ -118,23 +118,24 @@ const SidebarContainer = styled.div`
 `;
 
 const Sidebar = styled.div`
-  width: 280px; /* Standard bredde */
-  max-width: 280px; /* Standard max bredde */
+  width: 290px; /* Standard bredde */
+  max-width: 290px; /* Standard max bredde */
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
   overflow-y: auto;
   max-height: 73vh;
-  margin-top: 5px;
+  margin-top: 0px;
   min-height: 63vh;
   padding-right: 20px;
-  padding-top: 30px;
-  padding-left: 10px;
+  padding-top: 25px;
+  padding-left: 0px;
 
   @media (max-width: 860px) {
     max-width: unset;;
     width: 98%;
-    padding-left: 0px;  
+    padding-left: 0px;
+    margin-top: 5px;
   }
 
   @media (max-width: 505px) {
