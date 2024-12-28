@@ -426,7 +426,7 @@ const BicycleTable = styled.table`
   border-collapse: collapse;
 
   @media (max-width: 435px) {
-    width: 285px;
+    width: 290px;
   }
 `;
 
@@ -452,7 +452,6 @@ const BicycleTableData = styled.td`
 
   @media (max-width: 435px) {
     font-size: 0.65rem;
-    padding: 0.2rem;
     &:first-child {
     width: 26%;     
     }
