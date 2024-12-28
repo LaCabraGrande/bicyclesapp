@@ -40,9 +40,12 @@ header {
     max-width: var(--large-device);
 
     @media (max-width: 850px) {
-      padding: 0.0rem 0.5rem 0.5rem 0.5rem;
+      
     }
 
+    @media (max-width: 505px) {
+      padding: 0.0rem 0.5rem 0.5rem 0.5rem;
+    }
 
 }
 
