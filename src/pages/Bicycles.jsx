@@ -43,7 +43,7 @@ const FilterDiv = styled.div`
     font-size: 0.8rem;    
   } 
 
-  @media (max-width: 460px) {
+  @media (max-width: 505px) {
     padding: 0px 0px 30px 20px; /* Plads til knappen */
     
   }  
@@ -239,8 +239,12 @@ const FilterTitle = styled.h4`
     clip-path: polygon(0 0, 100% 0, 0 100%);
   }
 
-  @media (max-width: 760px) {
-    font-size: 1.1rem;
+  @media (max-width: 860px) {
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 505px) {
+    font-size: 0.8rem;
   }
 `;
 
