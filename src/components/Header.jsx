@@ -170,7 +170,7 @@ const Button = styled.button`
   padding: 0.4rem 0.8rem;
   border: none;
   border-radius: 4px;
-  background-color: #0056b3;;
+  background-color: #0056b3;
   color: white;
   font-size: 0.8rem;
   cursor: pointer;

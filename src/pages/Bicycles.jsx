@@ -111,8 +111,6 @@ const SidebarContainer = styled.div`
 `;
 
 
-
-
 const Sidebar = styled.div`
   width: 290px; /* Standard bredde */
   max-width: 290px; /* Standard max bredde */
@@ -357,12 +355,11 @@ const BicycleBox = styled.div`
     width: 320px;
     padding: 0.5rem;
   }
-
 `;
 
 const Tooltip = styled.div`
   visibility: hidden;
-  opacity: 0;
+  opacity: 1;
   position: absolute;
   top: 0.2rem; 
   right: 1.0rem; 
@@ -379,12 +376,11 @@ const Tooltip = styled.div`
    font-size: 0.6rem;
    right: 1.0rem;
   }
-
 `;
 
 const BicycleBoxContent = styled.div`
   width: 295px;
-  height: 255px;
+  height: 2405px;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -419,8 +415,8 @@ const BicycleBrand = styled.h4`
 
 const BicycleTableContainer = styled.div`
   width: 100%;
-  max-height: 230px; 
-  height: 230px;
+  max-height: 220px; 
+  height: 220px;
 
   @media (max-width: 435px) {
     width: 100%;
