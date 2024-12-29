@@ -75,47 +75,43 @@ const SidebarContainer = styled.div`
   position: absolute;
   top: 36px;
   display: flex;
-  left: ${(props) => (props.isOpen ? "0" : "-300px")};
+  transform: ${(props) => (props.isOpen ? "translateX(0)" : "translateX(-105%)")};
   width: 320px;
-  height: 77vh;
-  align-items: center;
-  justify-content: center;
+  height: 77vh;  
   background-color: white;
-  z-index: 0;
+  z-index: 1; /* Sørg for, at det er synligt over indholdet */
   overflow-y: auto;
-  transition: left 0.4s ease;
-  display: ${(props) => (props.isOpen || props.isMobile ? "block" : "none")};
+  transition: transform 0.3s ease; /* Tilføjer glidende overgang */
   padding-left: 10px;
   margin-top: 20px;
   margin-left: 10px;
-  border-right: 1px solid #ddd;  
+  border-right: 1px solid #ddd;
 
   @media (max-width: 860px) {
-    left: ${(props) => (props.isOpen ? "0" : "-101%")};
+    transform: ${(props) => (props.isOpen ? "translateX(0)" : "translateX(-100%)")};
     width: 100%;
-    border-right: none;    
-    top: 30px;  
+    border-right: none;
+    top: 30px;
   }
 
   @media (max-width: 505px) {
-    width: 100%; 
+    width: 100%;
     padding-left: 0px;
     margin-left: 0%;
     top: 30px;
   }
 
   @media (max-width: 460px) {
-     height: 74vh;
-     width: 100%;
-     margin: 0;
-     padding-left: 0px; 
-     top: 50px;  
-  }
-
-  @media (max-width: 400px) {
-     
+    height: 74vh;
+    width: 100%;
+    margin: 0;
+    padding-left: 0px;
+    top: 50px;
   }
 `;
+
+
+
 
 const Sidebar = styled.div`
   width: 290px; /* Standard bredde */
@@ -172,7 +168,7 @@ const Content = styled.div`
       : props.isOpen
       ? "325px"
       : "0"}; 
-  transition: margin-left 0.4s ease; 
+  transition: margin-left 0.3s ease; 
   flex-grow: 1;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(325px, 0fr));

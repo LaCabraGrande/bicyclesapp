@@ -28,18 +28,25 @@ const Container = styled.div`
 `;
 
 const Paragraph = styled.p`
-  padding: 10vh;
+  padding: 8vh;
   font-size: 1.2rem;
   line-height: 1.3;
   color: #555;
   margin-bottom: 15px;
 
+  @media (max-width: 1050px) {
+    padding: 6.5vh;
+    font-size: 1.1rem;
+  }
+
   @media (max-width: 768px) {
-    font-size: 0.85rem;    
+    padding: 4.5vh;
+    font-size: 0.9rem;
   }
 
   @media (max-width: 505px) {
-    padding: 2.5vh 0.5vh 0.5vh 0.5vh;
+    padding: 2.5vh;
+    font-size: 0.9rem;
   }
   @media (max-width: 400px) {
     font-size: 0.75rem;    
@@ -80,7 +87,7 @@ function Vision() {
         setDisplayText(currentText);
         index++;
   
-        const randomDelay = Math.random() * 50 + 30;
+        const randomDelay = Math.random() * 25 + 20;
         setTimeout(typewriter, randomDelay);
       }
     };
