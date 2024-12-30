@@ -50,12 +50,11 @@ const StyledNavLink = styled(NavLink)`
   }
 
   @media (max-width: 505px) {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     padding: 5px 0px;
   }
 
   @media (max-width: 435px) {
-    font-size: 1.1rem;
     padding: 0px 0px;
   }
 `;
