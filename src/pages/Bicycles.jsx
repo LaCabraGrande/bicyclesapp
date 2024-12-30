@@ -52,9 +52,9 @@ const FilterDiv = styled.div`
 const ClearFiltersButton = styled.button`
   position: absolute;
   display: ${(props) => (props.show ? "block" : "none")};
-  top: -6px;
+  top: -5px;
   left: 160px;
-  padding: 5px 7px 5px 7px;
+  padding: 4px 7px 4px 7px;
   background-color: #ff4d4d;
   color: white;
   border: none;
@@ -65,27 +65,32 @@ const ClearFiltersButton = styled.button`
   &:hover {
     background-color: #e60000;
   }
+
+  @media (max-width: 660px) {    
+    left: 35%; /* Placerer tælleren 100px inde */
+    font-size: 0.8rem;
+  }
 `;
 
 
 const BicycleCount = styled.div`
   position: absolute;
-  right: 100px; /* Placerer tælleren 100px inde */
+  right: 10%; /* Placerer tælleren 100px inde */
   color: black;
   font-size: 0.9rem;
 
   @media (max-width: 860px) {    
-    left: 80%; /* Placerer tælleren 100px inde */
+    right: 10%; /* Placerer tælleren 100px inde */
     font-size: 0.8rem;
   }
 
   @media (max-width: 660px) {    
-    left: 75%; /* Placerer tælleren 100px inde */
+    right: 10%; /* Placerer tælleren 100px inde */
     font-size: 0.8rem;
   }
 
   @media (max-width: 435px) {
-    left: 70%; /* Placerer tælleren 100px inde */
+    right: 10%; /* Placerer tælleren 100px inde */
     font-size: 0.75rem;
   }
 `;
