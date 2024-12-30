@@ -443,7 +443,7 @@ const BicycleTableData = styled.td`
   padding: 0.3rem;
  
   &:first-child {
-    width: 29%; 
+    width: 25%; 
     text-align: left;
     font-weight: bold;
   }
