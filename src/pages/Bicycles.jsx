@@ -49,9 +49,28 @@ const FilterDiv = styled.div`
   }  
 `;
 
+const ClearFiltersButton = styled.button`
+  position: absolute;
+  display: ${(props) => (props.show ? "block" : "none")};
+  top: -6px;
+  left: 160px;
+  padding: 5px 7px 5px 7px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+
+  &:hover {
+    background-color: #e60000;
+  }
+`;
+
+
 const BicycleCount = styled.div`
   position: absolute;
-  left: 350px; /* Placerer tælleren 100px inde */
+  right: 100px; /* Placerer tælleren 100px inde */
   color: black;
   font-size: 0.9rem;
 
@@ -512,6 +531,18 @@ const Bicycles = () => {
     priceInterval: [],
   });
 
+  const clearFilters = () => {
+    setSelectedFilters({
+      gearSeries: [],
+      saddleBrand: [],
+      wheelBrand: [],
+      bicycleBrand: [],
+      bicycleType: [],
+      wheelType: [],
+      priceInterval: [],
+    });
+  };
+
   const [bicycles, setBicycles] = useState([]);
   const [openCategories, setOpenCategories] = useState({
     gearSeries: false,
@@ -532,6 +563,10 @@ const Bicycles = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  const hasActiveFilters = Object.values(selectedFilters).some(
+    (filter) => filter.length > 0
+  );
 
   useEffect(() => {
     const fetchFilters = async () => {
@@ -640,6 +675,9 @@ const Bicycles = () => {
           {isSidebarOpen ? "Close Filter" : "Filter"}
         </SidebarButton>
         <BicycleCount>{bicycles.length} Bicycles</BicycleCount>
+        <ClearFiltersButton show={hasActiveFilters} onClick={clearFilters}>
+          Clear Filters
+        </ClearFiltersButton>
       </FilterDiv>
 
       <SidebarContainer isOpen={isSidebarOpen} isMobile={isMobile}>
