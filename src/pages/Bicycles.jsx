@@ -91,7 +91,7 @@ const BicycleCount = styled.div`
   }
 
   @media (max-width: 450px) {
-    left: 67%; /* Placerer tælleren 100px inde */
+    left: 66%; /* Placerer tælleren 100px inde */
     font-size: 0.8rem;
   }
 `;
