@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
-  position: relative; /* Gør Container til reference for absolut positionering */
+  position: relative;
   display: flex;
-  flex-direction: column; /* Tilføj filter-div øverst */
-  flex-wrap: nowrap; /* Hvis du vil forhindre brydning */
-  overflow-x: hidden; /* For at tillade scrolling i stedet for overlap */
+  flex-direction: column; 
+  flex-wrap: nowrap;
+  overflow-x: hidden; 
   overflow-y: hidden;
   height: 77vh;
   padding-top: 10px;
@@ -34,9 +34,9 @@ const FilterDiv = styled.div`
   width: 100%;
   background-color: white;
   display: flex;   
-  padding: 0px 0px 30px 25px; /* Plads til knappen */
+  padding: 0px 0px 30px 25px;
   margin: 0px 0px 0px 0px;
-  border-bottom: 1px solid #ddd; /* Tilsæt en bundlinje */
+  border-bottom: 1px solid #ddd;
   position: relative;
 
   @media (max-width: 660px) {
@@ -44,8 +44,7 @@ const FilterDiv = styled.div`
   } 
 
   @media (max-width: 505px) {
-    padding: 0px 0px 30px 20px; /* Plads til knappen */
-    
+    padding: 0px 0px 30px 20px;    
   }  
 `;
 
@@ -68,30 +67,34 @@ const ClearFiltersButton = styled.button`
 
   @media (max-width: 660px) {    
     top: -3px;
-    left: 35%; /* Placerer tælleren 100px inde */
+    left: 35%; 
     font-size: 0.7rem;
+  }
+
+  @media (max-width: 450px) {
+    left: 30%;     
   }
 `;
 
 
 const BicycleCount = styled.div`
   position: absolute;
-  left: 350px; /* Placerer tælleren 100px inde */
+  left: 350px; 
   color: black;
   font-size: 0.9rem;
 
   @media (max-width: 860px) {    
-    right: 10%; /* Placerer tælleren 100px inde */
+    right: 10%; 
     font-size: 0.8rem;
   }
 
   @media (max-width: 660px) {    
-    left: 70%; /* Placerer tælleren 100px inde */
+    left: 70%;
     font-size: 0.8rem;
   }
 
   @media (max-width: 450px) {
-    left: 65%; /* Placerer tælleren 100px inde */
+    left: 65%; 
     font-size: 0.8rem;
   }
 `;
@@ -104,9 +107,9 @@ const SidebarContainer = styled.div`
   width: 320px;
   height: 77vh;  
   background-color: white;
-  z-index: 1; /* Sørg for, at det er synligt over indholdet */
+  z-index: 1; 
   overflow-y: auto;
-  transition: transform 0.3s ease; /* Tilføjer glidende overgang */
+  transition: transform 0.3s ease; 
   padding-left: 10px;
   margin-top: 20px;
   margin-left: 10px;
@@ -137,8 +140,8 @@ const SidebarContainer = styled.div`
 
 
 const Sidebar = styled.div`
-  width: 290px; /* Standard bredde */
-  max-width: 290px; /* Standard max bredde */
+  width: 290px; 
+  max-width: 290px; 
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -574,6 +577,7 @@ const Bicycles = () => {
     (filter) => filter.length > 0
   );
 
+  // Her opdateres filteret til sidebar, når der vælges eller fravælges et filter
   useEffect(() => {
     const fetchFilters = async () => {
       try {
@@ -602,9 +606,10 @@ const Bicycles = () => {
       }
     };
 
-    fetchFilters();
+    fetchFilters(); // Efter hvert filtervalg opdateres filteret for at vise den opdaterede sidebar
   }, [selectedFilters]);
 
+  // Her henter vi cyklerne fra API'en baseret på de valgte filtre
   const fetchBicycles = async () => {
     try {
       const queryParams = new URLSearchParams();
@@ -614,6 +619,7 @@ const Bicycles = () => {
         });
       });
 
+      // vi gør ikke brug af minPrice og maxPrice i Backend endnu men vi vil lave en slider på prisen
       queryParams.append("minPrice", 0);
       queryParams.append("maxPrice", 18000);
 
@@ -632,18 +638,20 @@ const Bicycles = () => {
     }
   };
 
+  // Her opdateres filteret, når der vælges eller fravælges et filter
   const handleFilterChange = (category, brand) => {
     setSelectedFilters((prev) => {
       const newSelection = prev[category].includes(brand)
-        ? prev[category].filter((item) => item !== brand)
-        : [...prev[category], brand];
+        ? prev[category].filter((item) => item !== brand) // Hvis brand er i listen, så fjerner vi det
+        : [...prev[category], brand]; // Hvis brand ikke er i listen, så tilføjer vi det
       return {
         ...prev,
-        [category]: newSelection,
+        [category]: newSelection, // Her returnerer vi den nye liste med valgte filtre
       };
     });
   };
 
+  // Her styrer vi, om kategorierne i filteret skal vises eller ej
   const toggleCategory = (category) => {
     setOpenCategories((prev) => ({
       ...prev,
@@ -651,16 +659,19 @@ const Bicycles = () => {
     }));
   };
 
+  // Her henter vi cyklerne, når komponenten bliver indlæst første gang fordi useEffects altid køres en gang under den
+  // indledende rendering selvom selectedFilters ikke har ændret sig endnu, og hver gang selectedFilters ændres
   useEffect(() => {
     fetchBicycles();
   }, [selectedFilters]);
 
+  // Her styrer vi, om detaljer for en cykel skal vises eller ej
   const [openBicycleDetails, setOpenBicycleDetails] = useState({});
 
   const toggleBicycleDetail = (bicycleId) => {
     setOpenBicycleDetails((prevDetails) => ({
-      ...prevDetails,
-      [bicycleId]: !prevDetails[bicycleId], // Skifter mellem true/false
+      ...prevDetails, // Beholder alle tidligere detaljer med spread operator for at undgå at overskrive dem
+      [bicycleId]: !prevDetails[bicycleId], // Skifter tilstand mellem true/false hver gang funktionen kaldes og hvis den er undefined(kaldt første gang), så bliver den true
     }));
   };
 
@@ -688,16 +699,15 @@ const Bicycles = () => {
 
       <SidebarContainer isOpen={isSidebarOpen} isMobile={isMobile}>
         <Sidebar>
-          {Object.keys(filters).map((category) => (
+          {Object.keys(filters).map((category) => ( // Her itererer vi over alle kategorierne i arrayet filters
             <FilterCategory key={category}>
               <FilterTitleContainer>
               <FilterTitle isOpen={openCategories[category]} onClick={() => toggleCategory(category)}>
-                {categoryTitles[category] ||
-                  category.charAt(0).toUpperCase() + category.slice(1)}
+                {categoryTitles[category]}
               </FilterTitle>
               </FilterTitleContainer>
               <FilterOptions isOpen={openCategories[category]}>
-                {Object.keys(filters[category]).map((brand) => (
+                {Object.keys(filters[category]).map((brand) => ( // Her itererer vi over alle brands i arrayet filters[category]
                   <FilterButton
                     key={brand}
                     onClick={() =>
