@@ -296,7 +296,7 @@ const Options = ({ onFormSelect, activeForm }) => {
         "size",
         "price",
         "weight",
-        "description",        
+        "link",        
       ],
     },
     "New Frame": {
