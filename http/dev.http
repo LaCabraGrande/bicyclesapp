@@ -4,7 +4,7 @@ POST https://bicycle.thegreenway.dk/api/auth/register/
 Content-Type: application/json
 
 {
-    "username": "Lars",
+    "username": "admin",
     "password": "green123"
 }
 
@@ -13,7 +13,7 @@ POST https://bicycle.thegreenway.dk/api/auth/login
 Content-Type: application/json
 
 {
-  "username": "Nicolai",
+  "username": "lars",
   "password": "green123"
 }
 
@@ -23,7 +23,7 @@ Content-Type: application/json
 
 POST https://bicycle.thegreenway.dk/api/auth/user/addrole/
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsYXJzIiwic3ViIjoiTmljb2xhaSIsImV4cCI6MTczNDk0MDU4NSwicm9sZXMiOiJ1c2VyIiwidXNlcm5hbWUiOiJOaWNvbGFpIn0.tMZDIIAzUxOJbaDwcBjXQDTgvm1jP3oKboK-7pAQRAU
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsYXJzIiwic3ViIjoibGFycyIsImV4cCI6MTczNjE3ODg4NCwicm9sZXMiOiJ1c2VyIiwidXNlcm5hbWUiOiJsYXJzIn0.odmD9IxTfJFFf6lGxuF58ML6VuwCxdSD7XYJ2wmd9g4
 
 {
     "role": "admin"

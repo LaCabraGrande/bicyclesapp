@@ -43,9 +43,11 @@ function apiFacade() {
 
     // Logout and remove token
     const logout = () => {
-        localStorage.removeItem("jwtToken");
+        localStorage.removeItem("jwtToken"); // Her fjerner jeg jwtToken fra local storage
+        localStorage.removeItem("loggedInUser"); // Her fjerner jeg loggedInUser fra local storage
     };
 
+    // Funktionen bruges ikke i dette projekt da det check er implementeret i min backend
     // Get user roles from the JWT token
     const getUserRoles = () => {
         const token = getToken();
@@ -62,6 +64,7 @@ function apiFacade() {
         return [];
     };
 
+    // Funktionen bruges ikke i dette projekt da det check er implementeret i min backend
     // Check if user has the required role for access
     const hasUserAccess = (neededRole) => {
         const roles = getUserRoles();
@@ -69,14 +72,20 @@ function apiFacade() {
     };
 
     // Login function
-    const login = (username, password) => {
+    const login = async (username, password) => {
         const options = makeOptions("POST", false, { username, password });
-        return fetch(`${URL}/auth/login`, options)
-            .then(handleHttpErrors)
-            .then((res) => {
-                setToken(res.token);
-            });
+        try {
+            const res = await fetch(`${URL}/auth/login`, options);
+            const data = await handleHttpErrors(res); // Håndterer fejl og returnerer JSON
+            setToken(data.token); // Gemmer token i localStorage
+            localStorage.setItem("loggedInUser", username); // Gemmer brugernavn i localStorage
+            return data; // Returnerer data, hvis nødvendigt
+        } catch (error) {
+            console.error("Login failed:", error);
+            throw error; // Sender fejlen videre opad til kaldet i Header.jsx
+        }
     };
+    
 
     // Function to fetch data with authorization (JWT)
     const fetchWithAuth = async (endpoint, method = "GET", body = null) => {

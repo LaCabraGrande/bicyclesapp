@@ -734,7 +734,7 @@ const Bicycles = () => {
 
       <Content isOpen={isSidebarOpen} isMobile={isMobile}>
         {bicycles.length === 0 ? (
-          <p>  </p>
+          <p></p>
         ) : (
           bicycles.map((bicycle) => (
             <BicycleBox

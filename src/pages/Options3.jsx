@@ -296,7 +296,7 @@ const Options = ({ onFormSelect, activeForm }) => {
         "size",
         "price",
         "weight",
-        "link",        
+        "description",        
       ],
     },
     "New Frame": {
@@ -492,7 +492,8 @@ const Options = ({ onFormSelect, activeForm }) => {
           saddleId: parseInt(formData.saddleId),
           username: username, // Her tilføjer jeg username til payload
         };
-        
+        console.log("Payload for bicycle:", payload);
+
         await facade.fetchWithAuth(endpoint, "POST", payload);       
       } else {
         // Generic submission for other forms

@@ -195,7 +195,7 @@ const Header = () => {
   const navigate = useNavigate();
   
   useEffect(() => {
-    // Check local storage for logged-in user
+    // Her chekker vi om der i local storage er sat en logged-in user. I så fald sætter vi den i state.
     const storedUser = localStorage.getItem("loggedInUser");
     if (storedUser) {
       setLoggedInUser(storedUser);
@@ -203,24 +203,26 @@ const Header = () => {
   }, []);
 
   const login = (evt) => {
-    evt.preventDefault();
+    evt.preventDefault(); // Her forhindrer vi at siden reloader hvilket ville medføre at vi mister state og dermed logged-in user
     facade
-      .login(username, password)
-      .then(() => {
-        setLoggedInUser(username);
-        localStorage.setItem("loggedInUser", username); // Save to local storage
-        navigate("/Dealers"); // Navigate to the Dealers page on successful login
-        setIsModalOpen(false); // Close modal on successful login
-      })
-      .catch(() => alert("Login failed"));
+        .login(username, password)
+        .then(() => {
+            setLoggedInUser(username); // Opdaterer state med brugernavn
+            navigate("/Dealers"); // Navigerer til Dealers-siden
+            setIsModalOpen(false); // Lukker login-modalen
+        })
+        .catch((error) => {
+          const errorMessage = error.fullError?.error || "Login failed"; // Brug serverens fulde fejlbesked eller Login failed som standard
+          alert(errorMessage); // alert med fejlbesked
+        })
   };
+
 
   const logout = () => {
     facade.logout();
     setLoggedInUser(null);
     setUsername("");
     setPassword("");
-    localStorage.removeItem("loggedInUser"); // Remove from local storage
     navigate("/"); // Navigate to the front page on logout
   };
 
