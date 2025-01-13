@@ -5,7 +5,7 @@ import Bicycles from './pages/Bicycles.jsx'
 import MainLayout from './layouts/MainLayout.jsx'
 import Vision from './pages/Vision.jsx'
 import Components from './pages/Components.jsx'
-import Dealers from './pages/DealersNew.jsx'
+import Dealers from './pages/Dealers.jsx'
 
 const router = createBrowserRouter(
  createRoutesFromElements(

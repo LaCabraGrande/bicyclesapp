@@ -18,8 +18,7 @@ const Container = styled.div`
 
   @media (max-width: 860px) {
      border-right: none;
-     height: 74vh;
-    
+     height: 74vh;    
   }
 
   @media (max-width: 460px) {
@@ -75,7 +74,6 @@ const ClearFiltersButton = styled.button`
     left: 30%;     
   }
 `;
-
 
 const BicycleCount = styled.div`
   position: absolute;
@@ -138,7 +136,6 @@ const SidebarContainer = styled.div`
   }
 `;
 
-
 const Sidebar = styled.div`
   width: 290px; 
   max-width: 290px; 
@@ -173,17 +170,17 @@ const Sidebar = styled.div`
   }   
 
   &::-webkit-scrollbar {
-    width: 6px; /* Scrollbar bredde */
+    width: 6px; 
   }
   &::-webkit-scrollbar-thumb {
-    background-color: #45a049; /* Thumb farve */
-    border-radius: 2px; /* Runde hjørner */
+    background-color: #45a049; 
+    border-radius: 2px; 
   }
   &::-webkit-scrollbar-thumb:hover {
-    background-color: #45a049; /* Hover effekt */
+    background-color: #45a049;
   }
   &::-webkit-scrollbar-track {
-    background-color: #f0f0f0; /* Track farve */
+    background-color: #f0f0f0;
   }
 `;
 
@@ -214,22 +211,22 @@ const Content = styled.div`
   }
   
   &::-webkit-scrollbar {
-    width: 6px; /* Scrollbar bredde */
+    width: 6px; 
   }
   &::-webkit-scrollbar-thumb {
-    background-color: #45a049; /* Thumb farve */
-    border-radius: 2px; /* Runde hjørner */
+    background-color: #45a049; 
+    border-radius: 2px; 
   }
   &::-webkit-scrollbar-thumb:hover {
-    background-color: #45a049; /* Hover effekt */
+    background-color: #45a049;
   }
   &::-webkit-scrollbar-track {
-    background-color: #f0f0f0; /* Track farve */
+    background-color: #f0f0f0;
   }
 `;
 
 const FilterCategory = styled.div`
-  
+  // Bruges kun som container til FilterTitle og FilterOptions
 `;
 
 const FilterTitleContainer = styled.div`
@@ -248,6 +245,7 @@ const FilterTitle = styled.h4`
   position: relative;
   
  
+  // Her laver jeg en pil, der peger op eller ned, afhængig af om kategorien er åben eller lukket
   &::after {
     content: '';
     position: absolute;
@@ -606,7 +604,7 @@ const Bicycles = () => {
       }
     };
 
-    fetchFilters(); // Efter hvert filtervalg opdateres filteret for at vise den opdaterede sidebar
+    fetchFilters(); // Funktionen er defineret ovenover men skal jo kaldes for at den bliver kørt
   }, [selectedFilters]);
 
   // Her henter vi cyklerne fra API'en baseret på de valgte filtre
@@ -619,7 +617,7 @@ const Bicycles = () => {
         });
       });
 
-      // vi gør ikke brug af minPrice og maxPrice i Backend endnu men vi vil lave en slider på prisen
+      // vi gør ikke brug af minPrice og maxPrice i Backend endnu men vi vil senere lave en slider på prisen
       queryParams.append("minPrice", 0);
       queryParams.append("maxPrice", 18000);
 

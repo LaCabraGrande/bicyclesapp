@@ -1,7 +1,7 @@
 import { useState } from "react";
 import styled from "styled-components";
 import YourInfo from "./YourInfo";
-import Options from "./Options3";
+import Options from "./Options";
 
 const Container = styled.div`
   display: flex;

@@ -16,7 +16,6 @@ const Container = styled.div`
   background-color: darkgreen;
   box-shadow: 0 0 55px rgba(0, 0, 0, 0.3), 0 0 55px rgba(0, 0, 0, 0.3);
 
-
   // Mobile media query
   @media (max-width: 505px) {
     padding: 10px;    
@@ -62,7 +61,6 @@ const Footer = styled.footer`
       background-position: 0% 50%; /* Move back to the left */
     }
   }
-
   
   /* Tablet media query */
   @media (max-width: 768px) {
