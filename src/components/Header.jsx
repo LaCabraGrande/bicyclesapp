@@ -43,7 +43,7 @@ const StyledNavLink = styled(NavLink)`
       $isHovered || $isActive ? "100%" : "0"}; // Hvis linket er hovered eller aktivt, så er bredden 100%, ellers 0
     height: 1px;
     background-color: white;
-    transition: width 0.3s ease, left 0.3s ease; // her laver vi en transition på bredden og left positionen med 0.3 sekunders varighed
+    transition: width 0.3s ease, left 0.3s ease; // her flytter vi elementets startposition og udvider bredden hvilket giver en linie der vokser fra midten
   }
 
   @media (max-width: 860px) {
