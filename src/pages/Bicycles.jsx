@@ -661,6 +661,7 @@ const Bicycles = () => {
   // indledende rendering selvom selectedFilters ikke har ændret sig endnu, og hver gang selectedFilters ændres
   useEffect(() => {
     fetchBicycles();
+     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedFilters]);
 
   // Her styrer vi, om detaljer for en cykel skal vises eller ej
