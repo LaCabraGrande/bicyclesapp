@@ -32,6 +32,7 @@ const StyledNavLink = styled(NavLink)`
     color: white;
   }
 
+  // Her laver vi en pseudo-element der fungerer som en underline på linket
   &::after {
     content: "";
     position: absolute;
@@ -39,10 +40,10 @@ const StyledNavLink = styled(NavLink)`
     left: ${({ $isHovered, $isActive }) =>
       $isHovered || $isActive ? "0" : "50%"};
     width: ${({ $isHovered, $isActive }) =>
-      $isHovered || $isActive ? "100%" : "0"};
+      $isHovered || $isActive ? "100%" : "0"}; // Hvis linket er hovered eller aktivt, så er bredden 100%, ellers 0
     height: 1px;
     background-color: white;
-    transition: width 0.3s ease, left 0.3s ease;
+    transition: width 0.3s ease, left 0.3s ease; // her laver vi en transition på bredden og left positionen med 0.3 sekunders varighed
   }
 
   @media (max-width: 860px) {
