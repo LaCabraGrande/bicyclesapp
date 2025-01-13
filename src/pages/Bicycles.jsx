@@ -766,7 +766,7 @@ const Bicycles = () => {
                         <BicycleTableData>Dealer:</BicycleTableData>
                         <BicycleTableData>
                           <StyledLink
-                            href={bicycle.description}
+                            href={bicycle.link}
                             target="_blank"
                             rel="noopener noreferrer"
                             onClick={(e) => e.stopPropagation()}
