@@ -687,7 +687,7 @@ const Bicycles = () => {
   return (
     <Container>
       <FilterDiv>
-        <SidebarButton onClick={toggleSidebar} isOpen={isSidebarOpen}>
+        <SidebarButton onClick={toggleSidebar}>
           {isSidebarOpen ? "Close Filter" : "Filter"}
         </SidebarButton>
         <BicycleCount>{bicycles.length} Bicycles</BicycleCount>
